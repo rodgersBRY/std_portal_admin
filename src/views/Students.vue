@@ -22,7 +22,15 @@
             :headers="headers"
             :items="students"
             :search="search"
-          ></v-data-table>
+            group-by="gender"
+            show-group-by
+          >
+            <template v-slot:item.status="{ item }">
+              <v-chip :color="getColor(item.status)">{{
+                item.status ? "active" : "inactive"
+              }}</v-chip>
+            </template>
+          </v-data-table>
         </v-card>
       </section>
     </main>
@@ -30,6 +38,8 @@
 </template>
 
 <script>
+import students from "../utils/students.json";
+
 export default {
   data() {
     return {
@@ -39,52 +49,46 @@ export default {
           text: "Code",
           sortable: false,
           value: "code",
+          groupable: false,
         },
         {
           text: "Full Name",
           sortable: true,
           value: "name",
+          groupable: false,
         },
-        { text: "Phone Number", value: "phone", sortable: false },
-        { text: "Email", value: "email", sortable: false },
-        { text: "Age", value: "age", sortable: true },
-        { text: "Gender", value: "gender", sortable: false },
+        {
+          text: "Phone Number",
+          value: "phone",
+          sortable: false,
+          filterable: false,
+          groupable: false,
+        },
+        {
+          text: "Email",
+          value: "email",
+          sortable: false,
+          filterable: false,
+          groupable: false,
+        },
+        {
+          text: "Age",
+          value: "age",
+          sortable: false,
+          filterable: false,
+          groupable: false,
+        },
+        { text: "Gender", value: "gender", sortable: false, filterable: false },
       ],
-      students: [
-        {
-          code: "JWM-020",
-          name: "Brian Mawira",
-          email: "brian@mail.com",
-          phone: "0712413243",
-          age: 25,
-          gender: "male",
-        },
-        {
-          code: "JWM-021",
-          name: "Justin Mawira",
-          email: "justin@mail.com",
-          phone: "0710411857",
-          age: 23,
-          gender: "male",
-        },
-        {
-          code: "JWM-012",
-          name: "Nyla Makena",
-          email: "nyla@make.com",
-          phone: "0711367888",
-          age: 20,
-          gender: "female",
-        },
-        {
-          code: "JWM-233",
-          name: "Evelyn Njoki",
-          email: "evelyn@njoki.com",
-          phone: "254711234553",
-          age: 27,
-          gender: "female",
-        },
-      ],
+      students: students,
     };
+  },
+
+  methods: {
+    getColor(status) {
+      if (status === true) return "grey";
+      else return "green";
+    },
   },
 };
 </script>
