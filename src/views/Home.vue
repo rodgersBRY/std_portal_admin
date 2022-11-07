@@ -1,0 +1,89 @@
+<template>
+  <div class="home">
+    <header>
+      <sidenav />
+    </header>
+
+    <main>
+      <h1>Dashboard</h1>
+
+      <section class="categories">
+        <v-card
+          class="category"
+          width="300px"
+          v-for="(cat, i) in categories"
+          :key="i"
+        >
+          <v-img width="100%" height="200px" :src="cat.img"> </v-img>
+          <v-card-subtitle class="grey--text">CATEGORY</v-card-subtitle>
+          <v-card-title>{{ cat.title }}</v-card-title>
+          <v-card-text>{{ cat.text }}</v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              outlined
+              color="green darken-3"
+              style="text-transform: capitalize"
+              >{{ cat.btnText
+              }}<span>
+                <v-icon>mdi-arrow-right</v-icon>
+              </span></v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </section>
+    </main>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Home",
+
+  data() {
+    return {
+      categories: [
+        {
+          img: require("../assets/color_braid.svg"),
+          title: "Enrolled Students",
+          text: "Students who are entolled to th school",
+          btnText: "Students",
+        },
+        {
+          img: require("../assets/retro.svg"),
+          title: "Courses Offered",
+          text: "Courses being offered by the school",
+          btnText: "Courses",
+        },
+        {
+          img: require("../assets/color_braid.svg"),
+          title: "Notices",
+          text: "All notices that need your attention.",
+          btnText: "Notices",
+        },
+      ],
+    };
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.home {
+  main {
+    margin: auto 0 0 260px;
+    padding: 1rem;
+    height: 80vh;
+    width: 80%;
+    h1 {
+      margin-bottom: 3rem;
+    }
+    .categories {
+      display: flex;
+      justify-content: center;
+      .category {
+        margin: 0 1rem;
+      }
+    }
+  }
+}
+</style>
