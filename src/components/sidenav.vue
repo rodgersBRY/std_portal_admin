@@ -14,11 +14,11 @@
         ><span><v-icon color="white">mdi-home</v-icon></span
         >Home</router-link
       >
-      <router-link class="nav-link" tag="li" active-class="active" to="/modules"
+      <router-link class="nav-link" tag="li" active-class="active" to="/students"
         ><span><v-icon color="white">mdi-book-open</v-icon></span
         >Enrolled Students</router-link
       >
-      <router-link class="nav-link" tag="li" active-class="active" to="/modules"
+      <router-link class="nav-link" tag="li" active-class="active" to="/courses"
         ><span><v-icon color="white">mdi-account-group-outline</v-icon></span
         >Offered Courses</router-link
       >

@@ -24,6 +24,7 @@
               outlined
               color="green darken-3"
               style="text-transform: capitalize"
+              :to="cat.link"
               >{{ cat.btnText
               }}<span>
                 <v-icon>mdi-arrow-right</v-icon>
@@ -48,18 +49,21 @@ export default {
           title: "Enrolled Students",
           text: "Students who are entolled to th school",
           btnText: "Students",
+          link: '/students'
         },
         {
           img: require("../assets/retro.svg"),
           title: "Courses Offered",
           text: "Courses being offered by the school",
           btnText: "Courses",
+          link: '/courses'
         },
         {
           img: require("../assets/color_braid.svg"),
           title: "Notices",
           text: "All notices that need your attention.",
           btnText: "Notices",
+          link: '/notices'
         },
       ],
     };
