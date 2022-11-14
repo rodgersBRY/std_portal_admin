@@ -2,33 +2,32 @@
   <div>
     <auth-nav-bar></auth-nav-bar>
     <main>
-  
       <form action="#">
         <h1 class="mb-10">Sign up</h1>
 
-        <label for="email">Email*</label>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          v-model="formData.email"
-        />
-        <label for="password">Password*</label>
-        <input
-          type="password"
-          name="password"
-          v-model="formData.password"
-        />
-        <label for="confirmPass">Password Confirmation*</label>
+        <label for="name">Name<span>*</span></label>
+        <input type="text" name="name" id="name" v-model="formData.name" />
+        <label for="email">Email<span>*</span></label>
+        <input type="email" name="email" id="email" v-model="formData.email" />
+        <label for="password">Password<span>*</span></label>
+        <input type="password" name="password" v-model="formData.password" />
+        <label for="confirmPass">Password Confirmation<span>*</span></label>
         <input
           type="password"
           name="confirmPass"
+          :class="!passwordMatch ? 'error' : ''"
           v-model="formData.confirmPass"
         />
+        <p class="error-text" v-if="!passwordMatch">Passwords don't match</p>
 
-        <v-btn depressed dark color="green darken-3" class="mt-10"
-          >Sign Up</v-btn
-        >
+        <v-btn
+          depressed
+          dark
+          color="green darken-3"
+          class="mt-10"
+          @click="register"
+          >Sign Up
+        </v-btn>
       </form>
     </main>
 
@@ -39,6 +38,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "Register",
 
@@ -49,13 +50,44 @@ export default {
 
   data() {
     return {
-
       formData: {
+        name: "",
         email: "",
         password: "",
         confirmPass: "",
       },
     };
+  },
+
+  computed: {
+    ...mapGetters(["user, isLoading"]),
+
+    passwordMatch() {
+      return this.formData.password === this.formData.confirmPass;
+    },
+  },
+
+  // check if user is logged in
+  watch: {
+    user(val) {
+      if (val !== null && val !== undefined) {
+        this.$router.push("/");
+      }
+    },
+  },
+
+  methods: {
+    register() {
+      let name = this.formData.name;
+      let email = this.formData.email;
+      let pass = this.formData.password;
+
+      if (name === "" || email === "" || pass === "") {
+        alert("Fill all required fields!");
+      }
+
+      this.$store.dispatch("register", this.formData);
+    },
   },
 };
 </script>
@@ -75,31 +107,28 @@ form {
     }
   }
 
+  .error {
+    border: 1px solid red;
+  }
+
+  .error-text {
+    font-size: 12px;
+    color: red;
+    margin-top: 5px;
+  }
+
   label {
     display: block;
     margin: 1.5rem 0 5px 0;
-  }
-  .align-row {
-    display: flex;
-    justify-content: space-between;
-    div {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      margin: 0;
-      input,
-      select {
-        width: 100%;
-      }
+    span {
+      color: red;
+      margin-left: 2px;
     }
-  }
-  .v-btn {
-    display: block;
   }
 }
 
 footer {
   position: absolute;
-  bottom: 2%;
+  bottom: 0;
 }
 </style>

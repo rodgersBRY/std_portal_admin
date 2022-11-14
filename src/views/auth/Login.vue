@@ -9,13 +9,14 @@
             width="100%"
             :src="require('@/assets/retro.svg')"
             alt="ecommerce"
-          ></v-img>
+          >
+          </v-img>
         </div>
         <div class="form">
           <form action="#">
-            <label for="email">Email*</label>
+            <label for="email">Email<span>*</span></label>
             <input type="email" name="email" id="email" v-model="email" />
-            <label for="password">Password*</label>
+            <label for="password">Password<span>*</span></label>
             <input
               type="password"
               name="password"
@@ -23,12 +24,14 @@
               v-model="password"
             />
 
-            <input type="submit" value="Login" />
+            <input type="submit" @click.prevent="signin" value="Login" />
           </form>
           <v-divider class="mb-8"></v-divider>
           <div class="recover-account">
             <p>Forgot Password?</p>
-            <p @click="$router.push('/accounts/signup')">Don't have an account?</p>
+            <p @click="$router.push('/accounts/signup')">
+              Don't have an account?
+            </p>
           </div>
         </div>
       </section>
@@ -41,6 +44,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "Login",
 
@@ -54,6 +59,23 @@ export default {
       email: "",
       password: "",
     };
+  },
+
+  methods: {
+    ...mapActions(["login"]),
+
+    signin() {
+      let userData = {
+        email: this.email,
+        password: this.password,
+      };
+
+      if (this.email == "" || this.password == "") {
+        alert("fill in all required fields!");
+      } else {
+        this.login(userData);
+      }
+    },
   },
 };
 </script>
@@ -71,6 +93,10 @@ export default {
     label {
       display: block;
       margin: 2rem 0 0.5rem 0;
+      span {
+        color: red;
+        margin-left: 3px;
+      }
     }
     input[type="email"],
     input[type="password"] {

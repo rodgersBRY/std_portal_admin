@@ -20,16 +20,9 @@
           </v-card-title>
           <v-data-table
             :headers="headers"
-            :items="students"
+            :items="students.data"
             :search="search"
-            group-by="gender"
-            show-group-by
           >
-            <template v-slot:item.status="{ item }">
-              <v-chip :color="getColor(item.status)">{{
-                item.status ? "active" : "inactive"
-              }}</v-chip>
-            </template>
           </v-data-table>
         </v-card>
       </section>
@@ -38,9 +31,13 @@
 </template>
 
 <script>
-import students from "../utils/students.json";
+import { mapGetters } from "vuex";
 
 export default {
+  created() {
+    this.$store.dispatch("fetchStudents");
+  },
+
   data() {
     return {
       search: "",
@@ -78,17 +75,33 @@ export default {
           filterable: false,
           groupable: false,
         },
-        { text: "Gender", value: "gender", sortable: false, filterable: false },
+        {
+          text: "Gender",
+          value: "gender",
+          sortable: false,
+          filterable: false,
+          groupable: false,
+        },
+        {
+          text: "Fee Balance",
+          value: "fee_balance",
+          sortable: false,
+          filterable: false,
+          groupable: false,
+        },
       ],
-      students: students,
     };
   },
 
+  computed: {
+    ...mapGetters(["students"]),
+  },
+
   methods: {
-    getColor(status) {
-      if (status === true) return "grey";
-      else return "green";
-    },
+    // getColor(status) {
+    //   if (status === true) return "grey";
+    //   else return "green";
+    // },
   },
 };
 </script>
