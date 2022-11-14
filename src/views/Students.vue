@@ -34,6 +34,7 @@
 import { mapGetters } from "vuex";
 
 export default {
+  name: 'students',
   created() {
     this.$store.dispatch("fetchStudents");
   },
@@ -97,12 +98,6 @@ export default {
     ...mapGetters(["students"]),
   },
 
-  methods: {
-    // getColor(status) {
-    //   if (status === true) return "grey";
-    //   else return "green";
-    // },
-  },
 };
 </script>
 

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 
 export default {
   state: {
@@ -13,6 +13,7 @@ export default {
     addStudent(state, payload) {
       state.students.push(payload);
     },
+    
     deleteStudent(state, payload) {
       const updatedStudentsList = state.students.filter(
         (stud) => stud.id !== payload

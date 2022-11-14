@@ -9,7 +9,7 @@
         <h1 class="display-2">Courses</h1>
 
         <v-row no-gutters wrap justify="space-between" class="row-div">
-          <v-card
+          <!-- <v-card
             dark
             width="300px"
             height="300px"
@@ -22,7 +22,8 @@
               <v-icon>mdi-account-multiple</v-icon>
               {{ course.students }} students
             </v-card-text>
-          </v-card>
+          </v-card> -->
+          {{courses}}
         </v-row>
       </section>
     </main>
@@ -30,28 +31,40 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
 export default {
+  name: 'courses',
+  created() {
+    this.$store.dispatch('fetchCourses')
+  },
+
   data() {
     return {
-      courses: [
-        {
-          title: "Mixology",
-          color: "red",
-          students: 13,
-        },
-        {
-          title: "Barista",
-          color: "blue",
-          students: 45,
-        },
-        {
-          title: "Roasting",
-          color: "green",
-          students: 29,
-        },
-      ],
+      // courses: [
+      //   {
+      //     title: "Mixology",
+      //     color: "red",
+      //     students: 13,
+      //   },
+      //   {
+      //     title: "Barista",
+      //     color: "blue",
+      //     students: 45,
+      //   },
+      //   {
+      //     title: "Roasting",
+      //     color: "green",
+      //     students: 29,
+      //   },
+      // ],
     };
   },
+
+  computed: {
+    ...mapGetters(["courses"])
+  },
+
 };
 </script>
 
