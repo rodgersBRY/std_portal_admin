@@ -6,6 +6,9 @@
 
     <main>
       <section class="content">
+        <v-row class="new-student-div" justify="center">
+          <stud-dialog />
+        </v-row>
         <v-card width="90%" class="pa-5 mt-10">
           <v-card-title>
             Students
@@ -34,8 +37,12 @@
 import { mapGetters } from "vuex";
 
 export default {
-  name: 'students',
-  
+  name: "students",
+
+  components: {
+    "stud-dialog": require("../components/student_dialog_box.vue").default,
+  },
+
   created() {
     this.$store.dispatch("fetchStudents");
   },
@@ -98,7 +105,6 @@ export default {
   computed: {
     ...mapGetters(["students"]),
   },
-
 };
 </script>
 
@@ -108,6 +114,12 @@ export default {
     margin-left: 260px;
     .v-card {
       margin: auto;
+    }
+
+    .new-student-div {
+      position: absolute;
+      top: 80%;
+      right: 5%;
     }
   }
 }
