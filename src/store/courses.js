@@ -5,20 +5,9 @@ export default {
     courses: [],
   },
 
-  mutatons: {
+  mutations: {
     setCourses(state, payload) {
       state.courses = payload;
-    },
-
-    addCourse(state, payload) {
-      state.courses.push(payload);
-    },
-
-    removeCourse(state, payload) {
-      const updatedCourses = state.courses.filter(
-        (course) => course.id !== payload
-      );
-      state.courses = updatedCourses;
     },
   },
 
@@ -29,8 +18,8 @@ export default {
       try {
         const res = await axios.get("/modules");
 
-        console.log(res.data);
-        commit('setCourses', res.data)
+        commit("setCourses", res.data.data);
+        commit("setLoading", false);
         commit("clearError");
       } catch (err) {
         commit("setError", err);

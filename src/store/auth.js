@@ -45,7 +45,7 @@ export default {
         };
 
         const user = await axios.post("/admin/login", userData);
-
+        
         let token = user.data.token;
         localStorage.setItem("token", token);
         axios.defaults.headers.common["Authorization"] = token;

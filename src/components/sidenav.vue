@@ -14,7 +14,11 @@
         ><span><v-icon color="white">mdi-home</v-icon></span
         >Home</router-link
       >
-      <router-link class="nav-link" tag="li" active-class="active" to="/students"
+      <router-link
+        class="nav-link"
+        tag="li"
+        active-class="active"
+        to="/students"
         ><span><v-icon color="white">mdi-book-open</v-icon></span
         >Enrolled Students</router-link
       >
@@ -26,17 +30,39 @@
         ><span><v-icon color="white">mdi-calendar-text-outline</v-icon></span
         >Notices</router-link
       >
-      <router-link
-        class="nav-link"
-        tag="li"
-        active-class="active"
-        to="/accounts/login"
+      <v-btn dark class="nav-link" tag="li" @click="signout"
         ><span><v-icon color="white">mdi-logout</v-icon></span
-        >Logout</router-link
+        >Logout</v-btn
       >
     </ul>
   </v-container>
 </template>
+
+<script>
+import { mapGetters } from "vuex";
+export default {
+  name: "sidenav",
+
+  created: {
+    ...mapGetters(["user","isAuthenticated"]),
+  },
+
+  watch: {
+    isAuthenticated(val) {
+      if (!val) {
+        this.$router.push("/accounts/login");
+      }
+    },
+  },
+
+  methods: {
+    signout() {
+      this.$store.dispatch("logout");
+      this.$router.push("/accounts/login");
+    },
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 .sidenav {
