@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default {
   state: {
-    user: {},
+    user: null,
     token: localStorage.getItem("token") || "",
   },
 
@@ -13,9 +13,9 @@ export default {
     },
 
     logout(state) {
-      state.user = {};
+      state.user = null;
       state.token = "";
-      state.error = "";
+      state.error = null;
     },
   },
 
@@ -24,14 +24,14 @@ export default {
       commit("setLoading", true);
 
       try {
-        const resp = await axios.post("/auth/register", payload);
+        const resp = await axios.post("/admin/register", payload);
         if (resp.statusCode == 200) {
-          commit("setError", null);
+          commit("clearError");
           commit("setLoading", false);
         }
       } catch (err) {
         commit("setLoading", false);
-        commit("setError", err.message);
+        commit("setError", err);
       }
     },
 
@@ -39,23 +39,31 @@ export default {
       commit("setLoading", true);
 
       try {
-        const user = await axios.post("/auth/login", payload);
+        let userData = {
+          email: payload.email,
+          password: payload.password,
+        };
+
+        const user = await axios.post("/admin/login", userData);
 
         let token = user.data.token;
         localStorage.setItem("token", token);
         axios.defaults.headers.common["Authorization"] = token;
 
         commit("setUser", user.data, token);
-        commit("setError", null);
+        commit("clearError");
         commit("setLoading", false);
       } catch (err) {
-        console.log(payload);
-        commit("setError", err.message);
+        commit("setError", err);
         commit("setLoading", false);
       }
     },
 
-    // async logout({ commit }) {},
+    async logout({ commit }) {
+      commit("logout");
+      localStorage.removeItem("token");
+      delete axios.defaults.headers.common["Authorization"];
+    },
   },
 
   getters: {

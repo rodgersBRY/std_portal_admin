@@ -6,7 +6,7 @@ export default {
   },
 
   mutatons: {
-    addCourses(state, payload) {
+    setCourses(state, payload) {
       state.courses = payload;
     },
 
@@ -27,10 +27,11 @@ export default {
       commit("setLoading", true);
 
       try {
-        const resp = await axios.get("/modules");
-        
-        commit("addCourses", resp.data);
-        commit("setLoading", false);
+        const res = await axios.get("/modules");
+
+        console.log(res.data);
+        commit('setCourses', res.data)
+        commit("clearError");
       } catch (err) {
         commit("setError", err);
         commit("setLoading", false);

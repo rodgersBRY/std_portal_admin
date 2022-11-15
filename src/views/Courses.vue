@@ -23,7 +23,7 @@
               {{ course.students }} students
             </v-card-text>
           </v-card> -->
-          {{courses}}
+          {{ courses }}
         </v-row>
       </section>
     </main>
@@ -31,40 +31,18 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'courses',
-  created() {
-    this.$store.dispatch('fetchCourses')
-  },
+  name: "courses",
 
-  data() {
-    return {
-      // courses: [
-      //   {
-      //     title: "Mixology",
-      //     color: "red",
-      //     students: 13,
-      //   },
-      //   {
-      //     title: "Barista",
-      //     color: "blue",
-      //     students: 45,
-      //   },
-      //   {
-      //     title: "Roasting",
-      //     color: "green",
-      //     students: 29,
-      //   },
-      // ],
-    };
+  created() {
+    this.$store.dispatch("fetchCourses");
   },
 
   computed: {
-    ...mapGetters(["courses"])
+    ...mapGetters(["courses"]),
   },
-
 };
 </script>
 

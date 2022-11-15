@@ -35,6 +35,7 @@ import { mapGetters } from "vuex";
 
 export default {
   name: 'students',
+  
   created() {
     this.$store.dispatch("fetchStudents");
   },

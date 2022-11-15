@@ -27,9 +27,9 @@ export default {
       commit("setLoading", true);
       
       try {
-        const resp =await axios.get("/admin/students");
+        const res =await axios.get("/admin/students");
 
-        commit("setStudents", resp.data);
+        commit("setStudents", res.data);
         commit("setLoading", false);
       } catch (err) {
         commit("setError", err.message);

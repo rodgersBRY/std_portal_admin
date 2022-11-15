@@ -13,7 +13,7 @@
           </v-img>
         </div>
         <div class="form">
-          <form action="#">
+          <form @submit.prevent="signin">
             <label for="email">Email<span>*</span></label>
             <input type="email" name="email" id="email" v-model="email" />
             <label for="password">Password<span>*</span></label>
@@ -24,7 +24,7 @@
               v-model="password"
             />
 
-            <input type="submit" @click.prevent="signin" value="Login" />
+            <input type="submit" value="Login" />
           </form>
           <v-divider class="mb-8"></v-divider>
           <div class="recover-account">
@@ -44,14 +44,26 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-
+import { mapGetters } from 'vuex';
 export default {
   name: "Login",
 
   components: {
     "auth-nav-bar": require("@/components/auth_navbar.vue").default,
     "auth-footer": require("@/components/auth_footer.vue").default,
+  },
+
+  computed: {
+    ...mapGetters(['user'])
+  },
+
+  // check if user is logged in
+  watch: {
+    user(val) {
+      if (val !== null && val !== undefined) {
+        this.$router.push("/");
+      }
+    },
   },
 
   data() {
@@ -62,18 +74,14 @@ export default {
   },
 
   methods: {
-    ...mapActions(["login"]),
-
-    signin() {
-      let userData = {
-        email: this.email,
-        password: this.password,
-      };
-
+    async signin() {
       if (this.email == "" || this.password == "") {
         alert("fill in all required fields!");
       } else {
-        this.login(userData);
+        this.$store.dispatch("login", {
+          email: this.email,
+          password: this.password,
+        });
       }
     },
   },
