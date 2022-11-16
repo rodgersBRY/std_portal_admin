@@ -11,7 +11,7 @@ export default {
     },
 
     addStudent(state, payload) {
-      state.students.push(payload);
+      state.students.unshift(payload);
     },
 
     deleteStudent(state, payload) {
@@ -33,8 +33,24 @@ export default {
         commit("setLoading", false);
         commit("clearError");
       } catch (err) {
-        commit("setError", err.message);
         commit("setLoading", false);
+        commit("setError", err.message);
+      }
+    },
+
+    async newStudent({ commit }, payload) {
+      commit("setLoading", true);
+
+      try {
+        const res = await axios.post("/admin/new-user", payload);
+        if (res.statusCode == 201) {
+          commit("addStudent", payload);
+          commit("setLoading", false);
+          commit("clearError");
+        }
+      } catch (err) {
+        commit("setLoading", false);
+        commit("setError", err);
       }
     },
 
@@ -49,8 +65,8 @@ export default {
           commit("clearError");
         }
       } catch (err) {
-        commit("setError", err);
         commit("setLoading", false);
+        commit("setError", err);
       }
     },
   },
