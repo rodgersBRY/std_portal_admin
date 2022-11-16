@@ -6,9 +6,6 @@
 
     <main>
       <section class="content">
-        <v-row class="new-student-div" justify="center">
-          <stud-dialog />
-        </v-row>
         <v-card width="90%" class="pa-5 mt-10">
           <v-card-title>
             Students
@@ -22,10 +19,44 @@
             ></v-text-field>
           </v-card-title>
           <v-data-table
+            :item-key="students.code"
             :headers="headers"
-            :items="students.data"
+            :items="students"
             :search="search"
+            :loading="isLoading"
+            loading-text="Loading... Please wait"
           >
+            <template v-slot:top>
+              <v-toolbar flat>
+                <v-spacer />
+                <stud-dialog />
+                <v-dialog v-model="dialogDelete" max-width="500px">
+                  <v-card>
+                    <v-card-title class="text-h5"
+                      >Are you sure you want to delete this item?</v-card-title
+                    >
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" text @click="closeDelete"
+                        >Cancel</v-btn
+                      >
+                      <v-btn color="blue darken-1" text @click="confirmDelete"
+                        >OK</v-btn
+                      >
+                      <v-spacer></v-spacer>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-toolbar>
+            </template>
+            <template v-slot:item.actions="{ item }">
+              <v-icon small class="mr-2" @click="editStudent(item)"
+                >mdi-pencil</v-icon
+              >
+              <v-icon small class="mr-2" @click="deleteStudent(item)"
+                >mdi-delete</v-icon
+              >
+            </template>
           </v-data-table>
         </v-card>
       </section>
@@ -50,6 +81,30 @@ export default {
   data() {
     return {
       search: "",
+      editedIndex: -1,
+      dialogDelete: false,
+      editedItem: {
+        code: "",
+        name: "",
+        age: "",
+        phone: "",
+        gender: "",
+        role: "",
+        modules: [],
+        fee_balance: 0,
+        status: false,
+      },
+      defaultItem: {
+        code: "",
+        name: "",
+        age: "",
+        phone: "",
+        gender: "",
+        role: "",
+        modules: [],
+        fee_balance: 0,
+        status: false,
+      },
       headers: [
         {
           text: "Code",
@@ -98,12 +153,45 @@ export default {
           filterable: false,
           groupable: false,
         },
+        {
+          text: "Actions",
+          value: "actions",
+          sortable: false,
+          filterable: false,
+          groupable: false,
+        },
       ],
     };
   },
 
   computed: {
-    ...mapGetters(["students"]),
+    ...mapGetters(["students", "isLoading"]),
+  },
+
+  methods: {
+    editStudent(student) {
+      alert(`editing ${student}`);
+    },
+
+    deleteStudent(student) {
+      this.editedIndex = this.students.indexOf(student);
+      this.editedItem = Object.assign({}, student);
+      this.dialogDelete = true;
+    },
+
+    confirmDelete() {
+      this.$store.dispatch('deleteStudent', this.editedItem._id)
+      this.students.splice(this.editedIndex, 1);
+      this.closeDelete();
+    },
+
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
   },
 };
 </script>
@@ -114,12 +202,6 @@ export default {
     margin-left: 260px;
     .v-card {
       margin: auto;
-    }
-
-    .new-student-div {
-      position: absolute;
-      top: 80%;
-      right: 5%;
     }
   }
 }

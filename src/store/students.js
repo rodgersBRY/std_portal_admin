@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   state: {
@@ -13,7 +13,7 @@ export default {
     addStudent(state, payload) {
       state.students.push(payload);
     },
-    
+
     deleteStudent(state, payload) {
       const updatedStudentsList = state.students.filter(
         (stud) => stud.id !== payload
@@ -25,14 +25,31 @@ export default {
   actions: {
     async fetchStudents({ commit }) {
       commit("setLoading", true);
-      
-      try {
-        const res =await axios.get("/admin/students");
 
-        commit("setStudents", res.data);
+      try {
+        const res = await axios.get("/admin/students");
+
+        commit("setStudents", res.data.data);
         commit("setLoading", false);
+        commit("clearError");
       } catch (err) {
         commit("setError", err.message);
+        commit("setLoading", false);
+      }
+    },
+
+    async deleteStudent({ commit }, payload) {
+      commit("setLoading", true);
+
+      try {
+        const res = await axios.delete(`/admin/student/${payload}`);
+        if (res.statusCode == 200) {
+          commit("deleteStudent", payload);
+          commit("setLoading", false);
+          commit("clearError");
+        }
+      } catch (err) {
+        commit("setError", err);
         commit("setLoading", false);
       }
     },
