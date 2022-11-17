@@ -21,6 +21,11 @@ const routes = [
     component: () => import("../views/auth/Login.vue"),
   },
   {
+    path: "/courses/:courseId",
+    name: "Course Details",
+    component: () => import("../views/module_details.vue"),
+  },
+  {
     path: "/courses",
     name: "Courses",
     component: () => import("../views/Courses.vue"),

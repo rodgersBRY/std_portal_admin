@@ -33,14 +33,14 @@
                 <v-dialog v-model="dialogDelete" max-width="500px">
                   <v-card>
                     <v-card-title class="text-h5"
-                      >Are you sure you want to delete this item?</v-card-title
+                      >Are you sure you want to delete?</v-card-title
                     >
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" text @click="closeDelete"
+                      <v-btn color="green darken-1" text @click="closeDelete"
                         >Cancel</v-btn
                       >
-                      <v-btn color="blue darken-1" text @click="confirmDelete"
+                      <v-btn color="green darken-1" text @click="confirmDelete"
                         >OK</v-btn
                       >
                       <v-spacer></v-spacer>
@@ -180,7 +180,7 @@ export default {
     },
 
     confirmDelete() {
-      this.$store.dispatch('deleteStudent', this.editedItem._id)
+      this.$store.dispatch("deleteStudent", this.editedItem._id);
       this.students.splice(this.editedIndex, 1);
       this.closeDelete();
     },

@@ -11,7 +11,7 @@ export default {
     },
 
     addStudent(state, payload) {
-      state.students.unshift(payload);
+      state.students.push(payload);
     },
 
     deleteStudent(state, payload) {

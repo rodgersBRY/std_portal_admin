@@ -107,6 +107,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -128,6 +129,10 @@ export default {
     };
   },
 
+  computed: {
+    ...mapGetters(["students"]),
+  },
+
   methods: {
     async newStudent() {
       let student = {
@@ -137,12 +142,13 @@ export default {
         phone: this.phone,
         gender: this.gender,
         role: this.role,
-        fee_balanace: this.fee_balance,
+        fee_balance: this.fee_balance,
         age: this.age,
       };
 
       await this.$store.dispatch("newStudent", student);
       this.dialog = false;
+      this.students.unshift(student);
     },
   },
 };

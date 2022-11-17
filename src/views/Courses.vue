@@ -6,7 +6,14 @@
 
     <main>
       <section class="content">
-        <h1 class="display-2">Courses</h1>
+        <div class="d-flex justify-space-between">
+          <h1 class="display-2">Courses</h1>
+
+          <v-btn dark color="green" @click="newCourse">
+            <span><v-icon>mdi-plus</v-icon></span>
+            New Course
+          </v-btn>
+        </div>
 
         <v-row no-gutters wrap justify="space-between" class="row-div">
           <div class="loader" v-if="isLoading" />
@@ -19,9 +26,11 @@
               v-for="(course, i) in courses"
               :key="i"
               color="green"
-
+              @click="$router.push(`/courses/${course._id}`)"
             >
-              <v-card-title class="display-1 pa-0">{{ course.name }}</v-card-title>
+              <v-card-title class="display-1 pa-0">{{
+                course.name
+              }}</v-card-title>
               <v-card-text class="subtitle-4 pa-0 mt-5">
                 <v-icon>mdi-page-layout-body</v-icon>
                 {{ course.topics.length }} topics
@@ -51,6 +60,12 @@ export default {
   computed: {
     ...mapGetters(["courses", "isLoading"]),
   },
+
+  methods: {
+    newCourse() {
+      
+    }
+  }
 };
 </script>
 
