@@ -1,4 +1,5 @@
 import axios from "axios";
+import currencyFormatter from "currency-formatter";
 
 export default {
   state: {
@@ -29,7 +30,21 @@ export default {
       try {
         const res = await axios.get("/admin/students");
 
-        commit("setStudents", res.data.data);
+        // format fee balance
+        let students = res.data.data.map((student) => {
+          let formattedFee = currencyFormatter.format(student.fee_balance, {
+            symbol: "Ksh",
+            thousand: ",",
+            precision: 1,
+            format: "%s. %v",
+          });
+
+          student.fee_balance = formattedFee;
+          
+          return student;
+        });
+
+        commit("setStudents", students);
         commit("setLoading", false);
         commit("clearError");
       } catch (err) {
@@ -64,6 +79,17 @@ export default {
           commit("setLoading", false);
           commit("clearError");
         }
+      } catch (err) {
+        commit("setLoading", false);
+        commit("setError", err);
+      }
+    },
+
+    async enrollStudentToCourse({ commit }, payload) {
+      commit("setLoading", true);
+
+      try {
+        await axios.post("/admin/enroll", payload);
       } catch (err) {
         commit("setLoading", false);
         commit("setError", err);

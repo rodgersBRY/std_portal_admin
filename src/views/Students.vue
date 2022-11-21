@@ -49,6 +49,9 @@
                 </v-dialog>
               </v-toolbar>
             </template>
+            <template v-slot:item.name="{ item }">
+              <p style="cursor: pointer" @click="$router.push(`/student-details/${item._id}`)">{{ item.name }}</p>
+            </template>
             <template v-slot:item.actions="{ item }">
               <v-icon small class="mr-2" @click="editStudent(item)"
                 >mdi-pencil</v-icon
