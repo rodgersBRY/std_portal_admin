@@ -9,23 +9,22 @@
         <div class="d-flex justify-space-between">
           <h1 class="display-2">Courses</h1>
 
-          <v-btn dark color="green" @click="newCourse">
-            <span><v-icon>mdi-plus</v-icon></span>
-            New Course
-          </v-btn>
+          <div class="new-course">
+            <new-course />
+          </div>
         </div>
 
-        <v-row no-gutters wrap justify="space-between" class="row-div">
+        <div class="row-div">
           <div class="loader" v-if="isLoading" />
 
-          <div v-else>
+          <div v-else class="card-div">
             <v-card
               dark
               width="300px"
               height="300px"
               v-for="(course, i) in courses"
               :key="i"
-              color="green"
+              color="brown"
               @click="$router.push(`/courses/${course._id}`)"
             >
               <v-card-title class="display-1 pa-0">{{
@@ -37,11 +36,11 @@
               </v-card-text>
               <v-card-text class="subtitle-4 pa-0 mt-2">
                 <v-icon>mdi-cash</v-icon>
-                Module Fee: Ksh. {{ course.feeAmount }}
+                Module Fee: {{ course.feeAmount }}
               </v-card-text>
             </v-card>
           </div>
-        </v-row>
+        </div>
       </section>
     </main>
   </div>
@@ -53,6 +52,10 @@ import { mapGetters } from "vuex";
 export default {
   name: "courses",
 
+  components: {
+    "new-course": require("../components/new_course_dialog.vue").default,
+  },
+
   created() {
     this.$store.dispatch("fetchCourses");
   },
@@ -60,12 +63,6 @@ export default {
   computed: {
     ...mapGetters(["courses", "isLoading"]),
   },
-
-  methods: {
-    newCourse() {
-      
-    }
-  }
 };
 </script>
 
@@ -77,13 +74,17 @@ export default {
     .row-div {
       width: 70%;
       margin: 3rem 0;
-      .v-card {
-        padding: 1rem;
-        cursor: pointer;
+      .card-div {
         display: flex;
-        flex-direction: column;
-        text-transform: capitalize;
-        justify-content: flex-end;
+        .v-card {
+          margin: 0 20px 0 0;
+          padding: 1rem;
+          cursor: pointer;
+          display: flex;
+          flex-direction: column;
+          text-transform: capitalize;
+          justify-content: flex-end;
+        }
       }
     }
     .loader {

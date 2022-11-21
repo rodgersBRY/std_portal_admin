@@ -1,4 +1,5 @@
 import axios from "axios";
+import currencyFormatter from "currency-formatter";
 
 export default {
   state: {
@@ -9,6 +10,9 @@ export default {
     setCourses(state, payload) {
       state.courses = payload;
     },
+    addCourse(state, payload) {
+      state.courses.push(payload);
+    },
   },
 
   actions: {
@@ -18,7 +22,41 @@ export default {
       try {
         const res = await axios.get("/modules");
 
-        commit("setCourses", res.data.data);
+        // format currency
+        let courses = res.data.data.map((course) => {
+          let formattedCurrency = currencyFormatter.format(course.feeAmount, {
+            symbol: "Ksh",
+            thousand: ",",
+            precision: 1,
+            format: "%s. %v",
+          });
+
+          let formattedCourse = {
+            _id: course._id,
+            name: course.name,
+            shortCode: course.shortCode,
+            topics: course.topics,
+            feeAmount: formattedCurrency,
+          };
+
+          return formattedCourse;
+        });
+
+        commit("setCourses", courses);
+        commit("setLoading", false);
+        commit("clearError");
+      } catch (err) {
+        commit("setError", err);
+        commit("setLoading", false);
+      }
+    },
+
+    async newCourse({ commit }, payload) {
+      commit("setLoading", true);
+
+      try {
+        const res = await axios.post("/admin/add-module", payload);
+        commit("addCourse", res.data.data);
         commit("setLoading", false);
         commit("clearError");
       } catch (err) {

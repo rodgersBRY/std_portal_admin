@@ -5,7 +5,7 @@
     <main v-for="course in courses" :key="course._id">
       <div class="main-section" v-if="course._id === courseId">
         <h1 style="text-transform: capitalize">{{ course.name }}</h1>
-        <p class="subtitle">Ksh. {{ course.feeAmount }}</p>
+        <p class="subtitle">{{ course.feeAmount }}</p>
 
         <ul class="topics-list">
           <li v-for="(topic, i) in course.topics" :key="i">
@@ -13,8 +13,6 @@
           </li>
         </ul>
       </div>
-      
-      
     </main>
   </div>
 </template>
@@ -36,10 +34,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.module-details {
-  main {
-    margin: auto 0 0 260px;
-    padding: 2rem;
-  }
+.main-section {
+  margin: 1rem 0 0 280px;
 }
 </style>
