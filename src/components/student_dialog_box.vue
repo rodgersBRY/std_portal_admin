@@ -1,12 +1,7 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    fullscreen
-    hide-overlay
-    transition="dialog-bottom-transition"
-  >
+  <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn color="green" dark v-bind="attrs" v-on="on"> Add Sudent </v-btn>
+      <v-btn color="brown" dark v-bind="attrs" v-on="on"> Add Sudent </v-btn>
     </template>
     <v-card>
       <v-toolbar dark color="green">
@@ -83,6 +78,23 @@
           </v-col>
         </v-row>
         <br />
+        <v-combobox
+          outlined
+          color="brown"
+          v-model="course"
+          label="Select Courses"
+          :items="courses"
+          multiple
+        >
+          <template v-slot:selection="{ attrs, item, parent, selected }">
+            <v-chip v-bind="attrs" :input-value="selected" label small>
+              <span class="pr-2">
+                {{ item }}
+              </span>
+              <v-icon small @click="parent.selectItem(item)"> $delete </v-icon>
+            </v-chip>
+          </template>
+        </v-combobox>
         <v-text-field
           label="Student Code"
           hint="e.g. JWM-001"
@@ -91,16 +103,8 @@
           color="brown"
           v-model="code"
         ></v-text-field>
-        <br />
-        <v-text-field
-          label="Fee Balance"
-          outlined
-          color="brown"
-          disabled
-          v-model="fee_balance"
-        ></v-text-field>
 
-        <v-btn dark block color="brown" @click="newStudent"> Save </v-btn>
+        <v-btn dark block color="brown" class="mt-10" @click="newStudent"> Save </v-btn>
       </form>
     </v-card>
   </v-dialog>
@@ -108,15 +112,14 @@
 
 <script>
 import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
       dialog: false,
-      notifications: false,
-      sound: true,
-      widgets: false,
       genderItems: ["Male", "Female"],
-      roleItems: ["Instructor", "Student"],
+      roleItems: ["instructor", "student"],
+      courses: ["mixology", "barista", "roasting"],
 
       code: "",
       name: "",
@@ -124,8 +127,8 @@ export default {
       phone: "",
       gender: "",
       role: "",
-      fee_balance: 0,
       age: "",
+      course: [],
     };
   },
 
@@ -135,20 +138,31 @@ export default {
 
   methods: {
     async newStudent() {
-      let student = {
-        name: this.name,
-        code: this.code,
-        email: this.email,
-        phone: this.phone,
-        gender: this.gender,
-        role: this.role,
-        fee_balance: this.fee_balance,
-        age: this.age,
-      };
+      if (
+        this.name !== "" ||
+        this.code !== "" ||
+        this.gender !== "" ||
+        this.phone !== "" ||
+        this.email !== "" ||
+        this.age !== ""
+      ) {
+        let student = {
+          name: this.name,
+          code: this.code,
+          email: this.email,
+          phone: this.phone,
+          gender: this.gender,
+          role: this.role,
+          age: this.age,
+          modules: this.course,
+        };
 
-      await this.$store.dispatch("newStudent", student);
-      this.dialog = false;
-      this.students.unshift(student);
+        await this.$store.dispatch("newStudent", student);
+        this.dialog = false;
+        this.students.unshift(student);
+      } else {
+        alert("Cannot submit empty fields");
+      }
     },
   },
 };

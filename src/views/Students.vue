@@ -6,12 +6,13 @@
 
     <main>
       <section class="content">
-        <v-card width="90%" class="pa-5 mt-10">
+        <v-card flat width="90%" class="pa-5 my-10">
           <v-card-title>
-            Students
+            <h2>Students</h2>
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
+              color="brown"
               append-icon="mdi-magnify"
               label="Search"
               single-line
@@ -50,7 +51,17 @@
               </v-toolbar>
             </template>
             <template v-slot:item.name="{ item }">
-              <p style="cursor: pointer" @click="$router.push(`/student-details/${item._id}`)">{{ item.name }}</p>
+              <p
+                style="cursor: pointer"
+                @click="$router.push(`/student-details/${item._id}`)"
+              >
+                {{ item.name }}
+              </p>
+            </template>
+            <template v-slot:item.fee_balance="{ item }">
+              <p :class="[item.fee_balance !== 'Ksh. 0.0' ? 'warning--text' : '']">
+                {{ item.fee_balance }}
+              </p>
             </template>
             <template v-slot:item.actions="{ item }">
               <v-icon small class="mr-2" @click="editStudent(item)"
@@ -113,55 +124,46 @@ export default {
           text: "Code",
           sortable: false,
           value: "code",
-          groupable: false,
         },
         {
           text: "Full Name",
           sortable: true,
           value: "name",
-          groupable: false,
         },
         {
           text: "Phone Number",
           value: "phone",
           sortable: false,
           filterable: false,
-          groupable: false,
         },
         {
           text: "Email",
           value: "email",
           sortable: false,
           filterable: false,
-          groupable: false,
         },
         {
           text: "Age",
           value: "age",
           sortable: false,
           filterable: false,
-          groupable: false,
         },
         {
           text: "Gender",
           value: "gender",
           sortable: false,
           filterable: false,
-          groupable: false,
         },
         {
           text: "Fee Balance",
           value: "fee_balance",
-          sortable: false,
           filterable: false,
-          groupable: false,
         },
         {
           text: "Actions",
           value: "actions",
           sortable: false,
           filterable: false,
-          groupable: false,
         },
       ],
     };
