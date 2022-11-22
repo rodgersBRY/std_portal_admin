@@ -13,41 +13,64 @@ export default {
     addInstructor(state, payload) {
       state.instructors.unshift(payload);
     },
+
+    deleteInstructor(state, payload) {
+      const updatedInstructorList = state.instructors.filter(
+        (instr) => instr._id !== payload
+      );
+      state.instructors = updatedInstructorList;
+    },
   },
 
   actions: {
     async fetchInstructors({ commit }) {
-        commit("setLoading", true);
-  
-        try {
-          const res = await axios.get("/admin/instructors");
+      commit("setLoading", true);
 
-          let instructors = res.data.data
-  
-          commit("setInstructors", instructors);
+      try {
+        const res = await axios.get("/admin/instructors");
+
+        let instructors = res.data.data;
+
+        commit("setInstructors", instructors);
+        commit("setLoading", false);
+        commit("clearError");
+      } catch (err) {
+        commit("setLoading", false);
+        commit("setError", err.message);
+      }
+    },
+
+    async newInstructor({ commit }, payload) {
+      commit("setLoading", true);
+
+      try {
+        const res = await axios.post("/admin/new-user", payload);
+        if (res.statusCode == 201) {
+          commit("addInstructor", payload);
           commit("setLoading", false);
           commit("clearError");
-        } catch (err) {
-          commit("setLoading", false);
-          commit("setError", err.message);
         }
-      },
+      } catch (err) {
+        commit("setLoading", false);
+        commit("setError", err);
+      }
+    },
 
-      async newInstructor({ commit }, payload) {
-        commit("setLoading", true);
-  
-        try {
-          const res = await axios.post("/admin/new-user", payload);
-          if (res.statusCode == 201) {
-            commit("addInstructor", payload);
-            commit("setLoading", false);
-            commit("clearError");
-          }
-        } catch (err) {
+    async deleteInstructor({ commit }, payload) {
+      commit("setLoading", true);
+
+      try {
+        const res = await axios.delete(`/admin/user/${payload}`);
+        if (res.statusCode == 200) {
+          commit("deleteInstructor", payload);
           commit("setLoading", false);
-          commit("setError", err);
+          commit("clearError");
         }
-      },
+      } catch (err) {
+        commit("setLoading", false);
+        commit("setError", err);
+      }
+    },
   },
 
   getters: {

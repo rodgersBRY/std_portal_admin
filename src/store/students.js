@@ -17,7 +17,7 @@ export default {
 
     deleteStudent(state, payload) {
       const updatedStudentsList = state.students.filter(
-        (stud) => stud.id !== payload
+        (stud) => stud._id !== payload
       );
       state.students = updatedStudentsList;
     },
@@ -73,7 +73,7 @@ export default {
       commit("setLoading", true);
 
       try {
-        const res = await axios.delete(`/admin/student/${payload}`);
+        const res = await axios.delete(`/admin/user/${payload}`);
         if (res.statusCode == 200) {
           commit("deleteStudent", payload);
           commit("setLoading", false);
