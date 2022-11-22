@@ -21,6 +21,19 @@ export default {
       );
       state.students = updatedStudentsList;
     },
+
+    updateStudentFee(state, payload) {
+      // return list without the edited entry
+      let filteredStudents = state.students.filter(
+        (stud) => stud._id !== payload._id
+      );
+
+      // add the edited entry to array
+      filteredStudents.push(payload);
+
+      // set state items to new list
+      state.students = filteredStudents;
+    },
   },
 
   actions: {
@@ -40,7 +53,7 @@ export default {
           });
 
           student.fee_balance = formattedFee;
-          
+
           return student;
         });
 
@@ -90,6 +103,21 @@ export default {
 
       try {
         await axios.post("/admin/enroll", payload);
+      } catch (err) {
+        commit("setLoading", false);
+        commit("setError", err);
+      }
+    },
+
+    async updateStudentFee({ commit }, payload) {
+      commit("setLoading", true);
+
+      try {
+        const resp = await axios.put(`/admin/update-fee`, payload);
+        console.log(resp);
+        commit("updateStudentFee", resp.data);
+        commit("setLoading", false);
+        commit("clearError");
       } catch (err) {
         commit("setLoading", false);
         commit("setError", err);

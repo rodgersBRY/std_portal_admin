@@ -62,6 +62,29 @@
             Fee Balance: {{ student.fee_balance }}
           </h2>
         </div>
+        <v-btn color="green" outlined @click="dialogUpdate = true" class="mt-10"
+          >Update Fee Balance</v-btn
+        >
+        <v-dialog v-model="dialogUpdate" max-width="500px">
+          <v-card class="text-center">
+            <v-card-title class="text-h5">Enter the paid amount</v-card-title>
+            <v-text-field
+              outlined
+              label="Amount (Ksh)"
+              v-model="amount"
+              style="width: 70%; margin: 10px auto"
+              color="brown"
+            ></v-text-field>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="grey darken-1" text @click="dialogUpdate = false"
+                >Cancel</v-btn
+              >
+              <v-btn color="brown darken-1" text @click="updateFee">OK</v-btn>
+              <v-spacer />
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </div>
     </main>
   </div>
@@ -77,6 +100,8 @@ export default {
     return {
       studentId: this.$route.params.studentId,
       status: true,
+      dialogUpdate: false,
+      amount: "",
     };
   },
 
@@ -85,7 +110,16 @@ export default {
   },
 
   methods: {
-    updateStatus() {},
+    updateFee() {
+      let updateData = {
+        id: this.studentId,
+        amount: this.amount,
+      };
+
+      this.$store.dispatch("updateStudentFee", updateData);
+      this.amount = "";
+      this.dialogUpdate = false;
+    },
   },
 };
 </script>
