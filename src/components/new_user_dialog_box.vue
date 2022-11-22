@@ -1,24 +1,30 @@
 <template>
   <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn color="brown" dark v-bind="attrs" v-on="on"> Add Sudent </v-btn>
+      <v-btn color="brown" dark v-bind="attrs" v-on="on"> Add User </v-btn>
     </template>
+
     <v-card>
       <v-toolbar dark color="green">
         <v-btn icon dark @click="dialog = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
-        <v-toolbar-title>New Student</v-toolbar-title>
+
+        <v-toolbar-title>New User</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items> </v-toolbar-items>
       </v-toolbar>
-      <form @submit.prevent="createStudent" class="new-student-form">
-        <h1 class="mb-5 text-center">Enter Student Information</h1>
+
+      <form @submit.prevent="createUser" class="new-student-form">
+        <h1 class="mb-5 text-center">
+          Enter
+          {{ userType === "instructor" ? "Instructor" : "Student" }} Information
+        </h1>
         <v-row class="form-row">
           <v-col cols="12" sm="6">
             <v-text-field
               type="text"
-              label="Student Name"
+              label="Full Name"
               hint="e.g. Jane Doe"
               persistent-hint
               outlined
@@ -28,7 +34,7 @@
           </v-col>
           <v-col cols="12" sm="6">
             <v-text-field
-              label="Student Email"
+              label="Email"
               hint="e.g. janedoe@example.com"
               persistent-hint
               outlined
@@ -69,7 +75,7 @@
           </v-col>
           <v-col cols="12" sm="6">
             <v-select
-              :items="roleItems"
+              :items="userType"
               label="Role"
               outlined
               color="brown"
@@ -96,7 +102,7 @@
           </template>
         </v-combobox>
         <v-text-field
-          label="Student Code"
+          label="User Code"
           hint="e.g. JWM-001"
           persistent-hint
           outlined
@@ -104,7 +110,9 @@
           v-model="code"
         ></v-text-field>
 
-        <v-btn dark block color="brown" class="mt-10" @click="newStudent"> Save </v-btn>
+        <v-btn dark block color="brown" class="mt-10" @click="newUser">
+          Save
+        </v-btn>
       </form>
     </v-card>
   </v-dialog>
@@ -114,11 +122,12 @@
 import { mapGetters } from "vuex";
 
 export default {
+  props: ["userType"],
+
   data() {
     return {
       dialog: false,
       genderItems: ["Male", "Female"],
-      roleItems: ["instructor", "student"],
       courses: ["mixology", "barista", "roasting"],
 
       code: "",
@@ -126,18 +135,17 @@ export default {
       email: "",
       phone: "",
       gender: "",
-      role: "",
       age: "",
       course: [],
     };
   },
 
   computed: {
-    ...mapGetters(["students"]),
+    ...mapGetters(["students","instructors"]),
   },
 
   methods: {
-    async newStudent() {
+    async newUser() {
       if (
         this.name !== "" ||
         this.code !== "" ||
@@ -146,7 +154,7 @@ export default {
         this.email !== "" ||
         this.age !== ""
       ) {
-        let student = {
+        let user = {
           name: this.name,
           code: this.code,
           email: this.email,
@@ -157,9 +165,15 @@ export default {
           modules: this.course,
         };
 
-        await this.$store.dispatch("newStudent", student);
+        if (this.role === "student") {
+          await this.$store.dispatch("newStudent", user);
+          this.students.unshift(user);
+        } else {
+          await this.$store.dispatch("newInstructor", user);
+          this.instructors.unshift(user);
+        }
+
         this.dialog = false;
-        this.students.unshift(student);
       } else {
         alert("Cannot submit empty fields");
       }

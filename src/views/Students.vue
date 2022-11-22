@@ -30,7 +30,8 @@
             <template v-slot:top>
               <v-toolbar flat>
                 <v-spacer />
-                <stud-dialog />
+
+                <user-dialog :userType="'student'" />
                 <v-dialog v-model="dialogDelete" max-width="500px">
                   <v-card>
                     <v-card-title class="text-h5"
@@ -85,7 +86,7 @@ export default {
   name: "students",
 
   components: {
-    "stud-dialog": require("../components/student_dialog_box.vue").default,
+    "user-dialog": require("../components/new_user_dialog_box.vue").default,
   },
 
   created() {

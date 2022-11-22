@@ -22,6 +22,14 @@
         ><span><v-icon color="white">mdi-account-group-outline</v-icon></span
         >Enrolled Students</router-link
       >
+      <router-link
+        class="nav-link"
+        tag="li"
+        active-class="active"
+        to="/instructors"
+        ><span><v-icon color="white">mdi-school-outline</v-icon></span
+        >Instructors</router-link
+      >
       <router-link class="nav-link" tag="li" active-class="active" to="/courses"
         ><span><v-icon color="white">mdi-book-open</v-icon></span
         >Offered Courses</router-link
