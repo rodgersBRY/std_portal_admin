@@ -2,6 +2,16 @@
   <div>
     <auth-nav-bar></auth-nav-bar>
     <main>
+      <v-alert
+        v-show="error"
+        type="error"
+        dense
+        dismissible
+        prominent
+        style="margin: 2rem auto"
+      >
+        {{ error }}
+      </v-alert>
       <form action="#">
         <h1 class="mb-10">Sign up</h1>
 
@@ -60,10 +70,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["user, isLoading"]),
+    ...mapGetters(["user, isLoading", "error"]),
 
     passwordMatch() {
-      return this.formData.password === this.formData.confirmPass;
+      return this.formData.confirmPass === this.formData.password;
     },
   },
 
@@ -77,7 +87,7 @@ export default {
   },
 
   methods: {
-    register() {
+    async register() {
       let name = this.formData.name;
       let email = this.formData.email;
       let pass = this.formData.password;
@@ -86,7 +96,8 @@ export default {
         alert("Fill all required fields!");
       }
 
-      this.$store.dispatch("register", this.formData);
+      await this.$store.dispatch("register", this.formData);
+      this.$router.push("/accounts/login");
     },
   },
 };
@@ -109,6 +120,7 @@ form {
 
   .error {
     border: 1px solid red;
+    background-color: white;
   }
 
   .error-text {

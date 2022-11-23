@@ -24,14 +24,13 @@ export default {
       commit("setLoading", true);
 
       try {
-        const resp = await axios.post("/admin/register", payload);
-        if (resp.statusCode == 200) {
-          commit("clearError");
-          commit("setLoading", false);
-        }
+        await axios.post("/admin/register", payload);
+
+        commit("clearError");
+        commit("setLoading", false);
       } catch (err) {
         commit("setLoading", false);
-        commit("setError", err);
+        commit("setError", err.response.data.message);
       }
     },
 
@@ -45,7 +44,7 @@ export default {
         };
 
         const user = await axios.post("/admin/login", userData);
-        
+
         let token = user.data.token;
         localStorage.setItem("token", token);
         axios.defaults.headers.common["Authorization"] = token;
@@ -54,13 +53,15 @@ export default {
         commit("clearError");
         commit("setLoading", false);
       } catch (err) {
-        commit("setError", err);
+        commit("setError", err.response.data.message);
         commit("setLoading", false);
+        localStorage.removeItem("token");
       }
     },
 
     async logout({ commit }) {
       commit("logout");
+
       localStorage.removeItem("token");
       delete axios.defaults.headers.common["Authorization"];
     },

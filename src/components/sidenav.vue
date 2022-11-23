@@ -10,38 +10,48 @@
     </h2>
 
     <ul class="nav-links" style="margin-top: 2rem">
-      <router-link class="nav-link" tag="li" exact-active-class="active" to="/"
-        ><span><v-icon color="white">mdi-home</v-icon></span
-        >Home</router-link
-      >
+      <router-link class="nav-link" tag="li" exact-active-class="active" to="/">
+        <span><v-icon color="white">mdi-home</v-icon></span>
+        Home
+      </router-link>
       <router-link
         class="nav-link"
         tag="li"
         active-class="active"
         to="/students"
-        ><span><v-icon color="white">mdi-account-group-outline</v-icon></span
-        >Enrolled Students</router-link
       >
+        <span><v-icon color="white">mdi-account-group-outline</v-icon></span>
+        Enrolled Students
+      </router-link>
       <router-link
         class="nav-link"
         tag="li"
         active-class="active"
         to="/instructors"
-        ><span><v-icon color="white">mdi-school-outline</v-icon></span
-        >Instructors</router-link
       >
-      <router-link class="nav-link" tag="li" active-class="active" to="/courses"
-        ><span><v-icon color="white">mdi-book-open</v-icon></span
-        >Offered Courses</router-link
+        <span><v-icon color="white">mdi-school-outline</v-icon></span>
+        Instructors
+      </router-link>
+      <router-link
+        class="nav-link"
+        tag="li"
+        active-class="active"
+        to="/courses"
       >
-      <router-link class="nav-link" tag="li" active-class="active" to="#"
-        ><span><v-icon color="white">mdi-calendar-text-outline</v-icon></span
-        >Notices</router-link
+        <span><v-icon color="white">mdi-book-open</v-icon></span>
+        Offered Courses
+      </router-link>
+      <v-btn
+        dark
+        class="logout-btn"
+        color="brown darken-3"
+        block
+        tag="li"
+        @click="signout"
       >
-      <v-btn dark class="nav-link" tag="li" @click="signout"
-        ><span><v-icon color="white">mdi-logout</v-icon></span
-        >Logout</v-btn
-      >
+        <span> <v-icon color="white">mdi-logout</v-icon> </span>
+        Logout
+      </v-btn>
     </ul>
   </v-container>
 </template>
@@ -52,8 +62,8 @@ import { mapGetters } from "vuex";
 export default {
   name: "sidenav",
 
-  created: {
-    ...mapGetters(["user","isAuthenticated"]),
+  computed: {
+    ...mapGetters(["user", "isAuthenticated"]),
   },
 
   watch: {
@@ -97,6 +107,9 @@ export default {
       span {
         margin-right: 10px;
       }
+    }
+    .logout-btn {
+      margin-top: 10rem;
     }
   }
 }

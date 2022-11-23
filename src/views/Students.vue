@@ -60,15 +60,23 @@
               </p>
             </template>
             <template v-slot:item.fee_balance="{ item }">
-              <p :class="[item.fee_balance !== 'Ksh. 0.0' ? 'warning--text' : '']">
+              <p
+                :class="[
+                  item.fee_balance !== 'Ksh. 0.0' ? 'warning--text' : '',
+                ]"
+              >
                 {{ item.fee_balance }}
               </p>
             </template>
             <template v-slot:item.actions="{ item }">
-              <v-icon small class="mr-2" @click="editStudent(item)"
+              <!-- <v-icon small class="mr-2" @click="editStudent(item)"
                 >mdi-pencil</v-icon
-              >
-              <v-icon small class="mr-2" @click="deleteStudent(item)"
+              > -->
+              <v-icon
+                small
+                class="mr-2"
+                color="red"
+                @click="deleteStudent(item)"
                 >mdi-delete</v-icon
               >
             </template>
@@ -175,9 +183,9 @@ export default {
   },
 
   methods: {
-    editStudent(student) {
-      alert(`editing ${student}`);
-    },
+    // editStudent(student) {
+    //   alert(`editing ${student}`);
+    // },
 
     deleteStudent(student) {
       this.editedIndex = this.students.indexOf(student);

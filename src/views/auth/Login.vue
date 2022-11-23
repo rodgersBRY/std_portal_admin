@@ -3,6 +3,19 @@
     <auth-nav-bar />
 
     <main>
+      <div class="alert">
+        <v-alert
+          v-show="error"
+          type="error"
+          dense
+          dismissible
+          prominent
+          width="40%"
+          style="margin: 2rem auto"
+        >
+          {{ error }}
+        </v-alert>
+      </div>
       <section class="login d-flex align-center">
         <div class="img mr-10">
           <v-img
@@ -44,7 +57,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 export default {
   name: "Login",
 
@@ -54,7 +67,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(["user", "error"]),
   },
 
   // check if user is logged in

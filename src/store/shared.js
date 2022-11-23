@@ -20,6 +20,6 @@ export default {
   
   getters: {
     isLoading: (state) => state.loading,
-    getError: (state) => state.error,
+    error: (state) => state.error,
   },
 };

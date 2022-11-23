@@ -44,12 +44,11 @@ export default {
       commit("setLoading", true);
 
       try {
-        const res = await axios.post("/admin/new-user", payload);
-        if (res.statusCode == 201) {
-          commit("addInstructor", payload);
-          commit("setLoading", false);
-          commit("clearError");
-        }
+        await axios.post("/admin/new-user", payload);
+
+        commit("addInstructor", payload);
+        commit("setLoading", false);
+        commit("clearError");
       } catch (err) {
         commit("setLoading", false);
         commit("setError", err);
@@ -60,12 +59,11 @@ export default {
       commit("setLoading", true);
 
       try {
-        const res = await axios.delete(`/admin/user/${payload}`);
-        if (res.statusCode == 200) {
-          commit("deleteInstructor", payload);
-          commit("setLoading", false);
-          commit("clearError");
-        }
+        await axios.delete(`/admin/user/${payload}`);
+
+        commit("deleteInstructor", payload);
+        commit("setLoading", false);
+        commit("clearError");
       } catch (err) {
         commit("setLoading", false);
         commit("setError", err);

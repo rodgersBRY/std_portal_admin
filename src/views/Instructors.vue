@@ -59,10 +59,10 @@
                 </p>
               </template>
               <template v-slot:item.actions="{ item }">
-                <v-icon small class="mr-2" @click="editInstructor(item)"
+                <!-- <v-icon small class="mr-2" @click="editInstructor(item)"
                   >mdi-pencil</v-icon
-                >
-                <v-icon small class="mr-2" @click="deleteInstructor(item)"
+                > -->
+                <v-icon small color="red" class="mr-2" @click="deleteInstructor(item)"
                   >mdi-delete</v-icon
                 >
               </template>
@@ -160,9 +160,9 @@
     },
   
     methods: {
-      editInstructor(instructor) {
-        alert(`editing ${instructor}`);
-      },
+      // editInstructor(instructor) {
+      //   alert(`editing ${instructor}`);
+      // },
   
       deleteInstructor(instructor) {
         this.editedIndex = this.instructors.indexOf(instructor);

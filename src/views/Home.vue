@@ -49,21 +49,21 @@ export default {
           title: "Enrolled Students",
           text: "Students who are entolled to th school",
           btnText: "Students",
-          link: '/students'
+          link: "/students",
         },
         {
           img: require("../assets/retro.svg"),
           title: "Courses Offered",
           text: "Courses being offered by the school",
           btnText: "Courses",
-          link: '/courses'
+          link: "/courses",
         },
         {
           img: require("../assets/color_braid.svg"),
-          title: "Notices",
-          text: "All notices that need your attention.",
-          btnText: "Notices",
-          link: '/notices'
+          title: "Instructors",
+          text: "All instructors mandated with educating the students",
+          btnText: "Instructors",
+          link: "/instructors",
         },
       ],
     };

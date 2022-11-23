@@ -52,6 +52,7 @@ export default {
 
       try {
         const res = await axios.post("/admin/add-module", payload);
+        
         commit("addCourse", res.data.data);
         commit("setLoading", false);
         commit("clearError");

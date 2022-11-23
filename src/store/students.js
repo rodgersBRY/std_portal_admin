@@ -70,12 +70,11 @@ export default {
       commit("setLoading", true);
 
       try {
-        const res = await axios.post("/admin/new-user", payload);
-        if (res.statusCode == 201) {
-          commit("addStudent", payload);
-          commit("setLoading", false);
-          commit("clearError");
-        }
+        await axios.post("/admin/new-user", payload);
+        
+        commit("addStudent", payload);
+        commit("setLoading", false);
+        commit("clearError");
       } catch (err) {
         commit("setLoading", false);
         commit("setError", err);
@@ -86,12 +85,11 @@ export default {
       commit("setLoading", true);
 
       try {
-        const res = await axios.delete(`/admin/user/${payload}`);
-        if (res.statusCode == 200) {
-          commit("deleteStudent", payload);
-          commit("setLoading", false);
-          commit("clearError");
-        }
+        await axios.delete(`/admin/user/${payload}`);
+        
+        commit("deleteStudent", payload);
+        commit("setLoading", false);
+        commit("clearError");
       } catch (err) {
         commit("setLoading", false);
         commit("setError", err);
@@ -114,7 +112,7 @@ export default {
 
       try {
         const resp = await axios.put(`/admin/update-fee`, payload);
-        console.log(resp);
+        
         commit("updateStudentFee", resp.data);
         commit("setLoading", false);
         commit("clearError");

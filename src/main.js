@@ -7,7 +7,7 @@ import Sidenav from "./components/sidenav.vue";
 import axios from "axios";
 
 axios.defaults.withCredentials = false;
-axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.baseURL = "https://std-portal-api.vercel.app";
 
 Vue.prototype.$http = axios;
 
