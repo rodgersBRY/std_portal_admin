@@ -29,14 +29,16 @@ export default {
       try {
         const res = await axios.get("/admin/instructors");
 
-        let instructors = res.data.data;
+        if (res.status === 200) {
+          let instructors = res.data.data;
 
-        commit("setInstructors", instructors);
-        commit("setLoading", false);
-        commit("clearError");
+          commit("setInstructors", instructors);
+          commit("setLoading", false);
+          commit("clearError");
+        }
       } catch (err) {
         commit("setLoading", false);
-        commit("setError", err.message);
+        commit("setError", err.response.data.message);
       }
     },
 
@@ -44,14 +46,16 @@ export default {
       commit("setLoading", true);
 
       try {
-        await axios.post("/admin/new-user", payload);
+        const res = await axios.post("/admin/new-user", payload);
 
-        commit("addInstructor", payload);
-        commit("setLoading", false);
-        commit("clearError");
+        if (res.status === 201) {
+          commit("addInstructor", payload);
+          commit("clearError");
+          commit("setLoading", false);
+        }
       } catch (err) {
         commit("setLoading", false);
-        commit("setError", err);
+        commit("setError", err.response.data.message);
       }
     },
 
@@ -59,14 +63,16 @@ export default {
       commit("setLoading", true);
 
       try {
-        await axios.delete(`/admin/user/${payload}`);
+        const res = await axios.delete(`/admin/user/${payload}`);
 
-        commit("deleteInstructor", payload);
-        commit("setLoading", false);
-        commit("clearError");
+        if (res.status === 200) {
+          commit("deleteInstructor", payload);
+          commit("setLoading", false);
+          commit("clearError");
+        }
       } catch (err) {
         commit("setLoading", false);
-        commit("setError", err);
+        commit("setError", err.response.data.message);
       }
     },
   },

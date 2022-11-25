@@ -62,7 +62,7 @@ export default {
         commit("clearError");
       } catch (err) {
         commit("setLoading", false);
-        commit("setError", err.message);
+        commit("setError", err.response.data.message);
       }
     },
 
@@ -77,7 +77,7 @@ export default {
         commit("clearError");
       } catch (err) {
         commit("setLoading", false);
-        commit("setError", err);
+        commit("setError", err.response.data.message);
       }
     },
 
@@ -92,7 +92,7 @@ export default {
         commit("clearError");
       } catch (err) {
         commit("setLoading", false);
-        commit("setError", err);
+        commit("setError", err.response.data.message);
       }
     },
 
@@ -103,7 +103,7 @@ export default {
         await axios.post("/admin/enroll", payload);
       } catch (err) {
         commit("setLoading", false);
-        commit("setError", err);
+        commit("setError", err.response.data.message);
       }
     },
 
@@ -118,7 +118,7 @@ export default {
         commit("clearError");
       } catch (err) {
         commit("setLoading", false);
-        commit("setError", err);
+        commit("setError", err.response.data.message);
       }
     },
   },

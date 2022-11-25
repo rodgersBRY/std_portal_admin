@@ -1,12 +1,11 @@
 <template>
   <v-container class="sidenav green darken-2">
-    <h3 class="ml-10">{{ user ? user.name : 'User Name'}}</h3>
     <h2 class="app-name">
       <span
-        ><v-icon color="white" style="margin-right: 10px"
-          >mdi-account-circle-outline</v-icon
-        ></span
-      >
+        ><v-icon color="white" style="margin-right: 10px">
+          mdi-account-circle-outline
+        </v-icon>
+      </span>
       Admin Portal
     </h2>
 
@@ -21,7 +20,7 @@
         active-class="active"
         to="/students"
       >
-        <span><v-icon color="white">mdi-account-group-outline</v-icon></span>
+        <span><v-icon color="white">mdi-account-group-outline</v-icon> </span>
         Enrolled Students
       </router-link>
       <router-link

@@ -6,6 +6,24 @@
 
     <main>
       <section class="content">
+        <v-snackbar
+          v-model="ifError"
+          timeout="2000"
+          :value="true"
+          color="error"
+          multi-line  
+          absolute
+          text
+          centered
+          top
+        >
+          {{ error }}
+          <template v-slot:action="{ attrs }">
+            <v-btn color="brown" text v-bind="attrs" @click="ifError = false">
+              Close
+            </v-btn>
+          </template>
+        </v-snackbar>
         <v-card flat width="90%" class="pa-5 my-10">
           <v-card-title>
             <h2>Students</h2>
@@ -180,7 +198,16 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["students", "isLoading"]),
+    ...mapGetters(["students", "isLoading", "error"]),
+  },
+
+  watch: {
+    error(val) {
+      if (val !== null) {
+        console.log(val);
+        this.ifError = true;
+      }
+    },
   },
 
   methods: {
@@ -192,7 +219,6 @@ export default {
 
     confirmDelete() {
       this.$store.dispatch("deleteStudent", this.editedItem._id);
-      this.students.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 

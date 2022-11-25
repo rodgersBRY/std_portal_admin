@@ -2,19 +2,19 @@ import axios from "axios";
 
 export default {
   state: {
-    user: localStorage.getItem("user") || null,
-    // token: localStorage.getItem("token") || "",
+    user: null,
+    userId: localStorage.getItem("userId") || "",
   },
 
   mutations: {
-    setUser(state, user) {
+    setUser(state, user, userId) {
       state.user = user;
-      // state.token = token;
+      state.userId = userId;
     },
 
     logout(state) {
       state.user = null;
-      // state.token = "";
+      state.userId = "";
       state.error = null;
     },
   },
@@ -44,14 +44,13 @@ export default {
         };
 
         const res = await axios.post("/admin/login", userData);
-
+        
         let user = res.data.user;
+        let userId = res.data.userId;
+        
+        localStorage.setItem("userId", userId);
 
-        // let token = user.data.token;
-        localStorage.setItem("user", user);
-        // axios.defaults.headers.common["Authorization"] = token;
-
-        commit("setUser", user);
+        commit("setUser", user, userId);
         commit("clearError");
         commit("setLoading", false);
       } catch (err) {
@@ -64,13 +63,12 @@ export default {
     async logout({ commit }) {
       commit("logout");
 
-      localStorage.removeItem("user");
-      // delete axios.defaults.headers.common["Authorization"];
+      localStorage.removeItem("userId");
     },
   },
 
   getters: {
     user: (state) => state.user,
-    isAuthenticated: (state) => !!state.user,
+    isAuthenticated: (state) => !!state.userId,
   },
 };
