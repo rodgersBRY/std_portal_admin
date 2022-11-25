@@ -2,19 +2,19 @@ import axios from "axios";
 
 export default {
   state: {
-    user: null,
-    token: localStorage.getItem("token") || "",
+    user: localStorage.getItem("user") || null,
+    // token: localStorage.getItem("token") || "",
   },
 
   mutations: {
-    setUser(state, user, token) {
+    setUser(state, user) {
       state.user = user;
-      state.token = token;
+      // state.token = token;
     },
 
     logout(state) {
       state.user = null;
-      state.token = "";
+      // state.token = "";
       state.error = null;
     },
   },
@@ -43,27 +43,29 @@ export default {
           password: payload.password,
         };
 
-        const user = await axios.post("/admin/login", userData);
+        const res = await axios.post("/admin/login", userData);
 
-        let token = user.data.token;
-        localStorage.setItem("token", token);
-        axios.defaults.headers.common["Authorization"] = token;
+        let user = res.data.user;
 
-        commit("setUser", user.data, token);
+        // let token = user.data.token;
+        localStorage.setItem("user", user);
+        // axios.defaults.headers.common["Authorization"] = token;
+
+        commit("setUser", user);
         commit("clearError");
         commit("setLoading", false);
       } catch (err) {
         commit("setError", err.response.data.message);
         commit("setLoading", false);
-        localStorage.removeItem("token");
+        localStorage.removeItem("user");
       }
     },
 
     async logout({ commit }) {
       commit("logout");
 
-      localStorage.removeItem("token");
-      delete axios.defaults.headers.common["Authorization"];
+      localStorage.removeItem("user");
+      // delete axios.defaults.headers.common["Authorization"];
     },
   },
 

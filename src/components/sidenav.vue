@@ -1,5 +1,6 @@
 <template>
   <v-container class="sidenav green darken-2">
+    <h3 class="ml-10">{{ user ? user.name : 'User Name'}}</h3>
     <h2 class="app-name">
       <span
         ><v-icon color="white" style="margin-right: 10px"
