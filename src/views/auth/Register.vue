@@ -2,16 +2,24 @@
   <div>
     <auth-nav-bar></auth-nav-bar>
     <main>
-      <v-alert
-        v-show="error"
-        type="error"
-        dense
-        dismissible
-        prominent
-        style="margin: 2rem auto"
+      <v-snackbar
+        v-model="ifError"
+        timeout="2000"
+        :value="true"
+        color="error"
+        multi-line
+        absolute
+        text
+        centered
+        top
       >
         {{ error }}
-      </v-alert>
+        <template v-slot:action="{ attrs }">
+          <v-btn color="brown" text v-bind="attrs" @click="ifError = false">
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
       <form action="#">
         <h1 class="mb-10">Sign up</h1>
 
@@ -31,6 +39,7 @@
         <p class="error-text" v-if="!passwordMatch">Passwords don't match</p>
 
         <v-btn
+          :loading="isLoading"
           depressed
           dark
           color="green darken-3"
@@ -65,6 +74,7 @@ export default {
         email: "",
         password: "",
         confirmPass: "",
+        ifError: false,
       },
     };
   },
@@ -82,6 +92,12 @@ export default {
     user(val) {
       if (val !== null && val !== undefined) {
         this.$router.push("/");
+      }
+    },
+    error(val) {
+      if (val !== null) {
+        console.log(val);
+        this.ifError = true;
       }
     },
   },

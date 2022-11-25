@@ -110,7 +110,15 @@
           v-model="code"
         ></v-text-field>
 
-        <v-btn dark block color="brown" class="mt-10" @click="newUser">
+        <v-btn
+          dark
+          block
+          color="brown"
+          class="mt-10"
+          @click="newUser"
+          @keyup.enter="newUser"
+          :loading="isLoading"
+        >
           Save
         </v-btn>
       </form>
@@ -132,6 +140,7 @@ export default {
 
       code: "",
       name: "",
+      role: "",
       email: "",
       phone: "",
       gender: "",
@@ -141,7 +150,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["students","instructors"]),
+    ...mapGetters(["students", "instructors", "isLoading"]),
   },
 
   methods: {
@@ -167,10 +176,8 @@ export default {
 
         if (this.role === "student") {
           await this.$store.dispatch("newStudent", user);
-          this.students.unshift(user);
         } else {
           await this.$store.dispatch("newInstructor", user);
-          this.instructors.unshift(user);
         }
 
         this.dialog = false;

@@ -17,7 +17,6 @@
           <v-img width="100%" height="200px" :src="cat.img"> </v-img>
           <v-card-subtitle class="grey--text">CATEGORY</v-card-subtitle>
           <v-card-title>{{ cat.title }}</v-card-title>
-          <v-card-text>{{ cat.text }}</v-card-text>
           <v-card-actions>
             <v-spacer />
             <v-btn
@@ -47,21 +46,18 @@ export default {
         {
           img: require("../assets/color_braid.svg"),
           title: "Enrolled Students",
-          text: "Students who are entolled to th school",
           btnText: "Students",
           link: "/students",
         },
         {
           img: require("../assets/retro.svg"),
           title: "Courses Offered",
-          text: "Courses being offered by the school",
           btnText: "Courses",
           link: "/courses",
         },
         {
           img: require("../assets/color_braid.svg"),
           title: "Instructors",
-          text: "All instructors mandated with educating the students",
           btnText: "Instructors",
           link: "/instructors",
         },

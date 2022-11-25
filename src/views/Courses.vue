@@ -22,9 +22,9 @@
               dark
               width="300px"
               height="300px"
-              v-for="(course, i) in courses"
-              :key="i"
-              color="brown"
+              v-for="(course) in courses"
+              :key="course._id"
+              :color="randomColor"
               @click="$router.push(`/courses/${course._id}`)"
             >
               <v-card-title class="display-1 pa-0">{{
@@ -62,6 +62,14 @@ export default {
 
   computed: {
     ...mapGetters(["courses", "isLoading"]),
+    randomColor() {
+      return (
+        "#" +
+        (
+          "00000" + Math.floor(Math.random() * Math.pow(16, 6)).toString(11)
+        ).slice(-6)
+      );
+    },
   },
 };
 </script>

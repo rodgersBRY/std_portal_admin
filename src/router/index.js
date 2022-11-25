@@ -54,6 +54,11 @@ const routes = [
     },
   },
   {
+    path: "/instructors/:instructorId",
+    name: "Instructor Details",
+    component: () => import("../views/instructor_details.vue"),
+  },
+  {
     path: "/instructors",
     name: "Instructors",
     component: () => import("../views/Instructors.vue"),

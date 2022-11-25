@@ -1,14 +1,26 @@
 <template>
   <v-app>
     <v-main>
-      <router-view/>
+      <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script>
+import axios from "axios";
 
 export default {
-  name: 'App',
+  name: "App",
+
+  created() {
+    axios.interceptors.response.use(undefined, (err) => {
+      return new Promise((_, reject) => {
+        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+          this.$store.dispatch("logout");
+        }
+        reject(err);
+      });
+    });
+  },
 };
 </script>

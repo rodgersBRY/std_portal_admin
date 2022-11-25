@@ -4,17 +4,24 @@
 
     <main>
       <div class="alert">
-        <v-alert
-          v-show="error"
-          type="error"
-          dense
-          dismissible
-          prominent
-          width="40%"
-          style="margin: 2rem auto"
+        <v-snackbar
+          v-model="ifError"
+          timeout="2000"
+          :value="true"
+          color="error"
+          multi-line
+          absolute
+          text
+          centered
+          top
         >
           {{ error }}
-        </v-alert>
+          <template v-slot:action="{ attrs }">
+            <v-btn color="brown" text v-bind="attrs" @click="ifError = false">
+              Close
+            </v-btn>
+          </template>
+        </v-snackbar>
       </div>
       <section class="login d-flex align-center">
         <div class="img mr-10">
@@ -37,7 +44,16 @@
               v-model="password"
             />
 
-            <input type="submit" value="Login" />
+            <v-btn
+              :loading="isLoading"
+              depressed
+              dark
+              color="green darken-3"
+              class="my-10"
+              type="submit"
+              @keyup.enter="signin"
+              >Login
+            </v-btn>
           </form>
           <v-divider class="mb-8"></v-divider>
           <div class="recover-account">
@@ -67,7 +83,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["user", "error"]),
+    ...mapGetters(["user", "error", "isLoading"]),
   },
 
   // check if user is logged in
@@ -77,12 +93,19 @@ export default {
         this.$router.push("/");
       }
     },
+    error(val) {
+      if (val !== null) {
+        console.log(val);
+        this.ifError = true;
+      }
+    },
   },
 
   data() {
     return {
       email: "",
       password: "",
+      ifError: false,
     };
   },
 

@@ -63,7 +63,9 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="grey" text @click="closeDialog"> Close </v-btn>
+          <v-btn color="grey" text @click="closeDialog" :loading="isLoading">
+            Close
+          </v-btn>
           <v-btn
             color="green darken-1"
             :loading="isLoading"

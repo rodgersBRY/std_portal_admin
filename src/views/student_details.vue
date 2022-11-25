@@ -9,7 +9,7 @@
             <h1>{{ student.code }} - {{ student.name }}</h1>
             <p>Age: {{ student.age }} yrs</p>
           </div>
-          <v-switch
+          <!-- <v-switch
             v-model="status"
             @change="updateStatus"
             color="green"
@@ -18,7 +18,7 @@
             <template v-slot:label>
               {{ status ? "Active" : "Inactive" }}
             </template>
-          </v-switch>
+          </v-switch> -->
         </div>
 
         <hr />
@@ -77,7 +77,11 @@
             ></v-text-field>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="grey darken-1" text @click="dialogUpdate = false"
+              <v-btn
+                color="grey darken-1"
+                text
+                :loading="isLoading"
+                @click="dialogUpdate = false"
                 >Cancel</v-btn
               >
               <v-btn color="brown darken-1" text @click="updateFee">OK</v-btn>
@@ -106,7 +110,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["students"]),
+    ...mapGetters(["students", "isLoading"]),
   },
 
   methods: {
@@ -119,6 +123,7 @@ export default {
       this.$store.dispatch("updateStudentFee", updateData);
       this.amount = "";
       this.dialogUpdate = false;
+      this.$router.push("/students");
     },
   },
 };

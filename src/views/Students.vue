@@ -107,6 +107,7 @@ export default {
       editedIndex: -1,
       dialogDelete: false,
       editedItem: {
+        _id: "",
         code: "",
         name: "",
         age: "",
@@ -183,10 +184,6 @@ export default {
   },
 
   methods: {
-    // editStudent(student) {
-    //   alert(`editing ${student}`);
-    // },
-
     deleteStudent(student) {
       this.editedIndex = this.students.indexOf(student);
       this.editedItem = Object.assign({}, student);

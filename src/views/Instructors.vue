@@ -53,15 +53,12 @@
               <template v-slot:item.name="{ item }">
                 <p
                   style="cursor: pointer"
-                  @click="$router.push(`/instructor-details/${item._id}`)"
+                  @click="$router.push(`/instructors/${item._id}`)"
                 >
                   {{ item.name }}
                 </p>
               </template>
               <template v-slot:item.actions="{ item }">
-                <!-- <v-icon small class="mr-2" @click="editInstructor(item)"
-                  >mdi-pencil</v-icon
-                > -->
                 <v-icon small color="red" class="mr-2" @click="deleteInstructor(item)"
                   >mdi-delete</v-icon
                 >
