@@ -24,6 +24,7 @@
             </v-btn>
           </template>
         </v-snackbar>
+
         <v-card flat width="90%" class="pa-5 my-10">
           <v-card-title>
             <h2>Instructors</h2>
@@ -48,7 +49,7 @@
             <template v-slot:top>
               <v-toolbar flat>
                 <v-spacer />
-                <user-dialog :user-type="'instructor'" />
+                <user-dialog :user-type="['instructor']" />
                 <v-dialog v-model="dialogDelete" max-width="500px">
                   <v-card>
                     <v-card-title class="text-h5"

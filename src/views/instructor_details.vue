@@ -24,7 +24,7 @@
           </div>
   
           <div v-if="instructor.fee_balance !== 'Ksh. 0.0'" class="course-info">
-            <h3 class="ml-5">Enrolled Courses</h3>
+            <h3 class="ml-5">Expertise</h3>
             <div v-if="instructor.modules.length > 0" class="courses-list">
               <ul>
                 <li

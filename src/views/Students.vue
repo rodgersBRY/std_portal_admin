@@ -24,10 +24,11 @@
             </v-btn>
           </template>
         </v-snackbar>
+
         <v-card flat width="90%" class="pa-5 my-10">
           <v-card-title>
             <h2>Students</h2>
-            <v-spacer></v-spacer>
+            <v-spacer />
             <v-text-field
               v-model="search"
               color="brown"
@@ -49,7 +50,7 @@
               <v-toolbar flat>
                 <v-spacer />
 
-                <user-dialog :userType="'student'" />
+                <user-dialog :userType="['student']" />
                 <v-dialog v-model="dialogDelete" max-width="500px">
                   <v-card>
                     <v-card-title class="text-h5"
@@ -121,6 +122,7 @@ export default {
 
   data() {
     return {
+      ifError: false,
       search: "",
       editedIndex: -1,
       dialogDelete: false,
