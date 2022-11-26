@@ -44,10 +44,10 @@ export default {
         };
 
         const res = await axios.post("/admin/login", userData);
-        
+
         let user = res.data.user;
         let userId = res.data.userId;
-        
+
         localStorage.setItem("userId", userId);
 
         commit("setUser", user, userId);
@@ -63,6 +63,7 @@ export default {
     async logout({ commit }) {
       commit("logout");
 
+      await axios.post("/admin/logout");
       localStorage.removeItem("userId");
     },
   },
