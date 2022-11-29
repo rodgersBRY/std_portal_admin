@@ -98,7 +98,7 @@
 import { mapGetters } from "vuex";
 
 export default {
-  name: "student details",
+  name: "student-details",
 
   data() {
     return {

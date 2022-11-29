@@ -51,7 +51,7 @@
   import { mapGetters } from "vuex";
   
   export default {
-    name: "instructor details",
+    name: "instructor-details",
   
     data() {
       return {

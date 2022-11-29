@@ -22,7 +22,7 @@ const routes = [
     component: () => import("../views/auth/Login.vue"),
   },
   {
-    path: "/courses/:courseId",
+    path: "/courses/:courseTitle/:courseId",
     name: "Course Details",
     component: () => import("../views/module_details.vue"),
     meta: {

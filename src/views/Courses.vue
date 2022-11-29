@@ -25,7 +25,7 @@
               v-for="(course) in courses"
               :key="course._id"
               :color="randomColor"
-              @click="$router.push(`/courses/${course._id}`)"
+              @click="$router.push(`/courses/${course.name}/${course._id}`)"
             >
               <v-card-title class="display-1 pa-0">{{
                 course.name
@@ -62,6 +62,7 @@ export default {
 
   computed: {
     ...mapGetters(["courses", "isLoading"]),
+
     randomColor() {
       return (
         "#" +

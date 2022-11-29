@@ -4,14 +4,22 @@ import currencyFormatter from "currency-formatter";
 export default {
   state: {
     courses: [],
+    studentsPerCourse: [],
   },
 
   mutations: {
     setCourses(state, payload) {
       state.courses = payload;
     },
+    setStudentsPerCourse(state, payload) {
+      state.studentsPerCourse = payload;
+    },
     addCourse(state, payload) {
       state.courses.push(payload);
+    },
+    deleteCourse(state, payload) {
+      let courses = state.courses.filter((course) => course._id !== payload);
+      state.courses = courses;
     },
   },
 
@@ -29,9 +37,12 @@ export default {
             thousand: ",",
             precision: 1,
             format: "%s. %v",
-          }
+          };
 
-          let formattedCurrency = currencyFormatter.format(course.feeAmount, options);
+          let formattedCurrency = currencyFormatter.format(
+            course.feeAmount,
+            options
+          );
 
           course.feeAmount = formattedCurrency;
 
@@ -52,10 +63,46 @@ export default {
 
       try {
         const res = await axios.post("/admin/add-module", payload);
-        
-        commit("addCourse", res.data.data);
+
+        if (res.status === 201) {
+          commit("addCourse", res.data.resp);
+          commit("setLoading", false);
+          commit("clearError");
+        }
+      } catch (err) {
+        commit("setError", err);
         commit("setLoading", false);
-        commit("clearError");
+      }
+    },
+
+    async deleteCourse({ commit }, payload) {
+      commit("setLoading", true);
+
+      try {
+        const res = await axios.delete(`/admin/delete-module/${payload}`);
+
+        if (res.status === 201) {
+          commit("deleteCourse", payload);
+          commit("setLoading", false);
+          commit("clearError");
+        }
+      } catch (err) {
+        commit("setError", err);
+        commit("setLoading", false);
+      }
+    },
+
+    async getStudentsPerCourse({ commit }, payload) {
+      commit("setLoading", true);
+
+      try {
+        const res = await axios.get(`/admin/module-student/${payload}`);
+
+        if (res.status === 200) {
+          commit("setStudentsPerCourse", res.data.studentList);
+          commit("setLoading", false);
+          commit("clearError");
+        }
       } catch (err) {
         commit("setError", err);
         commit("setLoading", false);
@@ -65,5 +112,6 @@ export default {
 
   getters: {
     courses: (state) => state.courses,
+    studentsPerCourse: (state) => state.studentsPerCourse,
   },
 };
