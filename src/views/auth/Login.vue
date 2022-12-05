@@ -23,15 +23,16 @@
           </template>
         </v-snackbar>
       </div>
+
       <section class="login d-flex align-center">
         <div class="img mr-10">
-          <v-img
+          <img
             width="100%"
             :src="require('@/assets/retro.svg')"
             alt="ecommerce"
-          >
-          </v-img>
+          />
         </div>
+
         <div class="form">
           <form @submit.prevent="signin">
             <label for="email">Email<span>*</span></label>
@@ -55,7 +56,9 @@
               >Login
             </v-btn>
           </form>
-          <v-divider class="mb-8"></v-divider>
+
+          <v-divider class="mb-8" />
+
           <div class="recover-account">
             <p>Forgot Password?</p>
             <p @click="$router.push('/accounts/signup')">
@@ -124,15 +127,44 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.login {
-  width: 70%;
-  height: 70vh;
-  margin: auto;
-  display: flex;
-  .img,
-  .form {
-    flex: 2;
+@media screen and (min-width: 1000px) {
+  .login {
+    margin: 2rem auto;
+    width: 70%;
+    height: 70vh;
+    margin: auto;
+    .img,
+    .form {
+      flex: 2;
+    }
+    .form {
+      width: 100%;
+      input[type="submit"] {
+        width: 100px;
+      }
+    }
   }
+
+  footer {
+    position: absolute;
+    bottom: 2%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .login {
+    margin: 5rem auto;
+    width: 90%;
+    flex-direction: column;
+    .form {
+      width: 100%;
+    }
+  }
+}
+
+.login {
+  display: flex;
+
   .form {
     label {
       display: block;
@@ -159,7 +191,6 @@ export default {
       background: green;
       padding: 10px;
       border-radius: 5px;
-      width: 100px;
       color: white;
       &:hover {
         background: rgb(88, 129, 88);
@@ -180,7 +211,6 @@ export default {
 }
 
 footer {
-  position: absolute;
-  bottom: 2%;
+  width: 100%;
 }
 </style>

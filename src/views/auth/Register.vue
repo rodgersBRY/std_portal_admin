@@ -20,6 +20,7 @@
           </v-btn>
         </template>
       </v-snackbar>
+
       <form action="#">
         <h1 class="mb-10">Sign up</h1>
 
@@ -120,9 +121,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media screen and (min-width: 1000px) {
+  form {
+    width: 40%;
+    margin: 3rem auto;
+  }
+  footer {
+    position: absolute;
+    bottom: 2%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  form {
+    width: 100%;
+    padding: 1rem;
+    margin: 2rem auto;
+  }
+}
+
 form {
-  width: 40%;
-  margin: 3rem auto;
   input,
   select {
     width: 100%;
@@ -156,7 +174,6 @@ form {
 }
 
 footer {
-  position: absolute;
-  bottom: 0;
+  width: 100%;
 }
 </style>
