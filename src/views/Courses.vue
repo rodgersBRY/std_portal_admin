@@ -6,7 +6,7 @@
 
     <main>
       <section class="content">
-        <div class="d-flex justify-space-between">
+        <div class="header-div">
           <h1 class="display-2">Courses</h1>
 
           <div class="new-course">
@@ -20,9 +20,7 @@
           <div v-else class="card-div">
             <v-card
               dark
-              width="300px"
-              height="300px"
-              v-for="(course) in courses"
+              v-for="course in courses"
               :key="course._id"
               :color="randomColor"
               @click="$router.push(`/courses/${course.name}/${course._id}`)"
@@ -76,17 +74,67 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media screen and (min-width: 1000px) {
+  main {
+    .header-div {
+      display: flex;
+      justify-content: space-between;
+    }
+    .row-div {
+      .card-div {
+        .v-card {
+          width: 300px;
+          height: 300px;
+          margin: 0 10px;
+        }
+      }
+    }
+
+    .loader {
+      width: 120px;
+      height: 120px;
+      margin: 20% auto 0 40%;
+    }
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  main {
+    .header-div {
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: flex-start;
+      h1 {
+        margin-top: 2rem;
+      }
+    }
+    .row-div {
+      .card-div {
+        flex-direction: column;
+        .v-card {
+          width: 100%;
+          height: 300px;
+          margin: 10px auto;
+        }
+      }
+    }
+
+    .loader {
+      width: 30px;
+      height: 30px;
+      margin: 10% auto 0 30%;
+    }
+  }
+}
 .modules {
   main {
-    margin-left: 260px;
-    padding: 3rem;
+    margin-left: 60px;
+    padding: 2rem;
     .row-div {
-      width: 70%;
-      margin: 3rem 0;
+      margin-top: 3rem;
       .card-div {
         display: flex;
         .v-card {
-          margin: 0 20px 0 0;
           padding: 1rem;
           cursor: pointer;
           display: flex;
@@ -96,13 +144,11 @@ export default {
         }
       }
     }
+
     .loader {
       border: 16px solid #f3f3f3; /* Light grey */
       border-top: 16px solid rgb(71, 92, 71); /* Blue */
       border-radius: 50%;
-      width: 120px;
-      height: 120px;
-      margin: 20% auto 0 60%;
       animation: spin 2s linear infinite;
     }
 

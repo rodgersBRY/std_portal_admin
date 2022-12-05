@@ -25,7 +25,7 @@
           </template>
         </v-snackbar>
 
-        <v-card flat width="90%" class="pa-5 my-10">
+        <v-card flat class="pa-1">
           <v-card-title>
             <h2>Students</h2>
             <v-spacer />
@@ -236,9 +236,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+@media screen and (min-width: 1000px){
+    .v-card {
+      width: 70%;
+    }
+}
 .students {
   main {
-    margin-left: 260px;
+    margin-left: 60px;
     .v-card {
       margin: auto;
     }

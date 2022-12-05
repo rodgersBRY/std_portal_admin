@@ -81,8 +81,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .main-section {
-  margin: 0 0 0 260px;
+  margin: 0 0 0 60px;
   text-align: center;
   .title-div {
     background: rgba(10, 139, 10, 0.2);
@@ -98,12 +99,22 @@ export default {
     font-size: 20px;
     font-weight: bold;
   }
+
+  @media screen and (min-width: 1000px) {
+    .course-info {
+      width: 80%;
+    }
+  }
+
+  @media screen and (max-width: 1000px) {
+    .course-info {
+      flex-direction: column;
+      width: 100%;
+    }
+  }
   .course-info {
-    padding: 0 2rem;
     display: flex;
-    justify-content: space-between;
-    width: 70%;
-    margin: 1rem auto;
+    margin: 10px auto;
     .course-outline {
       width: 100%;
       .topics-list {

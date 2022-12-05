@@ -47,10 +47,15 @@
         color="brown darken-3"
         block
         tag="li"
+        right
         @click="signout"
       >
-        <span> <v-icon color="white">mdi-logout</v-icon> </span>
-        Logout
+        <v-icon color="white">mdi-logout</v-icon>
+        <span id="logout-txt">Logout </span>
+      </v-btn>
+
+      <v-btn @click="toggleSidebar" color="white" class="mt-10" oultined icon>
+        <v-icon>{{ mini ? "mdi-chevron-right" : "mdi-chevron-left" }}</v-icon>
       </v-btn>
     </ul>
   </v-container>
@@ -74,24 +79,58 @@ export default {
     },
   },
 
+  data() {
+    return {
+      mini: false,
+    };
+  },
+
   methods: {
     signout() {
       this.$store.dispatch("logout");
       this.$router.push("/accounts/login");
+    },
+
+    toggleSidebar() {
+      var sidenav = document.getElementsByClassName("sidenav")[0];
+      var logoutTxt = document.getElementById("logout-txt");
+
+      if (this.mini) {
+        sidenav.style.width = "260px";
+        logoutTxt.style.display = "block";
+        this.mini = false;
+      } else {
+        sidenav.style.width = "65px";
+        logoutTxt.style.display = "none";
+        this.mini = true;
+      }
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+#logout-txt {
+  display: none;
+}
+
+h2 {
+  overflow-x: hidden;
+  white-space: nowrap;
+  span {
+    margin-right: 30px;
+  }
+}
 .sidenav {
   position: fixed;
   top: 0;
+  left: 0;
   z-index: 1;
   color: white;
   height: 100vh;
-  width: 260px;
+  width: 65px;
   padding: 4rem 10px 0 10px;
+  transition: width 0.5s ease;
   .nav-links {
     list-style: none;
     padding: 0;
@@ -100,12 +139,14 @@ export default {
       margin: 1rem 0;
       cursor: pointer;
       border-radius: 5px;
+      overflow-x: hidden;
+      white-space: nowrap;
       &:hover,
       &.active {
         background: rgb(225, 225, 225, 0.2);
       }
       span {
-        margin-right: 10px;
+        margin-right: 30px;
       }
     }
     .logout-btn {

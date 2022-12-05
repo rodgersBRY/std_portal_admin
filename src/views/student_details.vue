@@ -130,12 +130,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-main {
-  margin: 20px 0 0 280px;
+
+
+@media screen and (min-width: 1000px) {
   .student-info {
     width: 50%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .student-info {
+    width: 90%;
+  }
+}
+
+main {
+  margin: 20px 0 0 60px;
+  .student-info {
     margin: 10% auto;
-    // border: 1px solid grey;
     border-radius: 10px;
     padding: 5rem;
     box-shadow: 5px 5px 1rem grey;
