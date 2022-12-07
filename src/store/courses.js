@@ -53,8 +53,8 @@ export default {
         commit("setLoading", false);
         commit("clearError");
       } catch (err) {
-        commit("setError", err);
         commit("setLoading", false);
+        commit("setError", err);
       }
     },
 
@@ -70,8 +70,8 @@ export default {
           commit("clearError");
         }
       } catch (err) {
-        commit("setError", err);
         commit("setLoading", false);
+        commit("setError", err);
       }
     },
 
@@ -87,8 +87,8 @@ export default {
           commit("clearError");
         }
       } catch (err) {
-        commit("setError", err);
         commit("setLoading", false);
+        commit("setError", err);
       }
     },
 
@@ -104,8 +104,8 @@ export default {
           commit("clearError");
         }
       } catch (err) {
-        commit("setError", err);
         commit("setLoading", false);
+        commit("setError", err);
       }
     },
   },

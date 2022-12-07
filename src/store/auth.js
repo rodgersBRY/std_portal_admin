@@ -44,7 +44,7 @@ export default {
         };
 
         const res = await axios.post("/auth/login", userData);
-
+        console.log(res);
         if (res.status === 200) {
           let user = res.data.loadedUser;
           let token = res.data.token;
@@ -52,17 +52,19 @@ export default {
           localStorage.setItem("token", token);
           axios.defaults.headers.common["Authorization"] = token;
 
-          let payload = {
+          let data = {
             user,
             token,
           };
-          commit("setUser", payload);
+          commit("setUser", data);
           commit("clearError");
           commit("setLoading", false);
         }
       } catch (err) {
-        commit("setError", err.response.data.message);
+        console.log(err);
         commit("setLoading", false);
+        commit("setError", err.response.data.message);
+
         localStorage.removeItem("token");
       }
     },

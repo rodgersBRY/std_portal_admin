@@ -18,7 +18,7 @@
       <form @submit.prevent="createUser" class="new-student-form">
         <h1 class="mb-5 text-center">
           Enter
-          {{ userType === "instructor" ? "Instructor" : "Student" }} Information
+          {{ userType[0] }} information
         </h1>
         <v-row class="form-row">
           <v-col cols="12" sm="6">

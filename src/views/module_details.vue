@@ -40,10 +40,7 @@
                   <v-list-item-subtitle>{{ std.name }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-              <v-divider
-                v-if="index < studentsPerCourse.length - 1"
-                :key="index"
-              ></v-divider>
+              
             </v-list>
           </div>
         </section>
