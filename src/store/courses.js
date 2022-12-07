@@ -28,7 +28,7 @@ export default {
       commit("setLoading", true);
 
       try {
-        const res = await axios.get("/modules");
+        const res = await axios.get("/admin/modules");
 
         // format currency
         let courses = res.data.data.map((course) => {

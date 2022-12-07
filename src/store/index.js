@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import createPersistedState from 'vuex-persistedstate'
 
 import Auth from './auth'
 import Students from "./students";
@@ -17,4 +18,5 @@ export default new Vuex.Store({
     Instructors,
     Shared,
   },
+  plugins:[createPersistedState()]
 });

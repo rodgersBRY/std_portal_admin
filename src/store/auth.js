@@ -3,18 +3,18 @@ import axios from "axios";
 export default {
   state: {
     user: null,
-    userId: localStorage.getItem("userId") || "",
+    token: localStorage.getItem("token") || "",
   },
 
   mutations: {
-    setUser(state, user, userId) {
-      state.user = user;
-      state.userId = userId;
+    setUser(state, payload) {
+      state.user = payload.user;
+      state.token = payload.token;
     },
 
     logout(state) {
       state.user = null;
-      state.userId = "";
+      state.token = "";
       state.error = null;
     },
   },
@@ -24,7 +24,7 @@ export default {
       commit("setLoading", true);
 
       try {
-        await axios.post("/admin/register", payload);
+        await axios.post("/auth/register", payload);
 
         commit("clearError");
         commit("setLoading", false);
@@ -43,33 +43,39 @@ export default {
           password: payload.password,
         };
 
-        const res = await axios.post("/admin/login", userData);
+        const res = await axios.post("/auth/login", userData);
 
-        let user = res.data.user;
-        let userId = res.data.userId;
+        if (res.status === 200) {
+          let user = res.data.loadedUser;
+          let token = res.data.token;
 
-        localStorage.setItem("userId", userId);
+          localStorage.setItem("token", token);
+          axios.defaults.headers.common["Authorization"] = token;
 
-        commit("setUser", user, userId);
-        commit("clearError");
-        commit("setLoading", false);
+          let payload = {
+            user,
+            token,
+          };
+          commit("setUser", payload);
+          commit("clearError");
+          commit("setLoading", false);
+        }
       } catch (err) {
         commit("setError", err.response.data.message);
         commit("setLoading", false);
-        localStorage.removeItem("userId");
+        localStorage.removeItem("token");
       }
     },
 
     async logout({ commit }) {
       commit("logout");
-
-      await axios.post("/admin/logout");
-      localStorage.removeItem("userId");
+      localStorage.removeItem("token");
+      delete axios.defaults.headers.common["Authorization"];
     },
   },
 
   getters: {
     user: (state) => state.user,
-    isAuthenticated: (state) => !!state.userId,
+    isAuthenticated: (state) => !!state.user,
   },
 };

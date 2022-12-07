@@ -7,15 +7,24 @@ import Sidenav from "./components/sidenav.vue";
 import axios from "axios";
 
 axios.defaults.withCredentials = false;
-// https://std-portal-api.vercel.app
-axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.baseURL = "http://localhost:4000/api";
 
-Vue.prototype.$http = axios;
+// handle expired tokens
+axios.interceptors.response.use(undefined, function(err) {
+  if(err) {
+    const originalRequest=err.config
+    if(err.response.status===401&&!originalRequest._retry) {
+      originalRequest._retry=true
+      store.dispatch('logout')
+      return router.push('/accounts/login')
+    }
+  }
+})
 
 // auto authenticate
-const userId = localStorage.getItem("userId");
-if (userId) {
-  Vue.prototype.$http.defaults.headers.common["Authorization"] = userId;
+const token = localStorage.getItem("token");
+if (token) {
+  axios.defaults.headers.common["Authorization"] = token;
 }
 
 Vue.config.productionTip = false;
