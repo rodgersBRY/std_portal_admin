@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Login",
 
@@ -98,7 +98,6 @@ export default {
     },
     error(val) {
       if (val !== null) {
-        console.log(val);
         this.ifError = true;
       }
     },
@@ -113,14 +112,17 @@ export default {
   },
 
   methods: {
+    ...mapActions(["login"]),
+    
     async signin() {
       if (this.email == "" || this.password == "") {
         alert("fill in all required fields!");
       } else {
-        this.$store.dispatch("login", {
-          email: this.email,
-          password: this.password,
-        });
+        this.login({ email: this.email, password: this.password });
+        // this.$store.dispatch("login", {
+        //   email: this.email,
+        //   password: this.password,
+        // });
       }
     },
   },

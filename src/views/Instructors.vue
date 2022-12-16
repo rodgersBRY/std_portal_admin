@@ -50,7 +50,7 @@
               <v-toolbar flat>
                 <v-spacer />
                 <user-dialog :user-type="['instructor']" />
-                <v-dialog v-model="dialogDelete" max-width="500px">
+                <v-dialog v-model="dialogDelete" max-width="600px">
                   <v-card>
                     <v-card-title class="text-h5"
                       >Are you sure you want to delete?</v-card-title

@@ -23,16 +23,12 @@ export default {
     },
 
     updateStudentFee(state, payload) {
-      // return list without the edited entry
-      let filteredStudents = state.students.filter(
-        (stud) => stud._id !== payload._id
-      );
-
-      // add the edited entry to array
-      filteredStudents.push(payload);
-
-      // set state items to new list
-      state.students = filteredStudents;
+      state.students = state.students.map((student) => {
+        if (student._id === payload._id) {
+          return Object.assign(student, payload);
+        }
+        return student;
+      });
     },
   },
 
@@ -71,7 +67,7 @@ export default {
 
       try {
         await axios.post("/admin/new-user", payload);
-        
+
         commit("addStudent", payload);
         commit("setLoading", false);
         commit("clearError");
@@ -86,7 +82,7 @@ export default {
 
       try {
         await axios.delete(`/admin/user/${payload}`);
-        
+
         commit("deleteStudent", payload);
         commit("setLoading", false);
         commit("clearError");
@@ -111,9 +107,11 @@ export default {
       commit("setLoading", true);
 
       try {
-        const resp = await axios.put(`/admin/update-fee`, payload);
-        
-        commit("updateStudentFee", resp.data);
+        const res = await axios.put(`/admin/update-fee`, payload);
+
+        let updatedUser = res.data;
+
+        commit("updateStudentFee", updatedUser);
         commit("setLoading", false);
         commit("clearError");
       } catch (err) {

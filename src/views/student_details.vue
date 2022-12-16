@@ -9,16 +9,6 @@
             <h1>{{ student.code }} - {{ student.name }}</h1>
             <p>Age: {{ student.age }} yrs</p>
           </div>
-          <!-- <v-switch
-            v-model="status"
-            @change="updateStatus"
-            color="green"
-            :label="[status ? 'Active' : 'Inactive']"
-          >
-            <template v-slot:label>
-              {{ status ? "Active" : "Inactive" }}
-            </template>
-          </v-switch> -->
         </div>
 
         <hr />
@@ -130,8 +120,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
 @media screen and (min-width: 1000px) {
   .student-info {
     width: 50%;

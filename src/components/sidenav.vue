@@ -6,7 +6,7 @@
           mdi-account-circle-outline
         </v-icon>
       </span>
-      Admin Portal
+      {{user ? user.name: "Admin Portal"}}
     </h2>
 
     <ul class="nav-links" style="margin-top: 2rem">
@@ -118,7 +118,7 @@ h2 {
   overflow-x: hidden;
   white-space: nowrap;
   span {
-    margin-right: 30px;
+    margin-right: 10px;
   }
 }
 .sidenav {
