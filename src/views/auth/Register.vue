@@ -2,6 +2,25 @@
   <div>
     <auth-nav-bar></auth-nav-bar>
     <main>
+      <v-snackbar
+        v-model="ifError"
+        timeout="2000"
+        :value="true"
+        color="error"
+        multi-line
+        absolute
+        text
+        centered
+        top
+      >
+        {{ error }}
+        <template v-slot:action="{ attrs }">
+          <v-btn color="brown" text v-bind="attrs" @click="ifError = false">
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+
       <form action="#">
         <h1 class="mb-10">Sign up</h1>
 
@@ -21,6 +40,7 @@
         <p class="error-text" v-if="!passwordMatch">Passwords don't match</p>
 
         <v-btn
+          :loading="isLoading"
           depressed
           dark
           color="green darken-3"
@@ -50,20 +70,22 @@ export default {
 
   data() {
     return {
+      ifError: false,
       formData: {
         name: "",
         email: "",
         password: "",
         confirmPass: "",
+        
       },
     };
   },
 
   computed: {
-    ...mapGetters(["user, isLoading"]),
+    ...mapGetters(["user, isLoading", "error"]),
 
     passwordMatch() {
-      return this.formData.password === this.formData.confirmPass;
+      return this.formData.confirmPass === this.formData.password;
     },
   },
 
@@ -74,10 +96,16 @@ export default {
         this.$router.push("/");
       }
     },
+    error(val) {
+      if (val !== null) {
+        console.log(val);
+        this.ifError = true;
+      }
+    },
   },
 
   methods: {
-    register() {
+    async register() {
       let name = this.formData.name;
       let email = this.formData.email;
       let pass = this.formData.password;
@@ -86,16 +114,34 @@ export default {
         alert("Fill all required fields!");
       }
 
-      this.$store.dispatch("register", this.formData);
+      await this.$store.dispatch("register", this.formData);
+      this.$router.push("/accounts/login");
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@media screen and (min-width: 1000px) {
+  form {
+    width: 40%;
+    margin: 3rem auto;
+  }
+  footer {
+    position: absolute;
+    bottom: 2%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  form {
+    width: 100%;
+    padding: 1rem;
+    margin: 2rem auto;
+  }
+}
+
 form {
-  width: 40%;
-  margin: 3rem auto;
   input,
   select {
     width: 100%;
@@ -109,6 +155,7 @@ form {
 
   .error {
     border: 1px solid red;
+    background-color: white;
   }
 
   .error-text {
@@ -128,7 +175,6 @@ form {
 }
 
 footer {
-  position: absolute;
-  bottom: 0;
+  width: 100%;
 }
 </style>

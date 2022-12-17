@@ -7,15 +7,24 @@ import Sidenav from "./components/sidenav.vue";
 import axios from "axios";
 
 axios.defaults.withCredentials = false;
-axios.defaults.baseURL = "http://128.199.38.66:81";
+axios.defaults.baseURL = "http://localhost:4000";
 
-Vue.prototype.$http = axios;
+// handle expired tokens
+axios.interceptors.response.use(undefined, function(err) {
+  if(err) {
+    const originalRequest=err.config
+    if(err.response.status===401&&!originalRequest._retry) {
+      originalRequest._retry=true
+      store.dispatch('logout')
+      return router.push('/accounts/login')
+    }
+  }
+})
 
 // auto authenticate
 const token = localStorage.getItem("token");
 if (token) {
-  Vue.prototype.$http.defaults.headers.common["Authorization"] =
-    "Bearer " + token;
+  axios.defaults.headers.common["Authorization"] = token;
 }
 
 Vue.config.productionTip = false;

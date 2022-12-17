@@ -8,16 +8,10 @@
       <h1>Dashboard</h1>
 
       <section class="categories">
-        <v-card
-          class="category"
-          width="300px"
-          v-for="(cat, i) in categories"
-          :key="i"
-        >
+        <v-card class="category" v-for="(cat, i) in categories" :key="i">
           <v-img width="100%" height="200px" :src="cat.img"> </v-img>
           <v-card-subtitle class="grey--text">CATEGORY</v-card-subtitle>
           <v-card-title>{{ cat.title }}</v-card-title>
-          <v-card-text>{{ cat.text }}</v-card-text>
           <v-card-actions>
             <v-spacer />
             <v-btn
@@ -47,23 +41,20 @@ export default {
         {
           img: require("../assets/color_braid.svg"),
           title: "Enrolled Students",
-          text: "Students who are entolled to th school",
           btnText: "Students",
-          link: '/students'
+          link: "/students",
         },
         {
           img: require("../assets/retro.svg"),
           title: "Courses Offered",
-          text: "Courses being offered by the school",
           btnText: "Courses",
-          link: '/courses'
+          link: "/courses",
         },
         {
           img: require("../assets/color_braid.svg"),
-          title: "Notices",
-          text: "All notices that need your attention.",
-          btnText: "Notices",
-          link: '/notices'
+          title: "Instructors",
+          btnText: "Instructors",
+          link: "/instructors",
         },
       ],
     };
@@ -74,18 +65,38 @@ export default {
 <style lang="scss" scoped>
 .home {
   main {
-    margin: auto 0 0 260px;
-    padding: 1rem;
-    height: 80vh;
+    padding: 10px;
     width: 80%;
     h1 {
       margin-bottom: 3rem;
     }
     .categories {
       display: flex;
-      justify-content: center;
-      .category {
-        margin: 0 1rem;
+    }
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  main {
+    margin: auto 0 0 60px;
+    .categories {
+      justify-content: space-around;
+      .v-card {
+        width: 300px;
+        margin: 1rem 0 1rem 10px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  main {
+    margin: auto 0 0 60px;
+    .categories {
+      flex-direction: column;
+      .v-card {
+        width: 100%;
+        margin: 1rem 0 1rem 10px;
       }
     }
   }

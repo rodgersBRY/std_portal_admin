@@ -1,11 +1,11 @@
 <template>
   <div>
-      <v-img width="50px" :src="require('../assets/logo.webp')"></v-img>
+    <img width="50px" :src="require('../assets/logo.webp')" />
     <h3>Student Portal</h3>
     <v-divider vertical class="grey lighten-3 mx-10"></v-divider>
-    <p>
-      &copy; {{ year }} Jowam Training Centre
-      <span class="mx-5">--</span> Mawira Corp
+    <p class="text-center">
+      &copy; {{ year }} Jowam Training Centre <br />
+      Powered By Mawira Corp
     </p>
   </div>
 </template>
@@ -21,10 +21,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media screen and (max-width: 1000px) {
+  div {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  div {
+    justify-content: center;
+    padding: 10px;
+  }
+}
+
 div {
-  margin: 0 2rem;
   display: flex;
-  align-items: center;
   p {
     margin: 0;
   }

@@ -3,17 +3,38 @@
     <auth-nav-bar />
 
     <main>
+      <div class="alert">
+        <v-snackbar
+          v-model="ifError"
+          timeout="2000"
+          :value="true"
+          color="error"
+          multi-line
+          absolute
+          text
+          centered
+          top
+        >
+          {{ error }}
+          <template v-slot:action="{ attrs }">
+            <v-btn color="brown" text v-bind="attrs" @click="ifError = false">
+              Close
+            </v-btn>
+          </template>
+        </v-snackbar>
+      </div>
+
       <section class="login d-flex align-center">
         <div class="img mr-10">
-          <v-img
+          <img
             width="100%"
             :src="require('@/assets/retro.svg')"
             alt="ecommerce"
-          >
-          </v-img>
+          />
         </div>
+
         <div class="form">
-          <form action="#">
+          <form @submit.prevent="signin">
             <label for="email">Email<span>*</span></label>
             <input type="email" name="email" id="email" v-model="email" />
             <label for="password">Password<span>*</span></label>
@@ -24,9 +45,20 @@
               v-model="password"
             />
 
-            <input type="submit" @click.prevent="signin" value="Login" />
+            <v-btn
+              :loading="isLoading"
+              depressed
+              dark
+              color="green darken-3"
+              class="my-10"
+              type="submit"
+              @keyup.enter="signin"
+              >Login
+            </v-btn>
           </form>
-          <v-divider class="mb-8"></v-divider>
+
+          <v-divider class="mb-8" />
+
           <div class="recover-account">
             <p>Forgot Password?</p>
             <p @click="$router.push('/accounts/signup')">
@@ -44,8 +76,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Login",
 
@@ -54,41 +85,88 @@ export default {
     "auth-footer": require("@/components/auth_footer.vue").default,
   },
 
+  computed: {
+    ...mapGetters(["user", "error", "isLoading"]),
+  },
+
+  // check if user is logged in
+  watch: {
+    user(val) {
+      if (val !== null && val !== undefined) {
+        this.$router.push("/");
+      }
+    },
+    error(val) {
+      if (val !== null) {
+        this.ifError = true;
+      }
+    },
+  },
+
   data() {
     return {
       email: "",
       password: "",
+      ifError: false,
     };
   },
 
   methods: {
     ...mapActions(["login"]),
-
-    signin() {
-      let userData = {
-        email: this.email,
-        password: this.password,
-      };
-
+    
+    async signin() {
       if (this.email == "" || this.password == "") {
         alert("fill in all required fields!");
       } else {
-        this.login(userData);
+        this.login({ email: this.email, password: this.password });
+        // this.$store.dispatch("login", {
+        //   email: this.email,
+        //   password: this.password,
+        // });
       }
     },
   },
 };
 </script>
 <style lang="scss" scoped>
-.login {
-  width: 70%;
-  height: 70vh;
-  margin: auto;
-  display: flex;
-  .img,
-  .form {
-    flex: 2;
+@media screen and (min-width: 1000px) {
+  .login {
+    margin: 2rem auto;
+    width: 70%;
+    height: 70vh;
+    margin: auto;
+    .img,
+    .form {
+      flex: 2;
+    }
+    .form {
+      width: 100%;
+      input[type="submit"] {
+        width: 100px;
+      }
+    }
   }
+
+  footer {
+    position: absolute;
+    bottom: 2%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .login {
+    margin: 5rem auto;
+    width: 90%;
+    flex-direction: column;
+    .form {
+      width: 100%;
+    }
+  }
+}
+
+.login {
+  display: flex;
+
   .form {
     label {
       display: block;
@@ -115,7 +193,6 @@ export default {
       background: green;
       padding: 10px;
       border-radius: 5px;
-      width: 100px;
       color: white;
       &:hover {
         background: rgb(88, 129, 88);
@@ -136,7 +213,6 @@ export default {
 }
 
 footer {
-  position: absolute;
-  bottom: 2%;
+  width: 100%;
 }
 </style>
