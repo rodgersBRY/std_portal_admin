@@ -14,10 +14,10 @@
     </div>
     <v-spacer></v-spacer>
     <div class="actions">
-      <v-btn depressed dark class="mr-5" color="green" to="/accounts/signup"
+      <!-- <v-btn depressed dark class="mr-5" color="green" to="/accounts/signup"
         >Sign Up</v-btn
-      >
-      <v-btn depressed color="grey lighten-4" to="/accounts/login">Login</v-btn>
+      > -->
+      <!-- <v-btn depressed color="grey lighten-4" to="/accounts/login">Login</v-btn> -->
     </div>
   </v-app-bar>
 </template>

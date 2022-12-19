@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "../store";
+
 import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
@@ -10,17 +11,22 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
-    meta: {},
   },
-  {
-    path: "/accounts/signup",
-    name: "Sign Up",
-    component: () => import("../views/auth/Register.vue"),
-  },
+  // {
+  //   path: "/accounts/signup",
+  //   name: "Sign Up",
+  //   component: () => import("../views/auth/Register.vue"),
+  //   meta: {
+  //     title: 'JOWAM PORTAL | REGISTER',
+  //   },
+  // },
   {
     path: "/accounts/login",
     name: "Login",
     component: () => import("../views/auth/Login.vue"),
+    meta: {
+      title: 'JOWAM PORTAL | LOGIN',
+    },
   },
   {
     path: "/courses/:courseTitle/:courseId",
@@ -36,6 +42,7 @@ const routes = [
     component: () => import("../views/Courses.vue"),
     meta: {
       requiresAuth: true,
+      title: 'COURSES OFFERED'
     },
   },
   {
@@ -44,6 +51,7 @@ const routes = [
     component: () => import("../views/student_details.vue"),
     meta: {
       requiresAuth: true,
+      title: ''
     },
   },
   {
@@ -52,6 +60,7 @@ const routes = [
     component: () => import("../views/Students.vue"),
     meta: {
       requiresAuth: true,
+      title: 'STUDENTS'
     },
   },
   {
@@ -65,6 +74,7 @@ const routes = [
     component: () => import("../views/Instructors.vue"),
     meta: {
       requiresAuth: true,
+      title:'INSTRUCTORS'
     },
   },
 ];
@@ -73,6 +83,13 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+const DEFAULT = "JOWAM PORTAL";
+router.afterEach((to) => {
+  Vue.nextTick(() => {
+    document.title = to.meta.title || DEFAULT;
+  });
 });
 
 router.beforeEach((to, from, next) => {

@@ -20,49 +20,46 @@ export default {
   },
 
   actions: {
-    async register({ commit }, payload) {
-      commit("setLoading", true);
+    // async register({ commit, dispatch }, payload) {
+    //   commit("setLoading", true);
+    //   try {
+    //     await axios.post("/auth/register", payload);
 
-      try {
-        await axios.post("/auth/register", payload);
+    //     let userForm = new FormData();
+    //     userForm.append("email", payload.email);
+    //     userForm.append("password", payload.password);
 
-        commit("clearError");
-        commit("setLoading", false);
-      } catch (err) {
-        commit("setLoading", false);
-        commit("setError", err.response.data.message);
-      }
-    },
+    //     commit("clearError");
+    //     dispatch("login", userForm);
+    //     commit("setLoading", false);
+    //   } catch (err) {
+    //     commit("setLoading", false);
+    //     commit("setError", err);
+    //   }
+    // },
 
     async login({ commit }, payload) {
       commit("setLoading", true);
 
       try {
-        let userData = {
-          email: payload.email,
-          password: payload.password,
-        };
+        const res = await axios.post("/auth/login", {
+          email: payload.get("email"),
+          password: payload.get("password"),
+        });
 
-        const res = await axios.post("/auth/login", userData);
-        // if (res.status === 200) {
         let user = res.data.loadedUser;
         let token = res.data.token;
 
         localStorage.setItem("token", token);
         axios.defaults.headers.common["Authorization"] = token;
 
-        let data = {
-          user,
-          token,
-        };
-        commit("setUser", data);
+        commit("setUser", { user, token });
         commit("clearError");
         commit("setLoading", false);
-        // }
       } catch (err) {
         console.log(err);
         commit("setLoading", false);
-        commit("setError", err.response.data.message);
+        commit("setError", err);
 
         localStorage.removeItem("token");
       }

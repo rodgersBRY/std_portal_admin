@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div>
     <auth-nav-bar></auth-nav-bar>
     <main>
@@ -46,6 +46,7 @@
           color="green darken-3"
           class="mt-10"
           @click="register"
+          @keyup.enter="register"
           >Sign Up
         </v-btn>
       </form>
@@ -75,13 +76,13 @@ export default {
         email: "",
         password: "",
         confirmPass: "",
-        ifError: false,
       },
+      ifError: false,
     };
   },
 
   computed: {
-    ...mapGetters(["user, isLoading", "error"]),
+    ...mapGetters(["user", "isLoading", "error"]),
 
     passwordMatch() {
       return this.formData.confirmPass === this.formData.password;
@@ -95,6 +96,7 @@ export default {
         this.$router.push("/");
       }
     },
+
     error(val) {
       if (val !== null) {
         console.log(val);
@@ -114,7 +116,6 @@ export default {
       }
 
       await this.$store.dispatch("register", this.formData);
-      this.$router.push("/accounts/login");
     },
   },
 };
@@ -176,4 +177,4 @@ form {
 footer {
   width: 100%;
 }
-</style>
+</style> -->
