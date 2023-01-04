@@ -46,7 +46,6 @@
             />
 
             <v-btn
-              :loading="isLoading"
               depressed
               dark
               color="green darken-3"
@@ -60,10 +59,10 @@
           <v-divider class="mb-8" />
 
           <div class="recover-account">
-            <p>Forgot Password?</p>
-            <p @click="$router.push('/accounts/signup')">
+            <!-- <p>Forgot Password?</p> -->
+            <!-- <p @click="$router.push('/accounts/signup')">
               Don't have an account?
-            </p>
+            </p> -->
           </div>
         </div>
       </section>

@@ -20,25 +20,17 @@ export default {
   },
 
   actions: {
-    // async register({ commit, dispatch }, payload) {
-    //   commit("setLoading", true);
-    //   try {
-    //     await axios.post("/auth/register", payload);
+    // auto logout after 30 minutes
+    autoLogout({ commit }) {
+      setTimeout(() => {
+        commit("clearError");
+        commit("logout");
+        localStorage.removeItem("token");
+        delete axios.defaults.headers.common["Authorization"];
+      }, 30 * 60000);
+    },
 
-    //     let userForm = new FormData();
-    //     userForm.append("email", payload.email);
-    //     userForm.append("password", payload.password);
-
-    //     commit("clearError");
-    //     dispatch("login", userForm);
-    //     commit("setLoading", false);
-    //   } catch (err) {
-    //     commit("setLoading", false);
-    //     commit("setError", err);
-    //   }
-    // },
-
-    async login({ commit }, payload) {
+    async login({ commit, dispatch }, payload) {
       commit("setLoading", true);
 
       try {
@@ -56,6 +48,7 @@ export default {
         commit("setUser", { user, token });
         commit("clearError");
         commit("setLoading", false);
+        dispatch("autoLogout");
       } catch (err) {
         console.log(err);
         commit("setLoading", false);
