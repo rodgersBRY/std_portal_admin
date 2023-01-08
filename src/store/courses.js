@@ -21,6 +21,12 @@ export default {
       let courses = state.courses.filter((course) => course._id !== payload);
       state.courses = courses;
     },
+    clearCourses(state) {
+      state.courses = [];
+    },
+    clearstudentsPerCourse(state) {
+      state.studentsPerCourse = [];
+    },
   },
 
   actions: {

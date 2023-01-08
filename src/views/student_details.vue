@@ -49,7 +49,7 @@
               'ml-5',
             ]"
           >
-            Fee Balance: {{ student.fee_balance }}
+            Fee Balance(Ksh): {{ student.fee_balance }}
           </h2>
         </div>
         <v-btn color="green" outlined @click="dialogUpdate = true" class="mt-10"

@@ -105,6 +105,7 @@ export default {
 
   created() {
     this.$store.dispatch("fetchInstructors");
+   
   },
 
   data() {
@@ -183,7 +184,6 @@ export default {
   watch: {
     error(val) {
       if (val !== null) {
-        console.log(val);
         this.ifError = true;
       }
     },
@@ -213,10 +213,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@media screen and (min-width: 1000px){
-    .v-card {
-      width: 70%;
-    }
+@media screen and (min-width: 1000px) {
+  .v-card {
+    width: 70%;
+  }
 }
 .instructors {
   main {

@@ -8,6 +8,7 @@
 
 <script>
 import axios from "axios";
+import { mapGetters } from "vuex";
 
 export default {
   name: "App",
@@ -21,6 +22,19 @@ export default {
         reject(err);
       });
     });
+  },
+
+  computed: {
+    ...mapGetters(["user"]),
+  },
+
+  // check if user is logged in
+  watch: {
+    user(val) {
+      if (val !== null && val !== undefined) {
+        this.$router.push("/");
+      }
+    },
   },
 };
 </script>

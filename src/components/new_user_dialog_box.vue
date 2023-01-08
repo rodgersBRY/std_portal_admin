@@ -89,7 +89,7 @@
           color="brown"
           v-model="course"
           label="Select Courses"
-          :items="courses"
+          :items="courseNames"
           multiple
         >
           <template v-slot:selection="{ attrs, item, parent, selected }">
@@ -136,8 +136,6 @@ export default {
     return {
       dialog: false,
       genderItems: ["Male", "Female"],
-      courses: ["mixology", "barista", "roasting"],
-
       code: "",
       name: "",
       role: "",
@@ -150,7 +148,15 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["students", "instructors", "isLoading"]),
+    ...mapGetters(["isLoading", "courses"]),
+
+    courseNames() {
+      let courses = [];
+      for (let course of this.courses) {
+        courses.push(course.name);
+      }
+      return courses;
+    },
   },
 
   methods: {

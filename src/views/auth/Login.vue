@@ -5,7 +5,7 @@
     <main>
       <div class="alert">
         <v-snackbar
-          v-model="ifError"
+          v-show="ifError"
           timeout="2000"
           :value="true"
           color="error"
@@ -46,12 +46,12 @@
             />
 
             <v-btn
-              :loading="isLoading"
               depressed
               dark
               color="green darken-3"
               class="my-10"
               type="submit"
+              :loading="isLoading"
               @keyup.enter="signin"
               >Login
             </v-btn>
@@ -60,10 +60,10 @@
           <v-divider class="mb-8" />
 
           <div class="recover-account">
-            <p>Forgot Password?</p>
-            <p @click="$router.push('/accounts/signup')">
+            <!-- <p>Forgot Password?</p> -->
+            <!-- <p @click="$router.push('/accounts/signup')">
               Don't have an account?
-            </p>
+            </p> -->
           </div>
         </div>
       </section>
@@ -76,31 +76,13 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   name: "Login",
 
   components: {
     "auth-nav-bar": require("@/components/auth_navbar.vue").default,
     "auth-footer": require("@/components/auth_footer.vue").default,
-  },
-
-  computed: {
-    ...mapGetters(["user", "error", "isLoading"]),
-  },
-
-  // check if user is logged in
-  watch: {
-    user(val) {
-      if (val !== null && val !== undefined) {
-        this.$router.push("/");
-      }
-    },
-    error(val) {
-      if (val !== null) {
-        this.ifError = true;
-      }
-    },
   },
 
   data() {
@@ -111,18 +93,27 @@ export default {
     };
   },
 
+  computed: {
+    ...mapGetters(["error", "isLoading"]),
+  },
+
+  watch: {
+    error(val) {
+      if (val !== null) {
+        this.ifError = true;
+      }
+    },
+  },
+
   methods: {
-    ...mapActions(["login"]),
-    
     async signin() {
       if (this.email == "" || this.password == "") {
         alert("fill in all required fields!");
       } else {
-        this.login({ email: this.email, password: this.password });
-        // this.$store.dispatch("login", {
-        //   email: this.email,
-        //   password: this.password,
-        // });
+        const userData = new FormData();
+        userData.append("email", this.email);
+        userData.append("password", this.password);
+        this.$store.dispatch("login", userData);
       }
     },
   },

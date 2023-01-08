@@ -20,6 +20,9 @@ export default {
       );
       state.instructors = updatedInstructorList;
     },
+    clearInstructors(state) {
+      state.instructors = [];
+    }
   },
 
   actions: {

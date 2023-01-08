@@ -1,5 +1,5 @@
 import axios from "axios";
-import currencyFormatter from "currency-formatter";
+// import currencyFormatter from "currency-formatter";
 
 export default {
   state: {
@@ -30,6 +30,9 @@ export default {
         return student;
       });
     },
+    clearStudents(state) {
+      state.students = [];
+    },
   },
 
   actions: {
@@ -40,18 +43,19 @@ export default {
         const res = await axios.get("/admin/students");
 
         // format fee balance
-        let students = res.data.data.map((student) => {
-          let formattedFee = currencyFormatter.format(student.fee_balance, {
-            symbol: "Ksh",
-            thousand: ",",
-            precision: 1,
-            format: "%s. %v",
-          });
+        let students = res.data.data;
+        // .map((student) => {
+        //   let formattedFee = currencyFormatter.format(student.fee_balance, {
+        //     symbol: "Ksh",
+        //     thousand: ",",
+        //     precision: 1,
+        //     format: "%s. %v",
+        //   });
 
-          student.fee_balance = formattedFee;
+        //   student.fee_balance = formattedFee;
 
-          return student;
-        });
+        //   return student;
+        // });
 
         commit("setStudents", students);
         commit("setLoading", false);
