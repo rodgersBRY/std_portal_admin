@@ -18,7 +18,11 @@
           <div class="loader" v-if="isLoading" />
 
           <div v-else class="card-div">
+            <div v-if="courses.length === 0">
+              <h3 class="grey--text">Add new courses to see more details</h3>
+            </div>
             <v-card
+              v-else
               dark
               v-for="course in courses"
               :key="course._id"
