@@ -58,7 +58,6 @@
           </form>
 
           <v-divider class="mb-8" />
-
         </div>
       </section>
     </main>
