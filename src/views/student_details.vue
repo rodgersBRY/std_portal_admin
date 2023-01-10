@@ -104,13 +104,14 @@ export default {
   },
 
   methods: {
-    updateFee() {
+    async updateFee() {
       let updateData = {
         id: this.studentId,
         amount: this.amount,
       };
 
-      this.$store.dispatch("updateStudentFee", updateData);
+      await this.$store.dispatch("updateStudentFee", updateData);
+      this.$store.dispatch('fetchStudents')
       this.amount = "";
       this.dialogUpdate = false;
       this.$router.push("/students");
