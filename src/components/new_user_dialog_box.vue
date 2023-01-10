@@ -148,7 +148,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["isLoading", "courses"]),
+    ...mapGetters(["isLoading", "courses", "error"]),
 
     courseNames() {
       let courses = [];
@@ -182,10 +182,11 @@ export default {
 
         if (this.role === "student") {
           await this.$store.dispatch("newStudent", user);
+          this.$store.dispatch("fetchStudents");
         } else {
           await this.$store.dispatch("newInstructor", user);
+          this.$store.dispatch("fetchInstructors");
         }
-
         this.dialog = false;
       } else {
         alert("Cannot submit empty fields");

@@ -7,8 +7,8 @@
     <main>
       <section class="content">
         <v-snackbar
-          v-model="ifError"
-          timeout="2000"
+          v-if="error"
+          timeout="10000"
           :value="true"
           color="error"
           multi-line
@@ -19,7 +19,7 @@
         >
           {{ error }}
           <template v-slot:action="{ attrs }">
-            <v-btn color="brown" text v-bind="attrs" @click="ifError = false">
+            <v-btn color="brown" text v-bind="attrs" @click="removeError">
               Close
             </v-btn>
           </template>
@@ -82,7 +82,7 @@
                 small
                 color="red"
                 class="mr-2"
-                @click="deleteInstructor(item)"
+                @click="removeInstructor(item)"
                 >mdi-delete</v-icon
               >
             </template>
@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "instructors",
@@ -103,10 +103,9 @@ export default {
     "user-dialog": require("../components/new_user_dialog_box.vue").default,
   },
 
-  created() {
-    this.$store.dispatch("fetchInstructors");
-   
-  },
+  // created() {
+  //   this.$store.dispatch("fetchInstructors");
+  // },
 
   data() {
     return {
@@ -115,6 +114,7 @@ export default {
       editedIndex: -1,
       dialogDelete: false,
       editedItem: {
+        _id: "",
         code: "",
         name: "",
         age: "",
@@ -124,6 +124,7 @@ export default {
         status: false,
       },
       defaultItem: {
+        _id: "",
         code: "",
         name: "",
         age: "",
@@ -190,14 +191,16 @@ export default {
   },
 
   methods: {
-    deleteInstructor(instructor) {
+    ...mapActions(["deleteInstructor", "clearError"]),
+
+    removeInstructor(instructor) {
       this.editedIndex = this.instructors.indexOf(instructor);
       this.editedItem = Object.assign({}, instructor);
       this.dialogDelete = true;
     },
 
     confirmDelete() {
-      this.$store.dispatch("deleteInstructor", this.editedItem._id);
+      this.deleteInstructor(this.editedItem._id);
       this.closeDelete();
     },
 
@@ -207,6 +210,10 @@ export default {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       });
+    },
+
+    removeError() {
+      this.clearError();
     },
   },
 };

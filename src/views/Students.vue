@@ -7,11 +7,11 @@
     <main>
       <section class="content">
         <v-snackbar
-          v-model="ifError"
-          timeout="2000"
+          v-if="error"
+          timeout="10000"
           :value="true"
           color="error"
-          multi-line  
+          multi-line
           absolute
           text
           centered
@@ -19,7 +19,7 @@
         >
           {{ error }}
           <template v-slot:action="{ attrs }">
-            <v-btn color="brown" text v-bind="attrs" @click="ifError = false">
+            <v-btn color="brown" text v-bind="attrs" @click="removeError">
               Close
             </v-btn>
           </template>
@@ -92,7 +92,7 @@
                 small
                 class="mr-2"
                 color="red"
-                @click="deleteStudent(item)"
+                @click="removeStudent(item)"
                 >mdi-delete</v-icon
               >
             </template>
@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "students",
@@ -113,13 +113,12 @@ export default {
     "user-dialog": require("../components/new_user_dialog_box.vue").default,
   },
 
-  created() {
-    this.$store.dispatch("fetchStudents");
-  },
+  // created() {
+  //   this.$store.dispatch("fetchStudents");
+  // },
 
   data() {
     return {
-      ifError: false,
       search: "",
       editedIndex: -1,
       dialogDelete: false,
@@ -182,7 +181,7 @@ export default {
           filterable: false,
         },
         {
-          text: "Fee Balance",
+          text: "Fee Balance (Ksh)",
           value: "fee_balance",
           filterable: false,
         },
@@ -200,24 +199,17 @@ export default {
     ...mapGetters(["students", "isLoading", "error"]),
   },
 
-  watch: {
-    error(val) {
-      if (val !== null) {
-        console.log(val);
-        this.ifError = true;
-      }
-    },
-  },
-
   methods: {
-    deleteStudent(student) {
+    ...mapActions(['deleteStudent','clearError']),
+
+    removeStudent(student) {
       this.editedIndex = this.students.indexOf(student);
       this.editedItem = Object.assign({}, student);
       this.dialogDelete = true;
     },
 
     confirmDelete() {
-      this.$store.dispatch("deleteStudent", this.editedItem._id);
+      this.deleteStudent(this.editedItem._id)
       this.closeDelete();
     },
 
@@ -228,16 +220,19 @@ export default {
         this.editedIndex = -1;
       });
     },
+
+    removeError() {
+      this.clearError();
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
-@media screen and (min-width: 1000px){
-    .v-card {
-      width: 70%;
-    }
+@media screen and (min-width: 1000px) {
+  .v-card {
+    width: 70%;
+  }
 }
 .students {
   main {

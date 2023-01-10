@@ -58,10 +58,6 @@ export default {
     "new-course": require("../components/new_course_dialog.vue").default,
   },
 
-  created() {
-    this.$store.dispatch("fetchCourses");
-  },
-
   computed: {
     ...mapGetters(["courses", "isLoading"]),
 

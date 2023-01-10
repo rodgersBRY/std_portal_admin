@@ -5,8 +5,8 @@
     <main>
       <div class="alert">
         <v-snackbar
-          v-show="ifError"
-          timeout="2000"
+          v-if="error"
+          timeout="10000"
           :value="true"
           color="error"
           multi-line
@@ -17,7 +17,7 @@
         >
           {{ error }}
           <template v-slot:action="{ attrs }">
-            <v-btn color="brown" text v-bind="attrs" @click="ifError = false">
+            <v-btn color="brown" text v-bind="attrs" @click="removeError">
               Close
             </v-btn>
           </template>
@@ -59,12 +59,6 @@
 
           <v-divider class="mb-8" />
 
-          <div class="recover-account">
-            <!-- <p>Forgot Password?</p> -->
-            <!-- <p @click="$router.push('/accounts/signup')">
-              Don't have an account?
-            </p> -->
-          </div>
         </div>
       </section>
     </main>
@@ -76,7 +70,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   name: "Login",
 
@@ -97,15 +92,9 @@ export default {
     ...mapGetters(["error", "isLoading"]),
   },
 
-  watch: {
-    error(val) {
-      if (val !== null) {
-        this.ifError = true;
-      }
-    },
-  },
-
   methods: {
+    ...mapActions(["login", "clearError"]),
+
     async signin() {
       if (this.email == "" || this.password == "") {
         alert("fill in all required fields!");
@@ -113,8 +102,13 @@ export default {
         const userData = new FormData();
         userData.append("email", this.email);
         userData.append("password", this.password);
-        this.$store.dispatch("login", userData);
+
+        this.login(userData);
       }
+    },
+
+    removeError() {
+      this.clearError();
     },
   },
 };

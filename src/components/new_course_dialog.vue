@@ -127,7 +127,7 @@ export default {
       this.dialog = false;
     },
 
-    saveCourse() {
+    async saveCourse() {
       if (
         this.title !== "" ||
         this.courseFee !== "" ||
@@ -142,7 +142,8 @@ export default {
           topics: this.items,
         };
 
-        this.$store.dispatch("newCourse", courseData);
+        await this.$store.dispatch("newCourse", courseData);
+        this.$store.dispatch("fetchCourses");
       } else {
         alert("FIll in all fields before submitting");
       }

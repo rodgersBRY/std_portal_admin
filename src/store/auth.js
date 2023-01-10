@@ -56,7 +56,7 @@ export default {
       } catch (err) {
         console.log(err);
         commit("setLoading", false);
-        commit("setError", err);
+        commit("setError", err.response.data.message);
 
         localStorage.removeItem("token");
       }
@@ -70,6 +70,10 @@ export default {
       commit("clearInstructors");
       commit("clearCourses");
       commit("clearstudentsPerCourse");
+    },
+
+    clearError({ commit }) {
+      commit("clearError");
     },
   },
 

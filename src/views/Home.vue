@@ -59,6 +59,12 @@ export default {
       ],
     };
   },
+
+  created() {
+    this.$store.dispatch("fetchCourses");
+    this.$store.dispatch("fetchInstructors");
+    this.$store.dispatch("fetchStudents");
+  }
 };
 </script>
 
