@@ -23,15 +23,8 @@
               color="brown"
               v-model="courseFee"
               required
-            ></v-text-field>
-            <v-text-field
-              label="Unique Code*"
-              hint="e.g. JC320"
-              color="brown"
-              v-model="uniqueCode"
-              persistent-hint
-              required
-            ></v-text-field>
+            >
+            </v-text-field>
             <br />
             <v-combobox
               v-model="topics"
@@ -90,7 +83,6 @@ export default {
 
       title: "",
       courseFee: "",
-      uniqueCode: "",
       items: [],
       topics: [],
     };
@@ -121,24 +113,18 @@ export default {
     closeDialog() {
       this.title = "";
       this.courseFee = "";
-      this.uniqueCode = "";
       this.topics = [];
       this.items = [];
       this.dialog = false;
     },
 
     async saveCourse() {
-      if (
-        this.title !== "" ||
-        this.courseFee !== "" ||
-        this.uniqueCode !== ""
-      ) {
+      if (this.title !== "" || this.courseFee !== "") {
         this.dialog = false;
 
         let courseData = {
           title: this.title,
           fee: this.courseFee,
-          uniqueCode: this.uniqueCode,
           topics: this.items,
         };
 

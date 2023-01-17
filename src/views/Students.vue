@@ -51,7 +51,7 @@
                 <v-spacer />
 
                 <user-dialog :userType="['student']" />
-                <v-dialog v-model="dialogDelete" max-width="500px">
+                <v-dialog v-model="dialogDelete" max-width="600px">
                   <v-card>
                     <v-card-title class="text-h5"
                       >Are you sure you want to delete?</v-card-title
@@ -81,7 +81,7 @@
             <template v-slot:item.fee_balance="{ item }">
               <p
                 :class="[
-                  item.fee_balance !== 'Ksh. 0.0' ? 'warning--text' : '',
+                  item.fee_balance != '0' ? 'warning--text' : '',
                 ]"
               >
                 {{ item.fee_balance }}
@@ -113,10 +113,6 @@ export default {
     "user-dialog": require("../components/new_user_dialog_box.vue").default,
   },
 
-  // created() {
-  //   this.$store.dispatch("fetchStudents");
-  // },
-
   data() {
     return {
       search: "",
@@ -124,7 +120,6 @@ export default {
       dialogDelete: false,
       editedItem: {
         _id: "",
-        code: "",
         name: "",
         age: "",
         phone: "",
@@ -135,7 +130,6 @@ export default {
         status: false,
       },
       defaultItem: {
-        code: "",
         name: "",
         age: "",
         phone: "",
@@ -147,7 +141,7 @@ export default {
       },
       headers: [
         {
-          text: "Code",
+          text: "Reg No",
           sortable: false,
           value: "code",
         },

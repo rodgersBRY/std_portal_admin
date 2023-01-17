@@ -11,7 +11,7 @@ export default {
     },
 
     addInstructor(state, payload) {
-      state.instructors.unshift(payload);
+      state.instructors.push(payload);
     },
 
     deleteInstructor(state, payload) {

@@ -34,9 +34,6 @@
                 style="text-transform: capitalize"
               >
                 {{ module.name }}
-                <span>
-                  <v-btn icon><v-icon>mdi-minus</v-icon></v-btn>
-                </span>
               </li>
             </ul>
           </div>

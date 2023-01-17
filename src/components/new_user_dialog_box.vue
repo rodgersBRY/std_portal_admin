@@ -101,14 +101,6 @@
             </v-chip>
           </template>
         </v-combobox>
-        <v-text-field
-          label="User Code"
-          hint="e.g. JWM-001"
-          persistent-hint
-          outlined
-          color="brown"
-          v-model="code"
-        ></v-text-field>
 
         <v-btn
           dark
@@ -136,7 +128,6 @@ export default {
     return {
       dialog: false,
       genderItems: ["Male", "Female"],
-      code: "",
       name: "",
       role: "",
       email: "",
@@ -163,7 +154,6 @@ export default {
     async newUser() {
       if (
         this.name !== "" ||
-        this.code !== "" ||
         this.gender !== "" ||
         this.phone !== "" ||
         this.email !== "" ||
@@ -171,7 +161,6 @@ export default {
       ) {
         let user = {
           name: this.name,
-          code: this.code,
           email: this.email,
           phone: this.phone,
           gender: this.gender,
@@ -187,6 +176,15 @@ export default {
           await this.$store.dispatch("newInstructor", user);
           this.$store.dispatch("fetchInstructors");
         }
+        // clear the fields
+        this.name = "";
+        this.email = "";
+        this.phone = "";
+        this.gender = "";
+        this.role = "";
+        this.age = ""; 
+        this.course = "";
+
         this.dialog = false;
       } else {
         alert("Cannot submit empty fields");

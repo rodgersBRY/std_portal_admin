@@ -34,8 +34,8 @@
                 style="text-transform: capitalize"
               >
                 {{ module.name }}
-                <span>
-                  <v-btn icon><v-icon>mdi-minus</v-icon></v-btn>
+                <span style="font-size: 14px; color: grey">
+                  Ksh. {{ module.amount }}
                 </span>
               </li>
             </ul>
@@ -67,14 +67,16 @@
             ></v-text-field>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                color="grey darken-1"
-                text
-                :loading="isLoading"
-                @click="dialogUpdate = false"
+              <v-btn color="grey darken-1" text @click="dialogUpdate = false"
                 >Cancel</v-btn
               >
-              <v-btn color="brown darken-1" text @click="updateFee">OK</v-btn>
+              <v-btn
+                color="brown darken-1"
+                text
+                :loading="isLoading"
+                @click="updateFee"
+                >OK</v-btn
+              >
               <v-spacer />
             </v-card-actions>
           </v-card>
@@ -111,7 +113,7 @@ export default {
       };
 
       await this.$store.dispatch("updateStudentFee", updateData);
-      this.$store.dispatch('fetchStudents')
+      this.$store.dispatch("fetchStudents");
       this.amount = "";
       this.dialogUpdate = false;
       this.$router.push("/students");

@@ -115,7 +115,6 @@ export default {
       dialogDelete: false,
       editedItem: {
         _id: "",
-        code: "",
         name: "",
         age: "",
         phone: "",
@@ -125,7 +124,6 @@ export default {
       },
       defaultItem: {
         _id: "",
-        code: "",
         name: "",
         age: "",
         phone: "",
@@ -135,7 +133,7 @@ export default {
       },
       headers: [
         {
-          text: "Code",
+          text: "Reg No",
           sortable: false,
           value: "code",
         },
