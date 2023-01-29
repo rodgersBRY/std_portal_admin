@@ -30,6 +30,18 @@ export default {
         return student;
       });
     },
+
+    enrollStudent(state, payload) {
+      let studentIndex = state.students.findIndex(
+        (std) => std._id == payload._id
+      );
+
+      state.students = [
+        ...state.students.slice(0, studentIndex),
+        payload,
+        state.students.slice(studentIndex++),
+      ];
+    },
     clearStudents(state) {
       state.students = [];
     },
@@ -42,20 +54,7 @@ export default {
       try {
         const res = await axios.get("/admin/students");
 
-        // format fee balance
         let students = res.data.data;
-        // .map((student) => {
-        //   let formattedFee = currencyFormatter.format(student.fee_balance, {
-        //     symbol: "Ksh",
-        //     thousand: ",",
-        //     precision: 1,
-        //     format: "%s. %v",
-        //   });
-
-        //   student.fee_balance = formattedFee;
-
-        //   return student;
-        // });
 
         commit("setStudents", students);
         commit("setLoading", false);
@@ -99,8 +98,17 @@ export default {
     async enrollStudentToCourse({ commit }, payload) {
       commit("setLoading", true);
 
+      console.log(payload);
+
       try {
-        await axios.post("/admin/enroll", payload);
+       const res= await axios.post(
+          `/admin/enroll-student/${payload.studentId}`,
+          payload.moduleName
+        );
+
+        console.log(res.data.updatedUser);
+
+        commit('setLoading', false)
       } catch (err) {
         commit("setLoading", false);
         commit("setError", err.response.data.message);

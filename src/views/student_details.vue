@@ -24,7 +24,12 @@
         </div>
 
         <div v-if="student.fee_balance !== 'Ksh. 0.0'" class="course-info">
-          <h3 class="ml-5">Enrolled Courses</h3>
+          <div class="d-flex justify-space-between">
+            <h3 class="ml-5">Enrolled Courses</h3>
+            <v-btn icon color="green" class="mr-4" @click="dialogEnroll = true">
+              <v-icon size="30">mdi-plus</v-icon>
+            </v-btn>
+          </div>
           <div v-if="student.modules.length > 0" class="courses-list">
             <ul>
               <li
@@ -52,24 +57,60 @@
             Fee Balance(Ksh): {{ student.fee_balance }}
           </h2>
         </div>
+
         <v-btn color="green" outlined @click="dialogUpdate = true" class="mt-10"
           >Update Fee Balance</v-btn
         >
+
+        <!-- enroll student to more courses -->
+        <v-dialog v-model="dialogEnroll" max-width="500px">
+          <v-card class="text-center px-11">
+            <v-card-title class="text-h5">Select a Course</v-card-title>
+            <v-select
+              label="Select Course"
+              single-line
+              id="course"
+              v-model="course"
+              :items="courseNames"
+            >
+            </v-select>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="grey darken-1" text @click="dialogEnroll = false">
+                Cancel
+              </v-btn>
+              <v-btn
+                color="brown darken-1"
+                text
+                :loading="isLoading"
+                @click="enrollStudent"
+                >OK</v-btn
+              >
+              <v-spacer />
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <!-- update fee balance -->
         <v-dialog v-model="dialogUpdate" max-width="500px">
           <v-card class="text-center">
             <v-card-title class="text-h5">Enter the paid amount</v-card-title>
             <v-text-field
+              type="number"
+              min="0"
               outlined
               label="Amount (Ksh)"
               v-model="amount"
               style="width: 70%; margin: 10px auto"
               color="brown"
-            ></v-text-field>
+            >
+            </v-text-field>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="grey darken-1" text @click="dialogUpdate = false"
-                >Cancel</v-btn
-              >
+              <v-btn color="grey darken-1" text @click="dialogUpdate = false">
+                Cancel
+              </v-btn>
               <v-btn
                 color="brown darken-1"
                 text
@@ -97,12 +138,22 @@ export default {
       studentId: this.$route.params.studentId,
       status: true,
       dialogUpdate: false,
+      dialogEnroll: false,
       amount: "",
+      course: "",
     };
   },
 
   computed: {
-    ...mapGetters(["students", "isLoading"]),
+    ...mapGetters(["students", "isLoading", "courses"]),
+
+    courseNames() {
+      let courses = [];
+      for (let course of this.courses) {
+        courses.push(course.name);
+      }
+      return courses;
+    },
   },
 
   methods: {
@@ -116,6 +167,18 @@ export default {
       this.$store.dispatch("fetchStudents");
       this.amount = "";
       this.dialogUpdate = false;
+      this.$router.push("/students");
+    },
+
+    async enrollStudent() {
+      let payload = {
+        studentId: this.studentId,
+        moduleName: this.course,
+      };
+
+      await this.$store.dispatch("enrollStudentToCourse", payload);
+      this.course = "";
+      this.dialogEnroll = false;
       this.$router.push("/students");
     },
   },
