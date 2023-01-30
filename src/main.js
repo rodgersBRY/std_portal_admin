@@ -7,7 +7,7 @@ import Sidenav from "./components/sidenav.vue";
 import axios from "axios";
 
 axios.defaults.withCredentials = false;
-axios.defaults.baseURL = "http://localhost:4000/api";
+axios.defaults.baseURL = "http://159.89.233.11:81/api";
 
 // 159.89.233.11:81
 // auto authenticate
