@@ -32,16 +32,14 @@ export default {
     },
 
     enrollStudent(state, payload) {
-      let studentIndex = state.students.findIndex(
-        (std) => std._id == payload._id
-      );
-
-      state.students = [
-        ...state.students.slice(0, studentIndex),
-        payload,
-        state.students.slice(studentIndex++),
-      ];
+      state.students = state.students.map((student) => {
+        if (student._id === payload._id) {
+          return Object.assign(student, payload);
+        }
+        return student;
+      });
     },
+
     clearStudents(state) {
       state.students = [];
     },
@@ -98,17 +96,16 @@ export default {
     async enrollStudentToCourse({ commit }, payload) {
       commit("setLoading", true);
 
-      console.log(payload);
-
       try {
-       const res= await axios.post(
-          `/admin/enroll-student/${payload.studentId}`,
-          payload.moduleName
-        );
+        const res = await axios.put(`/admin/enroll-user/${payload.studentId}`, {
+          moduleName: payload.moduleName,
+        });
 
-        console.log(res.data.updatedUser);
+        let user = res.data.updatedUser;
 
-        commit('setLoading', false)
+        commit("enrollStudent", user);
+        commit("setLoading", false);
+        commit("clearError");
       } catch (err) {
         commit("setLoading", false);
         commit("setError", err.response.data.message);

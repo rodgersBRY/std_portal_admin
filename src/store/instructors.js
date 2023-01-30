@@ -20,6 +20,16 @@ export default {
       );
       state.instructors = updatedInstructorList;
     },
+
+    enrollInstructor(state, payload) {
+      state.instructors = state.instructors.map((instructor) => {
+        if (instructor._id === payload._id) {
+          return Object.assign(instructor, payload);
+        }
+        return instructor;
+      });
+    },
+
     clearInstructors(state) {
       state.instructors = [];
     }
@@ -78,6 +88,25 @@ export default {
         commit("setError", err.response.data.message);
       }
     },
+
+    async enrollInstructor({ commit }, payload) {
+      commit("setLoading", true);
+
+      try {
+        const res = await axios.put(`/admin/enroll-user/${payload.instructorId}`, {
+          moduleName: payload.moduleName,
+        });
+
+        let user=res.data.updatedUser
+
+        commit("enrollInstructor", user);
+        commit("setLoading", false);
+        commit("clearError");
+      }catch(err) {
+        commit("setLoading", false);
+        commit("setError", err.response.data.message);
+      }
+    }
   },
 
   getters: {

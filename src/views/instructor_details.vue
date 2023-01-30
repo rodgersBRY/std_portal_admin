@@ -26,7 +26,7 @@
         <div v-if="instructor.fee_balance !== 'Ksh. 0.0'" class="course-info">
           <div class="d-flex justify-space-between">
             <h3 class="ml-5">Expertise</h3>
-            <v-btn icon color="green" class="mr-4">
+            <v-btn icon color="green" class="mr-4" @click="enrollDialog = true">
               <v-icon size="30">mdi-plus</v-icon>
             </v-btn>
           </div>
@@ -43,6 +43,38 @@
             </ul>
           </div>
         </div>
+
+        <!-- enroll student to more courses -->
+        <v-dialog persistent v-model="enrollDialog" max-width="500px">
+          <v-card class="text-center px-11">
+            <v-card-title class="text-h5">Select a Course</v-card-title>
+            <v-select
+              label="Select Course"
+              single-line
+              id="course"
+              v-model="course"
+              :items="courseNames"
+            >
+            </v-select>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="grey darken-1" text @click="enrollDialog = false">
+                Cancel
+              </v-btn>
+              <v-btn
+                color="brown darken-1"
+                text
+                :loading="isLoading"
+                @click="enrollInstructor"
+                @keyup.enter="enrollInstructor"
+              >
+                OK
+              </v-btn>
+              <v-spacer />
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </div>
     </main>
   </div>
@@ -60,11 +92,21 @@ export default {
       status: true,
       dialogUpdate: false,
       amount: "",
+      enrollDialog: false,
+      course: "",
     };
   },
 
   computed: {
-    ...mapGetters(["instructors", "isLoading"]),
+    ...mapGetters(["instructors", "isLoading", "courses"]),
+
+    courseNames() {
+      let courses = [];
+      for (let course of this.courses) {
+        courses.push(course.name);
+      }
+      return courses;
+    },
   },
 
   methods: {
@@ -77,6 +119,18 @@ export default {
       this.$store.dispatch("updateInstructorFee", updateData);
       this.amount = "";
       this.dialogUpdate = false;
+      this.$router.push("/instructors");
+    },
+
+    async enrollInstructor() {
+      let payload = {
+        instructorId: this.instructorId,
+        moduleName: this.course,
+      };
+
+      await this.$store.dispatch("enrollInstructor", payload);
+      this.course = "";
+      this.enrollDialog = false;
       this.$router.push("/instructors");
     },
   },

@@ -63,7 +63,7 @@
         >
 
         <!-- enroll student to more courses -->
-        <v-dialog v-model="dialogEnroll" max-width="500px">
+        <v-dialog persistent v-model="dialogEnroll" max-width="500px">
           <v-card class="text-center px-11">
             <v-card-title class="text-h5">Select a Course</v-card-title>
             <v-select
