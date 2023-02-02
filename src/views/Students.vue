@@ -36,8 +36,10 @@
               label="Search"
               single-line
               hide-details
-            ></v-text-field>
+            >
+            </v-text-field>
           </v-card-title>
+          <h2>Students available today: {{ attendanceCount }}</h2>
           <v-data-table
             :item-key="students.code"
             :headers="headers"
@@ -79,11 +81,7 @@
               </p>
             </template>
             <template v-slot:item.fee_balance="{ item }">
-              <p
-                :class="[
-                  item.fee_balance != '0' ? 'warning--text' : '',
-                ]"
-              >
+              <p :class="[item.fee_balance != '0' ? 'warning--text' : '']">
                 {{ item.fee_balance }}
               </p>
             </template>
@@ -190,11 +188,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["students", "isLoading", "error"]),
+    ...mapGetters(["students", "isLoading", "error", "attendanceCount"]),
   },
 
   methods: {
-    ...mapActions(['deleteStudent','clearError']),
+    ...mapActions(["deleteStudent", "clearError"]),
 
     removeStudent(student) {
       this.editedIndex = this.students.indexOf(student);
@@ -203,7 +201,7 @@ export default {
     },
 
     confirmDelete() {
-      this.deleteStudent(this.editedItem._id)
+      this.deleteStudent(this.editedItem._id);
       this.closeDelete();
     },
 

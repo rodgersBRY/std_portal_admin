@@ -9,6 +9,7 @@
             <h1>{{ instructor.code }} - {{ instructor.name }}</h1>
             <p>Age: {{ instructor.age }} yrs</p>
           </div>
+         
         </div>
 
         <hr />
@@ -94,6 +95,7 @@ export default {
       amount: "",
       enrollDialog: false,
       course: "",
+      checkedIn: false,
     };
   },
 

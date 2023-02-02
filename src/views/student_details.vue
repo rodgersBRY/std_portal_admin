@@ -9,6 +9,13 @@
             <h1>{{ student.code }} - {{ student.name }}</h1>
             <p>Age: {{ student.age }} yrs</p>
           </div>
+          <v-switch
+            v-model="student.checkedIn"
+            :label="student.checkedIn ? 'Check Out' : 'Check In'"
+            color="green"
+            inset
+            @change="changeCheckInStatus(student.checkedIn)"
+          ></v-switch>
         </div>
 
         <hr />
@@ -141,6 +148,7 @@ export default {
       dialogEnroll: false,
       amount: "",
       course: "",
+      // checkedIn: false,
     };
   },
 
@@ -157,6 +165,14 @@ export default {
   },
 
   methods: {
+    changeCheckInStatus(status) {
+      this.$store.dispatch("checkStudentIn", {
+        studentId: this.studentId,
+        status: status,
+      });
+      console.log(status);
+    },
+
     async updateFee() {
       let updateData = {
         id: this.studentId,

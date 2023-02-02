@@ -4,11 +4,22 @@ import axios from "axios";
 export default {
   state: {
     students: [],
+    attendanceCount: 0,
   },
 
   mutations: {
     setStudents(state, payload) {
       state.students = payload;
+    },
+
+    setTotalTimeSpent(state) {
+      state.totalTimeSpent = state.timeOut - state.timeIn;
+    },
+
+    setAttendanceCount(state, payload) {
+      state.attendanceCount = payload
+        ? state.attendanceCount + 1
+        : state.attendanceCount - 1;
     },
 
     addStudent(state, payload) {
@@ -128,9 +139,29 @@ export default {
         commit("setError", err.response.data.message);
       }
     },
+
+    async checkStudentIn({ commit }, payload) {
+      commit("setLoading", true);
+
+      try {
+        const res = await axios.put(`/admin/check-in/${payload.studentId}`, {
+          status: payload.status,
+        });
+
+        commit("setAttendanceCount", payload.status);
+
+        console.log(res.data);
+        commit("setLoading", false);
+        commit("clearError");
+      } catch (err) {
+        commit("setLoading", false);
+        commit("setError", err.response.data.message);
+      }
+    },
   },
 
   getters: {
     students: (state) => state.students,
+    attendanceCount: (state) => state.attendanceCount,
   },
 };
