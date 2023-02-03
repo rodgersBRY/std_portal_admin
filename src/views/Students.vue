@@ -39,7 +39,12 @@
             >
             </v-text-field>
           </v-card-title>
-          <h2>Students available today: {{ attendanceCount }}</h2>
+          <h2 class="my-6 grey--text">
+            Students available today:
+            <span class="blue--text">
+              {{ attendanceCount }}
+            </span>
+          </h2>
           <v-data-table
             :item-key="students.code"
             :headers="headers"
@@ -73,17 +78,27 @@
               </v-toolbar>
             </template>
             <template v-slot:item.name="{ item }">
-              <p
-                style="cursor: pointer"
+              <div
+                style="
+                  cursor: pointer;
+                  height: 100%;
+                  width: 100%;
+                  display: flex;
+                  align-items: center;
+                "
                 @click="$router.push(`/student-details/${item._id}`)"
               >
                 {{ item.name }}
-              </p>
+              </div>
             </template>
             <template v-slot:item.fee_balance="{ item }">
               <p :class="[item.fee_balance != '0' ? 'warning--text' : '']">
                 {{ item.fee_balance }}
               </p>
+            </template>
+            <template v-slot:item.checkedIn="{ item }">
+              <div v-if="item.checkedIn">In class</div>
+              <div v-else class="grey--text">--</div>
             </template>
             <template v-slot:item.actions="{ item }">
               <v-icon
@@ -175,6 +190,12 @@ export default {
         {
           text: "Fee Balance (Ksh)",
           value: "fee_balance",
+          filterable: false,
+        },
+        {
+          text: "Attendance",
+          value: "checkedIn",
+          sortable: true,
           filterable: false,
         },
         {

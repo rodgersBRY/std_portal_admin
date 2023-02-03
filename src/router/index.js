@@ -12,20 +12,12 @@ const routes = [
     name: "Home",
     component: Home,
   },
-  // {
-  //   path: "/accounts/signup",
-  //   name: "Sign Up",
-  //   component: () => import("../views/auth/Register.vue"),
-  //   meta: {
-  //     title: 'JOWAM PORTAL | REGISTER',
-  //   },
-  // },
   {
     path: "/accounts/login",
     name: "Login",
     component: () => import("../views/auth/Login.vue"),
     meta: {
-      title: 'JOWAM PORTAL | LOGIN',
+      title: "JOWAM PORTAL | LOGIN",
     },
   },
   {
@@ -42,7 +34,7 @@ const routes = [
     component: () => import("../views/Courses.vue"),
     meta: {
       requiresAuth: true,
-      title: 'COURSES OFFERED'
+      title: "COURSES OFFERED",
     },
   },
   {
@@ -51,7 +43,7 @@ const routes = [
     component: () => import("../views/student_details.vue"),
     meta: {
       requiresAuth: true,
-      title: ''
+      title: "",
     },
   },
   {
@@ -60,7 +52,7 @@ const routes = [
     component: () => import("../views/Students.vue"),
     meta: {
       requiresAuth: true,
-      title: 'STUDENTS'
+      title: "STUDENTS",
     },
   },
   {
@@ -74,7 +66,7 @@ const routes = [
     component: () => import("../views/Instructors.vue"),
     meta: {
       requiresAuth: true,
-      title:'INSTRUCTORS'
+      title: "INSTRUCTORS",
     },
   },
 ];

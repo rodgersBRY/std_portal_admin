@@ -25,23 +25,29 @@
           <v-divider vertical></v-divider>
           <div class="students px-4">
             <h2>Students</h2>
-            <v-list subheader two-line>
-              <v-list-item
-                v-for="(std, index) in studentsPerCourse"
-                :key="index"
-                ><v-list-item-content>
-                  <v-list-item-subtitle>{{ index + 1 }}</v-list-item-subtitle>
-                </v-list-item-content>
-                <v-list-item-content>
-                  <v-list-item-subtitle>{{ std.code }}</v-list-item-subtitle>
-                </v-list-item-content>
-
-                <v-list-item-content>
-                  <v-list-item-subtitle>{{ std.name }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-              
-            </v-list>
+            <v-data-table
+              :item-key="studentsPerCourse.code"
+              :headers="headers"
+              :items="studentsPerCourse"
+              :search="search"
+              :loading="isLoading"
+              loading-text="Loading... Please wait"
+            >
+              <template v-slot:item.name="{ item }">
+                <div
+                  style="
+                    cursor: pointer;
+                    height: 100%;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                  "
+                  @click="$router.push(`/student-details/${item._id}`)"
+                >
+                  {{ item.name }}
+                </div>
+              </template>
+            </v-data-table>
           </div>
         </section>
       </div>
@@ -57,6 +63,19 @@ export default {
     return {
       courseId: this.$route.params.courseId,
       courseTitle: this.$route.params.courseTitle,
+      search: "",
+      headers: [
+        {
+          text: "Reg No",
+          sortable: false,
+          value: "code",
+        },
+        {
+          text: "Full Name",
+          sortable: true,
+          value: "name",
+        },
+      ],
     };
   },
 
@@ -78,7 +97,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .main-section {
   margin: 0 0 0 60px;
   text-align: center;

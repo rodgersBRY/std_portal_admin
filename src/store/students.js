@@ -4,6 +4,7 @@ import axios from "axios";
 export default {
   state: {
     students: [],
+    studentsToday: [],
     attendanceCount: 0,
   },
 
@@ -12,8 +13,8 @@ export default {
       state.students = payload;
     },
 
-    setTotalTimeSpent(state) {
-      state.totalTimeSpent = state.timeOut - state.timeIn;
+    setStudentsToday(state, payload) {
+      state.studentsToday = payload;
     },
 
     setAttendanceCount(state, payload) {
@@ -158,10 +159,30 @@ export default {
         commit("setError", err.response.data.message);
       }
     },
+
+    async fetchStudentsToday({ commit }) {
+      commit("setLoading", true);
+
+      try {
+        const res = await axios.get("/admin/students-today");
+
+        console.log(res.data.students);
+
+        let students = res.data.students;
+        
+        commit("setLoading", false);
+        commit("clearError");
+        commit("setStudentsToday", students);
+      } catch (err) {
+        commit("setLoading", false);
+        commit("setError", err.response.data.message);
+      }
+    },
   },
 
   getters: {
     students: (state) => state.students,
+    studentsToday: (state) => state.studentsToday,
     attendanceCount: (state) => state.attendanceCount,
   },
 };
