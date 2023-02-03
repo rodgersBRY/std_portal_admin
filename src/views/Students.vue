@@ -39,8 +39,8 @@
             >
             </v-text-field>
           </v-card-title>
-          <h2 class="my-6 grey--text">
-            Students available today:
+          <h2 class="my-6 ml-3 grey--text">
+            Students In Attendance:
             <span class="blue--text">
               {{ attendanceCount }}
             </span>
@@ -124,6 +124,10 @@ export default {
 
   components: {
     "user-dialog": require("../components/new_user_dialog_box.vue").default,
+  },
+
+  created() {
+    this.$store.dispatch("fetchTotalAttendance");
   },
 
   data() {
