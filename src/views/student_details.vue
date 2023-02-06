@@ -157,15 +157,18 @@
 
           <div id="print">
             <h2>Activity Log</h2>
+            {{ student.activity }}
             <table border="1" cellpadding="3" class="table">
               <tbody>
                 <tr>
                   <th>Activity</th>
+                  <th>Fee Balance</th>
                   <th>Value</th>
                   <th>Timestamp</th>
                 </tr>
                 <tr v-for="activity in student.activity" :key="activity._id">
                   <td>{{ activity.title }}</td>
+                  <td>{{ activity.prev_balance }}</td>
                   <td>{{ activity.value }}</td>
                   <td>{{ activity.ts | dateFilter }}</td>
                 </tr>
@@ -224,6 +227,7 @@ export default {
 
   methods: {
     printSection() {
+      // window.print()
       var activityLog = document.getElementById("print");
       var studentInfo = document.getElementById("printStud");
       var contactInfo = document.getElementById("contactPrint");
