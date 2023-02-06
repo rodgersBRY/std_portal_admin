@@ -70,12 +70,18 @@
               </v-toolbar>
             </template>
             <template v-slot:item.name="{ item }">
-              <p
-                style="cursor: pointer"
+              <div
+                style="
+                  cursor: pointer;
+                  height: 100%;
+                  width: 100%;
+                  display: flex;
+                  align-items: center;
+                "
                 @click="$router.push(`/instructors/${item._id}`)"
               >
                 {{ item.name }}
-              </p>
+              </div>
             </template>
             <template v-slot:item.actions="{ item }">
               <v-icon
