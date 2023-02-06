@@ -157,7 +157,6 @@
 
           <div id="print">
             <h2>Activity Log</h2>
-            {{ student.activity }}
             <table border="1" cellpadding="3" class="table">
               <tbody>
                 <tr>
