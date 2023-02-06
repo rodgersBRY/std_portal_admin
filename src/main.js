@@ -5,6 +5,7 @@ import router from "./router";
 import vuetify from "./plugins/vuetify";
 import Sidenav from "./components/sidenav.vue";
 import axios from "axios";
+import VueHtmlToPaper from "vue-html-to-paper";
 
 axios.defaults.withCredentials = false;
 axios.defaults.baseURL = "http://localhost:4000/api";
@@ -26,8 +27,11 @@ axios.interceptors.response.use(undefined, (err) => {
 });
 
 Vue.config.productionTip = false;
-
+const options = {
+  styles: [""],
+};
 Vue.component("sidenav", Sidenav);
+Vue.use(VueHtmlToPaper, options);
 
 new Vue({
   store,

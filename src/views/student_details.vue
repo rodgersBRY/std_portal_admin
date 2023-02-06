@@ -6,7 +6,7 @@
       <div v-if="student._id === studentId" class="student-inf">
         <div class="student-info">
           <div class="student-name">
-            <div>
+            <div id="printStud">
               <h1>{{ student.code }} - {{ student.name }}</h1>
               <p>Age: {{ student.age }} yrs</p>
             </div>
@@ -20,7 +20,7 @@
           </div>
 
           <hr />
-          <div class="contact-info">
+          <div class="contact-info" id="contactPrint">
             <p>
               <em>{{ student.email }}</em>
             </p>
@@ -150,33 +150,28 @@
 
         <!-- student activity log -->
         <div class="activity-log">
-          <v-btn depressed class="print-btn mb-10">
+          <v-btn depressed class="print-btn mb-10" @click="printSection()">
             Print
             <v-icon class="ml-4" color="green">mdi-printer</v-icon>
           </v-btn>
 
-          <v-list>
-            <v-list-item class="d-flex justify-space-between grey--text">
-              <v-item-item-title> Activity </v-item-item-title>
-              <v-list-item-text> Value </v-list-item-text>
-              <v-list-item-text> Timestamp </v-list-item-text>
-            </v-list-item>
-            <v-list-item
-              class="d-flex justify-space-between grey--text"
-              v-for="activity in student.activity"
-              :key="activity._id"
-            >
-              <v-item-item-title>
-                {{ activity.title }}
-              </v-item-item-title>
-              <v-list-item-text>
-                {{ activity.value }}
-              </v-list-item-text>
-              <v-list-item-text>
-                {{ activity.ts | dateFilter }}
-              </v-list-item-text>
-            </v-list-item>
-          </v-list>
+          <div id="print">
+            <h2>Activity Log</h2>
+            <table border="1" cellpadding="3" class="table">
+              <tbody>
+                <tr>
+                  <th>Activity</th>
+                  <th>Value</th>
+                  <th>Timestamp</th>
+                </tr>
+                <tr v-for="activity in student.activity" :key="activity._id">
+                  <td>{{ activity.title }}</td>
+                  <td>{{ activity.value }}</td>
+                  <td>{{ activity.ts | dateFilter }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </main>
@@ -197,7 +192,6 @@ export default {
       dialogEnroll: false,
       amount: "",
       course: "",
-      // checkedIn: false,
     };
   },
 
@@ -229,6 +223,20 @@ export default {
   },
 
   methods: {
+    printSection() {
+      var activityLog = document.getElementById("print");
+      var studentInfo = document.getElementById("printStud");
+      var contactInfo = document.getElementById("contactPrint");
+
+      var newWin = window.open("");
+
+      newWin.document.write(studentInfo.outerHTML);
+      newWin.document.write(contactInfo.outerHTML);
+      newWin.document.write(activityLog.outerHTML);
+      newWin.print();
+      newWin.close();
+    },
+
     changeCheckInStatus(status) {
       this.$store.dispatch("checkStudentIn", {
         studentId: this.studentId,
@@ -266,6 +274,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background: green;
+    color: white;
+  }
+
+  td,
+  th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+}
+
 @media screen and (min-width: 1000px) {
   .student-info,
   .activity-log {
@@ -284,7 +314,6 @@ main {
   margin: 20px 0 0 60px;
   .activity-log {
     margin: 10% auto;
-    padding: 5rem;
   }
   .student-info {
     margin: 10% auto;
