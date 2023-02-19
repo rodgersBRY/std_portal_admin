@@ -6,7 +6,7 @@
           mdi-account-circle-outline
         </v-icon>
       </span>
-      {{user ? user.name: "Admin Portal"}}
+      {{ user ? user.name : "Admin Portal" }}
     </h2>
 
     <ul class="nav-links" style="margin-top: 2rem">
@@ -29,7 +29,7 @@
         active-class="active"
         to="/instructors"
       >
-        <span><v-icon color="white">mdi-school-outline</v-icon></span>
+        <span><v-icon color="white">mdi-account-school</v-icon></span>
         Instructors
       </router-link>
       <router-link
@@ -38,9 +38,21 @@
         active-class="active"
         to="/courses"
       >
-        <span><v-icon color="white">mdi-book-open</v-icon></span>
+        <span><v-icon color="white">mdi-book-open-variant</v-icon></span>
         Offered Courses
       </router-link>
+      <router-link
+        class="nav-link"
+        tag="li"
+        active-class="active"
+        to="/reports"
+      >
+        <span><v-icon color="white">mdi-poll</v-icon></span>
+        Reports
+      </router-link>
+    </ul>
+
+    <div class="absolute-tags">
       <v-btn
         dark
         class="logout-btn"
@@ -57,7 +69,7 @@
       <v-btn @click="toggleSidebar" color="white" class="mt-10" oultined icon>
         <v-icon>{{ mini ? "mdi-chevron-right" : "mdi-chevron-left" }}</v-icon>
       </v-btn>
-    </ul>
+    </div>
   </v-container>
 </template>
 
@@ -149,9 +161,10 @@ h2 {
         margin-right: 30px;
       }
     }
-    .logout-btn {
-      margin-top: 10rem;
-    }
+  }
+  .absolute-tags {
+    position: relative;
+    top: 2.5rem;
   }
 }
 </style>

@@ -69,6 +69,14 @@ const routes = [
       title: "INSTRUCTORS",
     },
   },
+  {
+    path: "/reports",
+    name: "Reports",
+    component: () => import("../views/reports.vue"),
+    meta: {
+      title: "REPORTS",
+    },
+  },
 ];
 
 const router = new VueRouter({
