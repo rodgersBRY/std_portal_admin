@@ -25,11 +25,18 @@
                 <th>Total Students</th>
                 <th>Total Amount Paid (Ksh)</th>
                 <th>Total Amount Payable (Ksh)</th>
+                <th>Balance (Ksh)</th>
               </tr>
               <tr>
                 <td>{{ studentsSummary.totalStudents }}</td>
                 <td>{{ studentsSummary.totalAmountPaid }}</td>
                 <td>{{ studentsSummary.totalAmountPayable }}</td>
+                <td>
+                  {{
+                    studentsSummary.totalAmountPayable -
+                    studentsSummary.totalAmountPaid
+                  }}
+                </td>
               </tr>
             </tbody>
           </table>
@@ -42,11 +49,18 @@
                 <th>Total Students</th>
                 <th>Total Amount Paid (Ksh)</th>
                 <th>Total Amount Payable (Ksh)</th>
+                <th>Balance (Ksh)</th>
               </tr>
               <tr>
                 <td>{{ allStudentsSummary.totalStudents }}</td>
                 <td>{{ allStudentsSummary.totalAmountPaid }}</td>
                 <td>{{ allStudentsSummary.totalAmountPayable }}</td>
+                <td>
+                  {{
+                    allStudentsSummary.totalAmountPayable -
+                    allStudentsSummary.totalAmountPaid
+                  }}
+                </td>
               </tr>
             </tbody>
           </table>
@@ -150,7 +164,7 @@ main {
     .divider {
       height: 80px;
     }
-    
+
     .table {
       border-collapse: collapse;
       width: 100%;
