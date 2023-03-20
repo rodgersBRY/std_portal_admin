@@ -13,17 +13,6 @@ import { mapGetters } from "vuex";
 export default {
   name: "App",
 
-  // created() {
-  //   axios.interceptors.response.use(undefined, (err) => {
-  //     return new Promise((_, reject) => {
-  //       if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-  //         this.$store.dispatch("logout");
-  //       }
-  //       reject(err);
-  //     });
-  //   });
-  // },
-
   computed: {
     ...mapGetters(["user"]),
   },

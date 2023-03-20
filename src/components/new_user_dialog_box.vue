@@ -83,6 +83,17 @@
             ></v-select>
           </v-col>
         </v-row>
+        <v-row>
+          <p>Enrollment Date: {{enrollDate}} </p>
+          <v-spacer></v-spacer>
+        <v-date-picker
+          v-model="enrollDate"
+          color="green"
+          
+        >
+         </v-date-picker>
+        </v-row>
+        
         <br />
         <v-combobox
           outlined
@@ -134,6 +145,7 @@ export default {
       phone: "",
       gender: "",
       age: "",
+      enrollDate: null,
       course: [],
     };
   },
@@ -167,6 +179,7 @@ export default {
           role: this.role,
           age: this.age,
           modules: this.course,
+          enrollDate: this.enrollDate,
         };
 
         if (this.role === "student") {
