@@ -20,6 +20,16 @@ export default {
       state.students.push(payload);
     },
 
+    updateStudent(state, payload) {
+      state.students = state.students.map((student) => {
+        if (student._id === payload._id) {
+          return Object.assign(student, payload);
+        }
+
+        return student;
+      });
+    },
+
     deleteStudent(state, payload) {
       const updatedStudentsList = state.students.filter(
         (stud) => stud._id !== payload
@@ -32,6 +42,7 @@ export default {
         if (student._id === payload._id) {
           return Object.assign(student, payload);
         }
+
         return student;
       });
     },
@@ -75,6 +86,26 @@ export default {
         await axios.post("/admin/new-user", payload);
 
         commit("addStudent", payload);
+        commit("setLoading", false);
+        commit("clearError");
+      } catch (err) {
+        commit("setLoading", false);
+        commit("setError", err.response.data.message);
+      }
+    },
+
+    async updateStudent({ commit }, payload) {
+      commit("setLoading", true);
+
+      try {
+        const resp = await axios.put(
+          `/admin/edit-user/${payload.userId}`,
+          payload.form
+        );
+
+
+        commit("updateStudent", resp.data.result);
+
         commit("setLoading", false);
         commit("clearError");
       } catch (err) {

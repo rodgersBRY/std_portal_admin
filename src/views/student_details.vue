@@ -9,6 +9,7 @@
             <div id="printStud">
               <h1>{{ student.code }} - {{ student.name }}</h1>
               <p>Age: {{ student.age }} yrs</p>
+              <edit-user-dialog :user="student" />
             </div>
             <v-switch
               v-model="student.checkedIn"
@@ -182,9 +183,14 @@
 
 <script>
 import { mapGetters } from "vuex";
+import EditUser from '../components/edit-user.vue';
 
 export default {
   name: "student-details",
+
+  components: {
+    "edit-user-dialog": EditUser
+  },
 
   data() {
     return {

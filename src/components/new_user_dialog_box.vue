@@ -133,12 +133,13 @@
 import { mapGetters } from "vuex";
 
 export default {
-  props: ["userType"],
+  props: ["userType", "user"],
 
   data() {
     return {
       dialog: false,
       genderItems: ["Male", "Female"],
+
       name: "",
       role: "",
       email: "",
@@ -146,7 +147,7 @@ export default {
       gender: "",
       age: "",
       enrollDate: null,
-      course: [],
+      course: [],     
     };
   },
 

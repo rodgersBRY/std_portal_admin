@@ -58,6 +58,7 @@
                 <v-spacer />
 
                 <user-dialog :userType="['student']" />
+                
                 <v-dialog v-model="dialogDelete" max-width="600px">
                   <v-card>
                     <v-card-title class="text-h5"
