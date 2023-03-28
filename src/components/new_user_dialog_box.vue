@@ -113,6 +113,13 @@
           </template>
         </v-combobox>
 
+        
+      <p>Registration Fee Status</p>
+        <v-radio-group v-model="paid" column>
+          <v-radio label="Paid" color="green" :value="true"></v-radio>
+          <v-radio label="Not Paid" color="red" :value="false"></v-radio>
+        </v-radio-group>
+
         <v-btn
           dark
           block
@@ -147,7 +154,8 @@ export default {
       gender: "",
       age: "",
       enrollDate: null,
-      course: [],     
+      paid: false,
+      course: [],
     };
   },
 
@@ -180,6 +188,7 @@ export default {
           role: this.role,
           age: this.age,
           modules: this.course,
+          paid: this.paid,
           enrollDate: this.enrollDate,
         };
 

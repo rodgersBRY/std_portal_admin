@@ -7,6 +7,7 @@ export default {
       totalStudents: 0,
       totalAmountPaid: 0,
       totalAmountPayable: 0,
+      registrationFee: 0,
     },
   },
 
@@ -19,16 +20,21 @@ export default {
       let totalStudents = payload.length;
       let totalAmountPaid = 0;
       let totalAmountPayable = 0;
+      let regFeePaid = 0;
 
       for (let student of payload) {
         totalAmountPaid += student.amount_paid;
         totalAmountPayable += student.amount_payable;
+        if (student.registrationFee) {
+          regFeePaid += 5000;
+        }
       }
 
       state.studentsSummary = {
         totalStudents: totalStudents,
         totalAmountPaid: totalAmountPaid,
         totalAmountPayable: totalAmountPayable,
+        registrationFee: regFeePaid,
       };
     },
   },
