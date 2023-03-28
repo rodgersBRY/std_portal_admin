@@ -38,6 +38,11 @@
               required
             >
             </v-text-field>
+            <p>Registration Fee Status</p>
+            <v-radio-group v-model="form.paid" column>
+              <v-radio label="Paid" color="green" :value="true"></v-radio>
+              <v-radio label="Not Paid" color="red" :value="false"></v-radio>
+            </v-radio-group>
             <p>Enrollment Date: {{enrollDate}} </p>
           <v-spacer></v-spacer>
         <v-date-picker
@@ -80,6 +85,7 @@ export default {
         name: "",
         email: "",
         phone: "",
+        paid: false,
         age: "",
       },
       enrollDate: ""
