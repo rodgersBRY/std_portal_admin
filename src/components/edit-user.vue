@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="green darken-4" dark v-bind="attrs" v-on="on">
+        <v-btn depressed text color="green darken-4" dark v-bind="attrs" v-on="on" style="position: absolute; right: 0;">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
       </template>

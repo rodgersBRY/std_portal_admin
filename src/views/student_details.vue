@@ -5,11 +5,16 @@
     <main v-for="student in students" :key="student._id">
       <div v-if="student._id === studentId" class="student-inf">
         <div class="student-info">
+          <div style="position: relative; height: 3rem;">
+            
+          <edit-user-dialog :user="student" />
+          </div>
+          <br/>
           <div class="student-name">
             <div id="printStud">
               <h1>{{ student.code }} - {{ student.name }}</h1>
               <p>Age: {{ student.age }} yrs</p>
-              <edit-user-dialog :user="student" />
+              <p>ID/Passport Number: {{student.idNo }}</p>
             </div>
             <v-switch
               v-model="student.checkedIn"
