@@ -6,7 +6,6 @@
       <div v-if="student._id === studentId" class="student-inf">
         <div class="student-info">
           <div style="position: relative; height: 3rem;">
-            
           <edit-user-dialog :user="student" />
           </div>
           <br/>
