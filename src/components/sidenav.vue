@@ -41,7 +41,9 @@
         <span><v-icon color="white">mdi-book-open-variant</v-icon></span>
         Offered Courses
       </router-link>
+
       <router-link
+        v-if="user.role == 'admin'"
         class="nav-link"
         tag="li"
         active-class="active"
