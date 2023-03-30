@@ -23,14 +23,16 @@
             <tbody>
               <tr>
                 <th>Total Students</th>
+                <th>Registration Fee Paid (Ksh)</th>
                 <th>Total Amount Paid (Ksh)</th>
-                <th>Total Amount Payable (Ksh)</th>
+                <th>Total Amount Payable (Ksh)</th>                
                 <th>Balance (Ksh)</th>
               </tr>
               <tr>
                 <td>{{ studentsSummary.totalStudents }}</td>
+                <td>{{ studentsSummary.registrationFee }}</td>
                 <td>{{ studentsSummary.totalAmountPaid }}</td>
-                <td>{{ studentsSummary.totalAmountPayable }}</td>
+                <td>{{ studentsSummary.totalAmountPayable }}</td>                
                 <td>
                   {{
                     studentsSummary.totalAmountPayable -
@@ -47,12 +49,14 @@
             <tbody>
               <tr>
                 <th>Total Students</th>
+                <th>Registration Fee Paid (Ksh)</th>
                 <th>Total Amount Paid (Ksh)</th>
                 <th>Total Amount Payable (Ksh)</th>
                 <th>Balance (Ksh)</th>
               </tr>
               <tr>
                 <td>{{ allStudentsSummary.totalStudents }}</td>
+                <td>{{ allStudentsSummary.registrationFee }}</td>
                 <td>{{ allStudentsSummary.totalAmountPaid }}</td>
                 <td>{{ allStudentsSummary.totalAmountPayable }}</td>
                 <td>
@@ -86,16 +90,21 @@ export default {
       let totalStudents = this.students.length;
       let totalAmountPaid = 0;
       let totalAmountPayable = 0;
+      let registrationFee = 0;
 
       for (let student of this.students) {
         totalAmountPaid += student.amount_paid;
         totalAmountPayable += student.amount_payable;
+        if(student.registrationFee) {
+          registrationFee += 5000
+        }
       }
 
       return {
         totalStudents,
         totalAmountPaid,
         totalAmountPayable,
+        registrationFee
       };
     },
   },

@@ -37,6 +37,7 @@
                 })
               }}
             </p>
+            <p >Registration Fee Status: <span :class="[student.registrationFee ? 'green--text' : 'red--text']">{{student.registrationFee ? "Paid" : "Not Paid"}}</span> </p>
           </div>
 
           <div v-if="student.fee_balance !== 'Ksh. 0.0'" class="course-info">
