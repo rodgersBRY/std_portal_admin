@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition">
+  <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition" height="100vh">
     <template v-slot:activator="{ on, attrs }">
       <v-btn color="brown" dark v-bind="attrs" v-on="on"> Add User </v-btn>
     </template>
@@ -83,6 +83,15 @@
             ></v-select>
           </v-col>
         </v-row>
+       
+        <v-text-field
+        label="ID/Passport Number"
+        persistent-hint
+        outlined
+        color="brown"
+        v-model="idNo">
+        </v-text-field>
+        <br />
         <v-row>
           <p>Enrollment Date: {{enrollDate}} </p>
           <v-spacer></v-spacer>
@@ -112,9 +121,8 @@
             </v-chip>
           </template>
         </v-combobox>
-
         
-      <p>Registration Fee Status</p>
+        <p>Registration Fee Status</p>
         <v-radio-group v-model="paid" column>
           <v-radio label="Paid" color="green" :value="true"></v-radio>
           <v-radio label="Not Paid" color="red" :value="false"></v-radio>
@@ -153,6 +161,7 @@ export default {
       phone: "",
       gender: "",
       age: "",
+      idNo: "",
       enrollDate: null,
       paid: false,
       course: [],
@@ -189,6 +198,7 @@ export default {
           age: this.age,
           modules: this.course,
           paid: this.paid,
+          idNo: this.idNo,
           enrollDate: this.enrollDate,
         };
 
@@ -207,6 +217,7 @@ export default {
         this.role = "";
         this.age = ""; 
         this.course = "";
+        this.idNo = "";
 
         this.dialog = false;
       } else {

@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="green darken-4" dark v-bind="attrs" v-on="on">
+        <v-btn depressed text color="green darken-4" dark v-bind="attrs" v-on="on" style="position: absolute; right: 0;">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
       </template>
@@ -38,13 +38,11 @@
               required
             >
             </v-text-field>
-            <p>Enrollment Date: {{enrollDate}} </p>
-          <v-spacer></v-spacer>
-        <v-date-picker
-          v-model="enrollDate"
-          color="green"      
-        >
-         </v-date-picker>
+            <p>Registration Fee Status</p>
+            <v-radio-group v-model="form.paid" column>
+              <v-radio label="Paid" color="green" :value="true"></v-radio>
+              <v-radio label="Not Paid" color="red" :value="false"></v-radio>
+            </v-radio-group>
           </v-container>
         </v-card-text>
         <v-card-actions>
@@ -75,14 +73,13 @@ export default {
   data() {
     return {
       dialog: false,
-
-      form: this.user ? {_id:this.user._id, ...this.user } : {
+      form: this.user ?  {_id:this.user._id, ...this.user }  : {
         name: "",
+        age: '',
         email: "",
         phone: "",
-        age: "",
-      },
-      enrollDate: ""
+        paid: null,
+      }
     };
   },
 
@@ -99,7 +96,7 @@ export default {
     async saveUpdates() {
         this.dialog = false;
 
-        await this.$store.dispatch("updateStudent", {userId: this.user._id, form: {createdAt: this.enrollDate, ...this.form},});
+        await this.$store.dispatch("updateStudent", {userId: this.user._id, ...this.form});
         this.$store.dispatch("fetchStudents");
     },
 

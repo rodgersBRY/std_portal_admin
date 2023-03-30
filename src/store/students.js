@@ -100,9 +100,8 @@ export default {
       try {
         const resp = await axios.put(
           `/admin/edit-user/${payload.userId}`,
-          payload.form
+          payload
         );
-
 
         commit("updateStudent", resp.data.result);
 
