@@ -25,6 +25,13 @@
               required
             >
             </v-text-field>
+            <v-text-field
+            label="Registration Fee*"
+            color="brown"
+            v-model="regFee"
+            required
+          >
+          </v-text-field>
             <br />
             <v-combobox
               v-model="topics"
@@ -83,6 +90,7 @@ export default {
 
       title: "",
       courseFee: "",
+      regFee: '',
       items: [],
       topics: [],
     };
@@ -113,6 +121,7 @@ export default {
     closeDialog() {
       this.title = "";
       this.courseFee = "";
+      this.regFee = "";
       this.topics = [];
       this.items = [];
       this.dialog = false;
@@ -120,15 +129,23 @@ export default {
 
     async saveCourse() {
       if (this.title !== "" || this.courseFee !== "") {
-        this.dialog = false;
+       
 
         let courseData = {
           title: this.title,
           fee: this.courseFee,
+          regFee: this.regFee,
           topics: this.items,
         };
 
         await this.$store.dispatch("newCourse", courseData);
+        this.dialog = false;
+        this.title = "";
+        this.courseFee = "";
+        this.regFee = "";
+        this.topics = [];
+        this.items = [];
+        
         this.$store.dispatch("fetchCourses");
       } else {
         alert("FIll in all fields before submitting");

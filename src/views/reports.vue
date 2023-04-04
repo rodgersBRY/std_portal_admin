@@ -95,16 +95,14 @@ export default {
       for (let student of this.students) {
         totalAmountPaid += student.amount_paid;
         totalAmountPayable += student.amount_payable;
-        if(student.registrationFee) {
-          registrationFee += 5000
-        }
+        registrationFee += student.registrationFee;
       }
 
       return {
         totalStudents,
         totalAmountPaid,
         totalAmountPayable,
-        registrationFee
+        registrationFee,
       };
     },
   },

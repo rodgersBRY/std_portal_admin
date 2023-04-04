@@ -25,9 +25,7 @@ export default {
       for (let student of payload) {
         totalAmountPaid += student.amount_paid;
         totalAmountPayable += student.amount_payable;
-        if (student.registrationFee) {
-          regFeePaid += 5000;
-        }
+        regFeePaid += student.registrationFee;
       }
 
       state.studentsSummary = {

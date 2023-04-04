@@ -1,5 +1,5 @@
 import axios from "axios";
-// import currencyFormatter from "currency-formatter";
+import currencyFormatter from "currency-formatter";
 
 export default {
   state: {
@@ -68,7 +68,23 @@ export default {
       try {
         const res = await axios.get("/admin/students");
 
-        let students = res.data.data;
+        let students = res.data.data.map((student) => {
+          let options = {
+            symbol: "KES",
+            thousand: ",",
+            precision: 0,
+            format: "%s %v",
+          };
+
+          let formattedFee = currencyFormatter.format(
+            student.fee_balance,
+            options
+          );
+
+          student.fee_balance = formattedFee;
+
+          return student;
+        });
 
         commit("setStudents", students);
         commit("setLoading", false);

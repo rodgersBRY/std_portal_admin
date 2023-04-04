@@ -39,18 +39,24 @@ export default {
         // format currency
         let courses = res.data.data.map((course) => {
           let options = {
-            symbol: "Ksh",
+            symbol: "KES",
             thousand: ",",
-            precision: 1,
-            format: "%s. %v",
+            precision: 0,
+            format: "%s %v",
           };
 
-          let formattedCurrency = currencyFormatter.format(
+          let formattedFee = currencyFormatter.format(
             course.feeAmount,
             options
           );
 
-          course.feeAmount = formattedCurrency;
+          let formattedAdmFee = currencyFormatter.format(
+            course.regFee,
+            options
+          );
+
+          course.feeAmount = formattedFee;
+          course.regFee = formattedAdmFee;
 
           return course;
         });

@@ -24,6 +24,7 @@
             <v-card
               v-else
               dark
+              min-width="300"
               v-for="course in courses"
               :key="course._id"
               :color="randomColor"
@@ -39,6 +40,10 @@
               <v-card-text class="subtitle-4 pa-0 mt-2">
                 <v-icon>mdi-cash</v-icon>
                 Module Fee: {{ course.feeAmount }}
+              </v-card-text>
+              <v-card-text class="subtitle-4 pa-0 mt-2">
+                <v-icon>mdi-cash</v-icon>
+                Admission Fee: {{ course.regFee }}
               </v-card-text>
             </v-card>
           </div>
@@ -139,6 +144,7 @@ export default {
           cursor: pointer;
           display: flex;
           flex-direction: column;
+          flex-wrap: wrap;
           text-transform: capitalize;
           justify-content: flex-end;
         }
