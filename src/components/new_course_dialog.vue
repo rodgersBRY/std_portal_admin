@@ -59,7 +59,7 @@
               </template>
             </v-combobox>
           </v-container>
-          <small>*indicates required field</small>
+          <small style="color:red;">all fields with * are required</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

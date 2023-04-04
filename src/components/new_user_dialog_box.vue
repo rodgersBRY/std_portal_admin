@@ -24,7 +24,7 @@
           <v-col cols="12" sm="6">
             <v-text-field
               type="text"
-              label="Full Name"
+              label="Full Name*"
               hint="e.g. Jane Doe"
               persistent-hint
               outlined
@@ -34,7 +34,7 @@
           </v-col>
           <v-col cols="12" sm="6">
             <v-text-field
-              label="Email"
+              label="Email*"
               hint="e.g. janedoe@example.com"
               persistent-hint
               outlined
@@ -46,7 +46,7 @@
         <v-row class="form-row">
           <v-col cols="12" sm="6">
             <v-text-field
-              label="Age"
+              label="Age*"
               outlined
               color="brown"
               v-model="age"
@@ -54,7 +54,7 @@
           </v-col>
           <v-col cols="12" sm="6">
             <v-text-field
-              label="Phone Number"
+              label="Phone Number*"
               hint="e.g. 254712345678"
               persistent-hint
               outlined
@@ -67,7 +67,7 @@
           <v-col cols="12" sm="6">
             <v-select
               :items="genderItems"
-              label="Gender"
+              label="Gender*"
               outlined
               color="brown"
               v-model="gender"
@@ -76,7 +76,7 @@
           <v-col cols="12" sm="6">
             <v-select
               :items="userType"
-              label="Role"
+              label="Role*"
               outlined
               color="brown"
               v-model="role"
@@ -85,7 +85,7 @@
         </v-row>
        
         <v-text-field
-        label="ID/Passport Number"
+        label="ID/Passport Number*"
         persistent-hint
         outlined
         color="brown"
@@ -93,7 +93,7 @@
         </v-text-field>
         <br />
         <v-row>
-          <p>Enrollment Date: {{enrollDate}} </p>
+          <p>Enrollment Date:* {{enrollDate}} </p>
           <v-spacer></v-spacer>
         <v-date-picker
           v-model="enrollDate"
@@ -123,12 +123,13 @@
         </v-combobox>
         
         <v-text-field
-        label="Registration Fee paid"
+        label="Registration Fee paid*"
         persistent-hint
         outlined
         color="brown"
         v-model="regFee">
         </v-text-field>
+        <p style="font-size: 11px; color: red;">All fields with * are required</p>
 
         <v-btn
           dark
@@ -141,6 +142,8 @@
         >
           Save
         </v-btn>
+        <br />
+        <br />
       </form>
     </v-card>
   </v-dialog>
