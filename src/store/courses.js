@@ -41,7 +41,7 @@ export default {
           let options = {
             symbol: "Ksh",
             thousand: ",",
-            precision: 1,
+            precision: 0,
             format: "%s. %v",
           };
 
