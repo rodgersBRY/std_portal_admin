@@ -26,12 +26,11 @@
 
           <hr />
           <div class="contact-info" id="contactPrint">
-            <p>
-              <em>{{ student.email }}</em>
+            <p><v-icon>mdi-email</v-icon> <em>{{ student.email }}</em>
             </p>
 
-            <p>Tel: {{ student.phone }}</p>
-            <p>
+            <p><v-icon>mdi-phone</v-icon> Tel: {{ student.phone }}</p>
+            <p><v-icon>mdi-calendar</v-icon> 
               Enrollment date:
               {{
                 new Date(student.createdAt).toLocaleString("en-US", {
@@ -41,7 +40,7 @@
                 })
               }}
             </p>
-            <p >Registration Fee Status: <span :class="[student.registrationFee ? 'green--text' : 'red--text']">{{student.registrationFee ? "Paid" : "Not Paid"}}</span> </p>
+            <p><v-icon>mdi-cash</v-icon> Registration Fee Status: <span :class="[student.registrationFee ? 'green--text' : 'red--text']">{{student.registrationFee ? "Paid" : "Not Paid"}}</span> </p>
           </div>
 
           <div v-if="student.fee_balance !== 'Ksh. 0.0'" class="course-info">
