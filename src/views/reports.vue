@@ -56,13 +56,13 @@
               </tr>
               <tr>
                 <td>{{ allStudentsSummary.totalStudents }}</td>
-                <td>{{ allStudentsSummary.registrationFee }}</td>
-                <td>{{ allStudentsSummary.totalAmountPaid }}</td>
-                <td>{{ allStudentsSummary.totalAmountPayable }}</td>
+                <td>{{  allStudentsSummary.registrationFee |  currencyFormat }}</td>
+                <td>{{ allStudentsSummary.totalAmountPaid | currencyFormat }}</td>
+                <td>{{ allStudentsSummary.totalAmountPayable | currencyFormat }}</td>
                 <td>
                   {{
                     allStudentsSummary.totalAmountPayable -
-                    allStudentsSummary.totalAmountPaid
+                    allStudentsSummary.totalAmountPaid | currencyFormat
                   }}
                 </td>
               </tr>
@@ -76,6 +76,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import currencyFormatter from "currency-formatter";
 
 export default {
   computed: {
@@ -138,6 +139,23 @@ export default {
         },
       ],
     };
+  },
+
+  filters: {
+    currencyFormat(val) {
+      let options = {
+        thousand: ",",
+        precision: 0,
+        format: "%s %v",
+      };
+
+      let formattedCurrency = currencyFormatter.format(
+        val,
+        options
+      );
+
+      return formattedCurrency;
+    }
   },
 
   methods: {

@@ -134,7 +134,9 @@ export default {
       margin-top: 3rem;
       .card-div {
         display: flex;
+        flex-wrap: wrap;
         .v-card {
+          margin: 10px;
           padding: 1rem;
           cursor: pointer;
           display: flex;

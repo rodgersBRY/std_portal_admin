@@ -231,6 +231,7 @@ export default {
         hour: "numeric",
         minute: "2-digit",
       });
+      
       return date;
     },
   },
