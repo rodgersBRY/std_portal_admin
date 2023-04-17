@@ -38,11 +38,7 @@
               required
             >
             </v-text-field>
-            <p>Registration Fee Status</p>
-            <v-radio-group v-model="form.paid" column>
-              <v-radio label="Paid" color="green" :value="true"></v-radio>
-              <v-radio label="Not Paid" color="red" :value="false"></v-radio>
-            </v-radio-group>
+            
           </v-container>
         </v-card-text>
         <v-card-actions>
@@ -78,7 +74,6 @@ export default {
         age: '',
         email: "",
         phone: "",
-        paid: null,
       }
     };
   },
