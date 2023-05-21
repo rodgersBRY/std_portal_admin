@@ -109,26 +109,7 @@ export default {
     return {
       search: "",
       filterVal: false,
-      // headers: [
-      //   {
-      //     text: "Total Students",
-      //     sortable: false,
-      //     filterable: false,
-      //     value: "totalStudents",
-      //   },
-      //   {
-      //     text: "Total Amount Paid",
-      //     sortable: false,
-      //     filterable: false,
-      //     value: "totalAmountPaid",
-      //   },
-      //   {
-      //     text: "Total Amount Payable",
-      //     value: "totalAmountPayable",
-      //     sortable: false,
-      //     filterable: false,
-      //   },
-      // ],
+     
     };
   },
 
@@ -190,7 +171,7 @@ main {
         padding-top: 12px;
         padding-bottom: 12px;
         text-align: left;
-        background: green;
+        background: var(--primary-color);
         color: white;
       }
 

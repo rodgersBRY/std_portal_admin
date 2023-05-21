@@ -1,5 +1,5 @@
 <template>
-  <v-container class="sidenav green darken-2">
+  <v-container class="sidenav">
     <h2 class="app-name">
       <span
         ><v-icon color="white" style="margin-right: 10px">
@@ -58,7 +58,7 @@
       <v-btn
         dark
         class="logout-btn"
-        color="brown darken-3"
+        color="red darken-4"
         block
         tag="li"
         right
@@ -145,6 +145,7 @@ h2 {
   width: 65px;
   padding: 4rem 10px 0 10px;
   transition: width 0.5s ease;
+  background-color: var(--primary-color);
   .nav-links {
     list-style: none;
     padding: 0;

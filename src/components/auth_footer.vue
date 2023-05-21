@@ -1,8 +1,7 @@
 <template>
   <div>
-    <img width="50px" :src="require('../assets/logo.webp')" />
-    <h3>Student Portal</h3>
-    <v-divider vertical class="grey lighten-3 mx-10"></v-divider>
+    <img width="150px" :src="require('../assets/logo.png')" />
+    <v-divider vertical class="brown lighten-3 mx-10"></v-divider>
     <p class="text-center">
       &copy; {{ year }} Jowam Training Centre <br />
       Powered By Mawira Corp
@@ -32,6 +31,7 @@ export default {
 @media screen and (min-width: 1000px) {
   div {
     justify-content: center;
+    align-items: center;
     padding: 10px;
   }
 }

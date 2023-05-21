@@ -6,24 +6,8 @@
 
     <main>
       <section class="content">
-        <v-snackbar
-          v-if="error"
-          timeout="10000"
-          :value="true"
-          color="error"
-          multi-line
-          absolute
-          text
-          centered
-          top
-        >
-          {{ error }}
-          <template v-slot:action="{ attrs }">
-            <v-btn color="brown" text v-bind="attrs" @click="removeError">
-              Close
-            </v-btn>
-          </template>
-        </v-snackbar>
+        <!-- error dialog -->
+        <error-dialog :display="error" @close-dialog="resetError" :error-text="error"></error-dialog>
 
         <v-card flat class="pa-1">
           <v-card-title>
@@ -239,7 +223,7 @@ export default {
       });
     },
 
-    removeError() {
+    resetError() {
       this.clearError();
     },
   },

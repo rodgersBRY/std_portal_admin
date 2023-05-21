@@ -3,26 +3,7 @@
     <auth-nav-bar />
 
     <main>
-      <div class="alert">
-        <v-snackbar
-          v-if="error"
-          timeout="10000"
-          :value="true"
-          color="error"
-          multi-line
-          absolute
-          text
-          centered
-          top
-        >
-          {{ error }}
-          <template v-slot:action="{ attrs }">
-            <v-btn color="brown" text v-bind="attrs" @click="removeError">
-              Close
-            </v-btn>
-          </template>
-        </v-snackbar>
-      </div>
+      <error-dialog :display="error" :error-text="error" @close-dialog="resetError"></error-dialog>
 
       <section class="login d-flex align-center">
         <div class="img mr-10">
@@ -83,7 +64,6 @@ export default {
     return {
       email: "",
       password: "",
-      ifError: false,
     };
   },
 
@@ -92,11 +72,11 @@ export default {
   },
 
   methods: {
-    ...mapActions(["login", "clearError"]),
+    ...mapActions(["login", "clearError", "setError"]),
 
     async signin() {
       if (this.email == "" || this.password == "") {
-        alert("fill in all required fields!");
+        this.setError("Fill in all the required fields");
       } else {
         const userData = new FormData();
         userData.append("email", this.email);
@@ -106,7 +86,7 @@ export default {
       }
     },
 
-    removeError() {
+    resetError() {
       this.clearError();
     },
   },

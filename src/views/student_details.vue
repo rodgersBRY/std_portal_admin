@@ -46,12 +46,13 @@
             <div class="d-flex justify-space-between">
               <h3 class="ml-5">Enrolled Courses</h3>
               <v-btn
-                icon
-                color="green"
+                text
+                color="brown"
                 class="mr-4"
                 @click="dialogEnroll = true"
               >
                 <v-icon size="30">mdi-plus</v-icon>
+                More Courses
               </v-btn>
             </div>
             <div v-if="student.modules.length > 0" class="courses-list">
@@ -91,8 +92,8 @@
           >
 
           <!-- enroll student to more courses -->
-          <v-dialog persistent v-model="dialogEnroll" max-width="500px">
-            <v-card class="text-center px-11">
+          <v-dialog persistent v-model="dialogEnroll" width="500px">
+            <v-card class="px-11">
               <v-card-title class="text-h5">Select a Course</v-card-title>
               <v-select
                 label="Select Course"
@@ -119,6 +120,8 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
+
+          <error-dialog :display="error" :error-text="error" @close-dialog="resetError"></error-dialog>
 
           <!-- update fee balance -->
           <v-dialog v-model="dialogUpdate" max-width="500px">
@@ -185,7 +188,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import EditUser from '../components/edit-user.vue';
 
 export default {
@@ -207,7 +210,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["students", "isLoading", "courses"]),
+    ...mapGetters(["students", "isLoading", "courses", "error"]),
 
     courseNames() {
       let courses = [];
@@ -235,6 +238,8 @@ export default {
   },
 
   methods: {
+    ...mapActions(['setError', 'clearError']),
+
     printSection() {
       // window.print()
       var activityLog = document.getElementById("print");
@@ -259,29 +264,43 @@ export default {
     },
 
     async updateFee() {
-      let updateData = {
-        id: this.studentId,
-        amount: this.amount,
-      };
+      if(this.amount == '') {
+        this.dialogUpdate = false;
+        this.setError('Enter amount before submitting')
+      } else {
+        let updateData = {
+          id: this.studentId,
+          amount: this.amount,
+        };
 
-      await this.$store.dispatch("updateStudentFee", updateData);
-      this.$store.dispatch("fetchStudents");
-      this.amount = "";
-      this.dialogUpdate = false;
-      this.$router.push("/students");
+        await this.$store.dispatch("updateStudentFee", updateData);
+        this.$store.dispatch("fetchStudents");
+        this.amount = "";
+        this.dialogUpdate = false;
+        this.$router.push("/students");
+      }      
     },
 
     async enrollStudent() {
-      let payload = {
-        studentId: this.studentId,
-        moduleName: this.course,
-      };
+      if(this.course == '') {
+        this.dialogEnroll = false;
+        this.setError('Select an option before submitting')
+      } else {
+        let payload = {
+          studentId: this.studentId,
+          moduleName: this.course,
+        };
 
-      await this.$store.dispatch("enrollStudentToCourse", payload);
-      this.course = "";
-      this.dialogEnroll = false;
-      this.$router.push("/students");
+        await this.$store.dispatch("enrollStudentToCourse", payload);
+        this.course = "";
+        this.dialogEnroll = false;
+        this.$router.push("/students");
+      }      
     },
+
+    resetError() {
+      this.clearError()
+    }
   },
 };
 </script>

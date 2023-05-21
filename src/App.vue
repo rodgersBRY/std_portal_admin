@@ -27,3 +27,11 @@ export default {
   },
 };
 </script>
+
+<style>
+:root {
+  --primary-color: rgba(90,49,21,255);
+  --secondary-color: rgba(241,70,35,255);
+  --accent-color: rgb(222,210,203);
+}
+</style>

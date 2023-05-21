@@ -89,7 +89,6 @@ export default {
 
         commit("setStudents", students);
         commit("setLoading", false);
-        commit("clearError");
       } catch (err) {
         commit("setLoading", false);
         commit("setError", err.response.data.message);
@@ -104,7 +103,6 @@ export default {
 
         commit("addStudent", payload);
         commit("setLoading", false);
-        commit("clearError");
       } catch (err) {
         commit("setLoading", false);
         commit("setError", err.response.data.message);
@@ -123,7 +121,6 @@ export default {
         commit("updateStudent", resp.data.result);
 
         commit("setLoading", false);
-        commit("clearError");
       } catch (err) {
         commit("setLoading", false);
         commit("setError", err.response.data.message);
@@ -138,7 +135,6 @@ export default {
 
         commit("deleteStudent", payload);
         commit("setLoading", false);
-        commit("clearError");
       } catch (err) {
         commit("setLoading", false);
         commit("setError", err.response.data.message);
@@ -157,7 +153,6 @@ export default {
 
         commit("enrollStudent", user);
         commit("setLoading", false);
-        commit("clearError");
       } catch (err) {
         commit("setLoading", false);
         commit("setError", err.response.data.message);
@@ -174,7 +169,6 @@ export default {
 
         commit("updateStudentFee", updatedUser);
         commit("setLoading", false);
-        commit("clearError");
       } catch (err) {
         commit("setLoading", false);
         commit("setError", err.response.data.message);
@@ -193,7 +187,6 @@ export default {
 
         console.log(res.data);
         commit("setLoading", false);
-        commit("clearError");
       } catch (err) {
         commit("setLoading", false);
         commit("setError", err.response.data.message);
@@ -209,7 +202,6 @@ export default {
         let attendance = res.data.totalAttendance;
 
         commit("setLoading", false);
-        commit("clearError");
         commit("setAttendanceCount", attendance);
       } catch (err) {
         commit("setLoading", false);

@@ -1,7 +1,7 @@
 <template>
-  <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition" height="100vh">
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn color="brown" dark v-bind="attrs" v-on="on"> Add User </v-btn>
+  <v-dialog width="60%" persistent v-model="dialog">
+    <template v-slot:activator="{ attrs }">
+      <v-btn color="brown" dark v-bind="attrs" @click="dialog=true"> Add User </v-btn>
     </template>
 
     <v-card>
@@ -135,11 +135,12 @@
         </v-btn>
       </form>
     </v-card>
+
   </v-dialog>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   props: ["userType", "user"],
@@ -158,6 +159,7 @@ export default {
       idNo: "",
       enrollDate: null,
       course: [],
+
     };
   },
 
@@ -174,6 +176,8 @@ export default {
   },
 
   methods: {
+    ...mapActions(['clearError', 'setError']),
+
     async newUser() {
       if (
         this.name !== "" ||
@@ -202,20 +206,25 @@ export default {
           this.$store.dispatch("fetchInstructors");
         }
         // clear the fields
-        this.name = "";
-        this.email = "";
-        this.phone = "";
-        this.gender = "";
-        this.role = "";
-        this.age = ""; 
-        this.course = "";
-        this.idNo = "";
+        // this.name = "";
+        // this.email = "";
+        // this.phone = "";
+        // this.gender = "";
+        // this.role = "";
+        // this.age = ""; 
+        // this.course = "";
+        // this.idNo = "";
 
         this.dialog = false;
       } else {
-        alert("Cannot submit empty fields");
+        this.dialog = false;
+        this.setError('Cannot submit empty fields')
       }
     },
+    
+    resetError() {
+      this.clearError()
+    }
   },
 };
 </script>

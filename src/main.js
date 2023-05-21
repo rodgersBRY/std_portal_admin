@@ -4,10 +4,12 @@ import store from "./store";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
 import Sidenav from "./components/sidenav.vue";
+import errorDialog from './components/error_dialog.vue'
+
 import axios from "axios";
 
 axios.defaults.withCredentials = false;
-axios.defaults.baseURL = "http://159.89.233.11:81/api";
+axios.defaults.baseURL = "http://localhost:3000/api";
 
 // 159.89.233.11:81
 // auto authenticate
@@ -28,6 +30,7 @@ axios.interceptors.response.use(undefined, (err) => {
 Vue.config.productionTip = false;
 
 Vue.component("sidenav", Sidenav);
+Vue.component('error-dialog', errorDialog)
 
 new Vue({
   store,

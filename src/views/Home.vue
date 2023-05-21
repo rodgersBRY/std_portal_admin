@@ -16,7 +16,7 @@
             <v-spacer />
             <v-btn
               outlined
-              color="green darken-3"
+              class="cardBtns"
               style="text-transform: capitalize"
               :to="cat.link"
               >{{ cat.btnText
@@ -79,6 +79,9 @@ export default {
     }
     .categories {
       display: flex;
+      .cardBtns {
+        color: var(--primary-color);
+      }
     }
   }
 }
