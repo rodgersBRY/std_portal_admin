@@ -1,11 +1,11 @@
 <template>
-  <v-dialog width="60%" persistent v-model="dialog">
+  <v-dialog width="55%" persistent v-model="dialog">
     <template v-slot:activator="{ attrs }">
       <v-btn color="brown" dark v-bind="attrs" @click="dialog=true"> Add User </v-btn>
     </template>
 
     <v-card>
-      <v-toolbar dark color="green">
+      <v-toolbar flat dark color="brown darken-2">
         <v-btn icon dark @click="dialog = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
@@ -206,14 +206,14 @@ export default {
           this.$store.dispatch("fetchInstructors");
         }
         // clear the fields
-        // this.name = "";
-        // this.email = "";
-        // this.phone = "";
-        // this.gender = "";
-        // this.role = "";
-        // this.age = ""; 
-        // this.course = "";
-        // this.idNo = "";
+        this.name = "";
+        this.email = "";
+        this.phone = "";
+        this.gender = "";
+        this.role = "";
+        this.age = ""; 
+        this.course = "";
+        this.idNo = "";
 
         this.dialog = false;
       } else {
@@ -231,7 +231,7 @@ export default {
 
 <style scoped>
 .new-student-form {
-  width: 50%;
+  width: 90%;
   margin: 3rem auto;
 }
 </style>

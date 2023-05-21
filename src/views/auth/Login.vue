@@ -15,7 +15,7 @@
         </div>
 
         <div class="form">
-          <form @submit.prevent="signin">
+          <form @submit.prevent="signin" no-validation>
             <label for="email">Email<span>*</span></label>
             <input type="email" name="email" id="email" v-model="email" />
             <label for="password">Password<span>*</span></label>
@@ -28,8 +28,7 @@
 
             <v-btn
               depressed
-              dark
-              color="green darken-3"
+              style="background-color: var(--primary-clor);"
               class="my-10"
               type="submit"
               :loading="isLoading"

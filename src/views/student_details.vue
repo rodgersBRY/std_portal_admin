@@ -6,7 +6,7 @@
       <div v-if="student._id === studentId" class="student-inf">
         <div class="student-info">
           <div style="position: relative; height: 3rem;">
-          <edit-user-dialog :user="student" />
+          <edit-user-dialog v-if="user.role == 'admin'" :user="student" />
           </div>
           <br/>
           <div class="student-name">
@@ -46,6 +46,7 @@
             <div class="d-flex justify-space-between">
               <h3 class="ml-5">Enrolled Courses</h3>
               <v-btn
+                v-if="user.role == 'admin'"
                 text
                 color="brown"
                 class="mr-4"
@@ -84,6 +85,7 @@
           </div>
 
           <v-btn
+            v-if="user.role == 'admin'"
             color="green"
             outlined
             @click="dialogUpdate = true"
@@ -210,7 +212,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["students", "isLoading", "courses", "error"]),
+    ...mapGetters(["students", "isLoading", "courses", "error", "user"]),
 
     courseNames() {
       let courses = [];
@@ -313,7 +315,7 @@ export default {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background: green;
+    background: var(--primary-color);
     color: white;
   }
 

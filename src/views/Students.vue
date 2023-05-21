@@ -43,8 +43,8 @@
 
                 <user-dialog :userType="['student']" />
                 
-                <v-dialog v-model="dialogDelete" max-width="600px">
-                  <v-card>
+                <v-dialog v-model="dialogDelete" width="600px">
+                  <v-card width="100%">
                     <v-card-title class="text-h5"
                       >Are you sure you want to delete?</v-card-title
                     >
@@ -85,7 +85,7 @@
               <div v-if="item.checkedIn">In class</div>
               <div v-else class="grey--text">--</div>
             </template>
-            <template v-slot:item.actions="{ item }">
+            <template v-if="user.role == 'admin'" v-slot:item.actions="{ item }">
               <v-icon
                 small
                 class="mr-2"
@@ -198,7 +198,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["students", "isLoading", "error", "attendanceCount"]),
+    ...mapGetters(["students", "isLoading", "error", "attendanceCount", "user"]),
   },
 
   methods: {
@@ -233,7 +233,7 @@ export default {
 <style lang="scss" scoped>
 @media screen and (min-width: 1000px) {
   .v-card {
-    width: 70%;
+    width: 80%;
   }
 }
 .students {
