@@ -9,9 +9,9 @@ import errorDialog from './components/error_dialog.vue'
 import axios from "axios";
 
 axios.defaults.withCredentials = false;
-axios.defaults.baseURL = "http://159.89.233.11:81/api";
+axios.defaults.baseURL = "http://207.154.244.175:81/api";
 
-// 159.89.233.11:81
+// 207.154.244.175
 // auto authenticate
 const token = localStorage.getItem("token");
 if (token) {
