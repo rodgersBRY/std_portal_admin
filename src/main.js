@@ -4,7 +4,8 @@ import store from "./store";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
 import Sidenav from "./components/sidenav.vue";
-import errorDialog from './components/error_dialog.vue'
+import errorDialog from "./components/error_dialog.vue";
+import userDialogBox from "./components/new_user_dialog_box.vue";
 
 import axios from "axios";
 
@@ -30,7 +31,8 @@ axios.interceptors.response.use(undefined, (err) => {
 Vue.config.productionTip = false;
 
 Vue.component("sidenav", Sidenav);
-Vue.component('error-dialog', errorDialog)
+Vue.component("error-dialog", errorDialog);
+Vue.component("user-dialog", userDialogBox);
 
 new Vue({
   store,

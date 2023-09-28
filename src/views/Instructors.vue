@@ -105,13 +105,9 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   name: "instructors",
 
-  components: {
-    "user-dialog": require("../components/new_user_dialog_box.vue").default,
+  created() {
+    this.$store.dispatch("fetchInstructors");
   },
-
-  // created() {
-  //   this.$store.dispatch("fetchInstructors");
-  // },
 
   data() {
     return {

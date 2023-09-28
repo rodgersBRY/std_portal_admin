@@ -40,7 +40,7 @@
             </v-text-field>
             <v-switch label="Edit Fee Balance?" color="green" v-model="editFee"></v-switch>
 
-            <v-text-field
+            <v-text-field v-if="editFee"
               label="Fee Balance"
               color="brown"
               v-model="form.fee_balance"
@@ -77,11 +77,13 @@ export default {
   data() {
     return {
       dialog: false,
+      editFee: false,
       form: this.user ?  {_id:this.user._id, ...this.user }  : {
         name: "",
         age: "",
         email: "",
-        phone: "",        
+        phone: "",
+        fee_balance: ""   
       }
     };
   },

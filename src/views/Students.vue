@@ -30,9 +30,9 @@
             </span>
           </h2>
           <v-data-table
-            :item-key="studentsList.code"
+            :item-key="students.code"
             :headers="headers"
-            :items="studentsList"
+            :items="students"
             :search="search"
             :loading="isLoading"
             loading-text="Loading... Please wait"
@@ -77,8 +77,8 @@
               </div>
             </template>
             <template v-slot:item.fee_balance="{ item }">
-              <p :class="[item.fee_balance != '0' ? 'warning--text' : '']">
-                {{ item.fee_balance }}
+              <p :class="[item.fee_balance > 0 ? 'warning--text' : '']">
+                {{ item.fee_balance | currencyFormatter }}
               </p>
             </template>
             <template v-slot:item.checkedIn="{ item }">
@@ -108,12 +108,9 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   name: "students",
 
-  components: {
-    "user-dialog": require("../components/new_user_dialog_box.vue").default,
-  },
-
   created() {
     this.$store.dispatch("fetchTotalAttendance");
+    this.$store.dispatch("fetchStudents");
   },
 
   data() {
@@ -198,30 +195,26 @@ export default {
     };
   },
 
+  filters: {
+    currencyFormatter(val) {
+      let options = {
+        symbol: "Ksh",
+        thousand: ",",
+        precision: 0,
+        format: "%s. %v",
+      };
+
+      let formattedCurrency = currencyFormatter.format(
+        val,
+        options
+      );
+
+      return formattedCurrency;
+    }
+  },
+
   computed: {
     ...mapGetters(["students", "isLoading", "error", "attendanceCount", "user"]),
-
-    studentsList() {
-      // format currency
-      let students = this.students.map((student) => {
-        let options = {
-          symbol: "Ksh",
-          thousand: ",",
-          precision: 0,
-          format: "%s. %v",
-        };
-
-        let formattedCurrency = currencyFormatter.format(
-          student.fee_balance,
-          options
-        );
-
-        student.fee_balance = formattedCurrency;
-
-        return student;
-      });
-      return students;
-    }    
   },
 
   methods: {
