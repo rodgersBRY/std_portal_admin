@@ -32,14 +32,7 @@
               <v-card-title class="display-1 pa-0">{{
                 course.name
               }}</v-card-title>
-              <v-card-text class="subtitle-4 pa-0 mt-5">
-                <v-icon>mdi-page-layout-body</v-icon>
-                {{ course.topics.length }} topics
-              </v-card-text>
-              <v-card-text class="subtitle-4 pa-0 mt-2">
-                <v-icon>mdi-cash</v-icon>
-                Module Fee: {{ course.feeAmount }}
-              </v-card-text>
+              
             </v-card>
           </div>
         </div>

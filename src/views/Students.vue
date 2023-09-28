@@ -43,17 +43,17 @@
 
                 <user-dialog :userType="['student']" />
                 
-                <v-dialog v-model="dialogDelete" width="600px">
-                  <v-card width="100%">
-                    <v-card-title class="text-h5"
+                <v-dialog v-model="dialogDelete" width="400px">
+                  <v-card width="100%" class="py-9">
+                    <v-card-title class="text-h5 justify-center"
                       >Are you sure you want to delete?</v-card-title
                     >
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="green darken-1" text @click="closeDelete"
+                      <v-btn color="grey darken-1" text @click="closeDelete"
                         >Cancel</v-btn
                       >
-                      <v-btn color="green darken-1" text @click="confirmDelete"
+                      <v-btn color="red darken-1" text @click="confirmDelete"
                         >OK</v-btn
                       >
                       <v-spacer></v-spacer>
@@ -62,6 +62,7 @@
                 </v-dialog>
               </v-toolbar>
             </template>
+
             <template v-slot:item.name="{ item }">
               <div
                 style="
@@ -69,9 +70,8 @@
                   height: 100%;
                   width: 100%;
                   display: flex;
-                  align-items: center;
-                "
-                @click="$router.push(`/student-details/${item._id}`)"
+                  align-items: center;"
+                  @click="$router.push(`/student-details/${item._id}`)"
               >
                 {{ item.name }}
               </div>
@@ -102,7 +102,6 @@
 </template>
 
 <script>
-import currencyFormatter from "currency-formatter";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -193,24 +192,6 @@ export default {
         },
       ],
     };
-  },
-
-  filters: {
-    currencyFormatter(val) {
-      let options = {
-        symbol: "Ksh",
-        thousand: ",",
-        precision: 0,
-        format: "%s. %v",
-      };
-
-      let formattedCurrency = currencyFormatter.format(
-        val,
-        options
-      );
-
-      return formattedCurrency;
-    }
   },
 
   computed: {

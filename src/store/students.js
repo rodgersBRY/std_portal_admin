@@ -66,9 +66,7 @@ export default {
 
       try {
         const res = await axios.get("/admin/students");
-
-        console.log(res.data);
-
+        
         let students = res.data.students;
 
         commit("setStudents", students);

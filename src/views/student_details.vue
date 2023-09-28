@@ -65,9 +65,6 @@
                   style="text-transform: capitalize"
                 >
                   {{ module.name }}
-                  <span style="font-size: 14px; color: grey">
-                    Ksh. {{ module.amount }}
-                  </span>
                 </li>
               </ul>
             </div>
@@ -80,7 +77,7 @@
                 'ml-5',
               ]"
             >
-              Fee Balance(Ksh): {{ student.fee_balance }}
+              Fee Balance: {{ student.fee_balance | currencyFormatter }}
             </h2>
           </div>
 
@@ -279,7 +276,6 @@ export default {
         this.$store.dispatch("fetchStudents");
         this.amount = "";
         this.dialogUpdate = false;
-        this.$router.push("/students");
       }      
     },
 
