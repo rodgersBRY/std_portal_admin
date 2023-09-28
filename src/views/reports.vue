@@ -15,7 +15,7 @@
             <option :value="true">Last Month</option>
           </select>
         </div>
-
+cd 
         <div class="divider"></div>
 
         <div v-if="filterVal">
@@ -29,12 +29,12 @@
               </tr>
               <tr>
                 <td>{{ studentsSummary.totalStudents }}</td>
-                <td>{{ studentsSummary.totalAmountPaid }}</td>
-                <td>{{ studentsSummary.totalAmountPayable }}</td>                
+                <td>{{ studentsSummary.totalAmountPaid | currencyFormatter }}</td>
+                <td>{{ studentsSummary.totalAmountPayable | currencyFormatter }}</td>                
                 <td>
                   {{
                     studentsSummary.totalAmountPayable -
-                    studentsSummary.totalAmountPaid
+                    studentsSummary.totalAmountPaid | currencyFormatter
                   }}
                 </td>
               </tr>
@@ -47,18 +47,18 @@
             <tbody>
               <tr>
                 <th>Total Students</th>
-                <th>Total Amount Paid (Ksh)</th>
-                <th>Total Amount Payable (Ksh)</th>
-                <th>Balance (Ksh)</th>
+                <th>Total Amount Paid</th>
+                <th>Total Amount Payable</th>
+                <th>Balance</th>
               </tr>
               <tr>
                 <td>{{ allStudentsSummary.totalStudents }}</td>
-                <td>{{ allStudentsSummary.totalAmountPaid | currencyFormat }}</td>
-                <td>{{ allStudentsSummary.totalAmountPayable | currencyFormat }}</td>
+                <td>{{ allStudentsSummary.totalAmountPaid | currencyFormatter }}</td>
+                <td>{{ allStudentsSummary.totalAmountPayable | currencyFormatter }}</td>
                 <td>
                   {{
                     allStudentsSummary.totalAmountPayable -
-                    allStudentsSummary.totalAmountPaid | currencyFormat
+                    allStudentsSummary.totalAmountPaid | currencyFormatter
                   }}
                 </td>
               </tr>
@@ -72,7 +72,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import currencyFormatter from "currency-formatter";
 
 export default {
   computed: {
@@ -82,6 +81,8 @@ export default {
       "isLoading",
       "studentsSummary",
     ]),
+
+
 
     allStudentsSummary() {
       let totalStudents = this.students.length;
@@ -111,23 +112,6 @@ export default {
       filterVal: false,
      
     };
-  },
-
-  filters: {
-    currencyFormat(val) {
-      let options = {
-        thousand: ",",
-        precision: 0,
-        format: "%s %v",
-      };
-
-      let formattedCurrency = currencyFormatter.format(
-        val,
-        options
-      );
-
-      return formattedCurrency;
-    }
   },
 
   methods: {

@@ -11,8 +11,9 @@ import userDialogBox from "./components/new_user_dialog_box.vue";
 import axios from "axios";
 
 axios.defaults.withCredentials = false;
-axios.defaults.baseURL = "http://localhost:4000/api";
+axios.defaults.baseURL = "http://207.154.244.175:81/api";
 
+// 207.154.244.175:81
 const currencyFormat = function (val) {
   let options = {
     symbol: "Ksh",
@@ -26,7 +27,7 @@ const currencyFormat = function (val) {
   return formattedCurrency;
 };
 
-// 207.154.244.175
+
 // auto authenticate
 const token = localStorage.getItem("token");
 if (token) {
