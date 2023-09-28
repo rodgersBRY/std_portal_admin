@@ -30,9 +30,9 @@
             </span>
           </h2>
           <v-data-table
-            :item-key="students.code"
+            :item-key="studentsList.code"
             :headers="headers"
-            :items="students"
+            :items="studentsList"
             :search="search"
             :loading="isLoading"
             loading-text="Loading... Please wait"
@@ -102,6 +102,7 @@
 </template>
 
 <script>
+import currencyFormatter from "currency-formatter";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -199,6 +200,28 @@ export default {
 
   computed: {
     ...mapGetters(["students", "isLoading", "error", "attendanceCount", "user"]),
+
+    studentsList() {
+      // format currency
+      let students = this.students.map((student) => {
+        let options = {
+          symbol: "Ksh",
+          thousand: ",",
+          precision: 0,
+          format: "%s. %v",
+        };
+
+        let formattedCurrency = currencyFormatter.format(
+          student.fee_balance,
+          options
+        );
+
+        student.fee_balance = formattedCurrency;
+
+        return student;
+      });
+      return students;
+    }    
   },
 
   methods: {

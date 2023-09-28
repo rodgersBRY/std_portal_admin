@@ -38,7 +38,15 @@
               required
             >
             </v-text-field>
-            
+            <v-switch label="Edit Fee Balance?" color="green" v-model="editFee"></v-switch>
+
+            <v-text-field
+              label="Fee Balance"
+              color="brown"
+              v-model="form.fee_balance"
+              required
+            >
+            </v-text-field>
           </v-container>
         </v-card-text>
         <v-card-actions>
@@ -71,9 +79,9 @@ export default {
       dialog: false,
       form: this.user ?  {_id:this.user._id, ...this.user }  : {
         name: "",
-        age: '',
+        age: "",
         email: "",
-        phone: "",
+        phone: "",        
       }
     };
   },

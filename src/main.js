@@ -9,7 +9,7 @@ import errorDialog from './components/error_dialog.vue'
 import axios from "axios";
 
 axios.defaults.withCredentials = false;
-axios.defaults.baseURL = "http://207.154.244.175:81/api";
+axios.defaults.baseURL = "http://localhost:4000/api";
 
 // 207.154.244.175
 // auto authenticate
