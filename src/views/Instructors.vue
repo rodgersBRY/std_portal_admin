@@ -50,17 +50,17 @@
               <v-toolbar flat>
                 <v-spacer />
                 <user-dialog :user-type="['instructor']" />
-                <v-dialog v-model="dialogDelete" max-width="600px">
-                  <v-card>
-                    <v-card-title class="text-h5"
+                <v-dialog v-model="dialogDelete" max-width="400px">
+                  <v-card width="100%">
+                    <v-card-title class="text-h5 justify-center"
                       >Are you sure you want to delete?</v-card-title
                     >
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="green darken-1" text @click="closeDelete"
+                      <v-btn color="grey darken-1" text @click="closeDelete"
                         >Cancel</v-btn
                       >
-                      <v-btn color="green darken-1" text @click="confirmDelete"
+                      <v-btn color="red darken-1" text @click="confirmDelete"
                         >OK</v-btn
                       >
                       <v-spacer />
