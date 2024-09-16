@@ -3,12 +3,16 @@ import axios from "axios";
 export default {
   state: {
     students: [],
-    attendanceCount: 0,
+    student: null,
   },
 
   mutations: {
     setStudents(state, payload) {
       state.students = payload;
+    },
+    
+    setStudent(state, payload) {
+      state.student = payload
     },
 
     setAttendanceCount(state, payload) {
@@ -63,17 +67,35 @@ export default {
   actions: {
     async fetchStudents({ commit }) {
       commit("setLoading", true);
+      commit("clearError");
 
       try {
-        const res = await axios.get("/admin/students");
-        
+        const res = await axios.get("/students");
+
         let students = res.data.students;
 
         commit("setStudents", students);
-        commit("setLoading", false);
       } catch (err) {
-        commit("setLoading", false);
         commit("setError", err.response.data.message);
+      } finally {
+        commit("setLoading", false);
+      }
+    },
+
+    async getStudent({ commit }, payload) {
+      commit("setLoading", true);
+      commit("clearError");
+
+      try {
+        const res = await axios.get(`/students/${payload}`);
+
+        let student = res.data;
+
+        commit("setStudent", student);
+      } catch (err) {
+        commit("setError", err.response.data.message);
+      } finally {
+        commit("setLoading", false);
       }
     },
 
@@ -81,7 +103,7 @@ export default {
       commit("setLoading", true);
 
       try {
-        await axios.post("/admin/new-user", payload);
+        await axios.post("/students", payload);
 
         commit("addStudent", payload);
         commit("setLoading", false);
@@ -95,10 +117,7 @@ export default {
       commit("setLoading", true);
 
       try {
-        const resp = await axios.put(
-          `/admin/edit-user/${payload.userId}`,
-          payload
-        );
+        const resp = await axios.put(`/students/${payload.userId}`, payload);
 
         commit("updateStudent", resp.data.result);
 
@@ -113,7 +132,7 @@ export default {
       commit("setLoading", true);
 
       try {
-        await axios.delete(`/admin/user/${payload}`);
+        await axios.delete(`/students/${payload}`);
 
         commit("deleteStudent", payload);
         commit("setLoading", false);
@@ -127,7 +146,7 @@ export default {
       commit("setLoading", true);
 
       try {
-        const res = await axios.put(`/admin/enroll-user/${payload.studentId}`, {
+        const res = await axios.put(`/students/enroll/${payload.studentId}`, {
           moduleName: payload.moduleName,
         });
 
@@ -145,7 +164,7 @@ export default {
       commit("setLoading", true);
 
       try {
-        const res = await axios.put(`/admin/update-fee`, payload);
+        const res = await axios.put(`/students/update-fee`, payload);
 
         let updatedUser = res.data;
 
@@ -194,6 +213,6 @@ export default {
 
   getters: {
     students: (state) => state.students,
-    attendanceCount: (state) => state.attendanceCount,
+    student: (state) => state.student,
   },
 };

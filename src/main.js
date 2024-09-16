@@ -5,6 +5,7 @@ import currencyFormatter from "currency-formatter";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
 import Sidenav from "./components/sidenav.vue";
+import NavBar from "./components/navbar.vue";
 import errorDialog from "./components/error_dialog.vue";
 import userDialogBox from "./components/new_user_dialog_box.vue";
 
@@ -15,10 +16,9 @@ axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URI;
 
 const currencyFormat = function (val) {
   let options = {
-    symbol: "Ksh",
     thousand: ",",
     precision: 0,
-    format: "%s. %v",
+    format: "%v",
   };
 
   let formattedCurrency = currencyFormatter.format(val, options);
@@ -46,6 +46,7 @@ Vue.config.productionTip = false;
 Vue.component("sidenav", Sidenav);
 Vue.component("error-dialog", errorDialog);
 Vue.component("user-dialog", userDialogBox);
+Vue.component("NavBar", NavBar);
 Vue.filter("currencyFormatter", currencyFormat);
 
 new Vue({

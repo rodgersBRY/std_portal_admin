@@ -11,9 +11,19 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+    beforeEnter: (_, __, next) => {
+      store
+        .dispatch("fetchStudents")
+        .then(() => {
+          next();
+        })
+        .catch(() => {
+          next(false);
+        });
+    },
   },
   {
-    path: "/accounts/login",
+    path: "/login",
     name: "Login",
     component: () => import("../views/auth/Login.vue"),
     meta: {
@@ -38,12 +48,22 @@ const routes = [
     },
   },
   {
-    path: "/student-details/:studentId",
+    path: "/students/:id",
     name: "Student Details",
     component: () => import("../views/student_details.vue"),
     meta: {
       requiresAuth: true,
       title: "",
+    },
+    beforeEnter: (to, __, next) => {
+      store
+        .dispatch("getStudent", to.params.id)
+        .then(() => {
+          next();
+        })
+        .catch(() => {
+          next(false);
+        });
     },
   },
   {

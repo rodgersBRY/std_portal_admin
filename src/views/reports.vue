@@ -15,7 +15,7 @@
             <option :value="true">Last Month</option>
           </select>
         </div>
-cd 
+
         <div class="divider"></div>
 
         <div v-if="filterVal">

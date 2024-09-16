@@ -22,6 +22,8 @@ export default {
     user(val) {
       if (val !== null && val !== undefined) {
         this.$router.push("/");
+      } else {
+        this.$router.push("/login")
       }
     },
   },
