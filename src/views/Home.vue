@@ -22,7 +22,11 @@
       <h2>Recent Students</h2>
 
       <section class="reports">
-        <p class="details">A list of students with a significant balance</p>
+        <p class="details">
+          <span><v-icon size="15">mdi-information</v-icon></span> 
+          A list of students with a significant balance
+        </p>
+
         <div class="table">
           <v-data-table
             :item-key="filteredStudents.code"

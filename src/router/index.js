@@ -11,6 +11,9 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+    meta: {
+      title: "Dashboard | | Jowam Portal",
+    },
     beforeEnter: (_, __, next) => {
       store
         .dispatch("fetchStudents")
@@ -27,33 +30,16 @@ const routes = [
     name: "Login",
     component: () => import("../views/auth/Login.vue"),
     meta: {
-      title: "JOWAM PORTAL | LOGIN",
-    },
-  },
-  {
-    path: "/courses/:courseTitle/:courseId",
-    name: "Course Details",
-    component: () => import("../views/module_details.vue"),
-    meta: {
-      requiresAuth: true,
-    },
-  },
-  {
-    path: "/courses",
-    name: "Courses",
-    component: () => import("../views/Courses.vue"),
-    meta: {
-      requiresAuth: true,
-      title: "COURSES OFFERED",
+      title: "Login | | Jowam Portal",
     },
   },
   {
     path: "/students/:id",
     name: "Student Details",
-    component: () => import("../views/student_details.vue"),
+    component: () => import("../views/students/student_details.vue"),
     meta: {
       requiresAuth: true,
-      title: "",
+      title: "Student Info | | Jowam Portal",
     },
     beforeEnter: (to, __, next) => {
       store
@@ -69,24 +55,10 @@ const routes = [
   {
     path: "/students",
     name: "Students",
-    component: () => import("../views/Students.vue"),
+    component: () => import("../views/students/Students.vue"),
     meta: {
       requiresAuth: true,
-      title: "STUDENTS",
-    },
-  },
-  {
-    path: "/instructors/:instructorId",
-    name: "Instructor Details",
-    component: () => import("../views/instructor_details.vue"),
-  },
-  {
-    path: "/instructors",
-    name: "Instructors",
-    component: () => import("../views/Instructors.vue"),
-    meta: {
-      requiresAuth: true,
-      title: "INSTRUCTORS",
+      title: "Students | | Jowam Portal",
     },
   },
   {
@@ -94,7 +66,7 @@ const routes = [
     name: "Reports",
     component: () => import("../views/reports.vue"),
     meta: {
-      title: "REPORTS",
+      title: "Reports | | Jowam Portal",
     },
   },
 ];

@@ -41,9 +41,10 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding-right: 20px;
+  height: 65px;
   .logo {
     width: 200px;
-    height: 80px;
+    height: 100%;
     img {
       width: 100%;
       height: 100%;
@@ -56,9 +57,10 @@ export default {
       gap: 1.5rem;
       font-weight: bold;
       text-transform: uppercase;
+      font-size: 14px;
       li {
         width: 120px;
-        height: 80px;
+        height: 65px;
         padding: 10px;
         display: flex;
         align-items: center;
