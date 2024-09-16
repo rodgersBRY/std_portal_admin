@@ -3,43 +3,23 @@
     <auth-nav-bar />
 
     <main>
-      <error-dialog :display="error" :error-text="error" @close-dialog="resetError"></error-dialog>
+      <div class="signin-form">
+        <h1>Sign In</h1>
 
-      <section class="login d-flex align-center">
-        <div class="img mr-10">
-          <img
-            width="100%"
-            :src="require('@/assets/retro.svg')"
-            alt="ecommerce"
-          />
+        <input v-model="email" type="text" name="email" id="email" placeholder="Email" />
+
+        <div class="password-input">
+          <input v-model="password" :type="inputType" name="password" placeholder="Password" id="password" />
+
+          <span @click="togglePassword" class="toggle-icon">
+            <v-icon color="grey">{{ showPassword ? 'mdi-eye-off' : 'mdi-eye' }}</v-icon>
+          </span>
         </div>
 
-        <div class="form">
-          <form @submit.prevent="signin" no-validation>
-            <label for="email">Email<span>*</span></label>
-            <input type="email" name="email" id="email" v-model="email" />
-            <label for="password">Password<span>*</span></label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              v-model="password"
-            />
+        <p v-if="error" class="error-text">{{ error }}</p>
 
-            <v-btn
-              depressed
-              style="background-color: var(--primary-clor);"
-              class="my-10"
-              type="submit"
-              :loading="isLoading"
-              @keyup.enter="signin"
-              >Login
-            </v-btn>
-          </form>
-
-          <v-divider class="mb-8" />
-        </div>
-      </section>
+        <v-btn :loading="isLoading" @click="signin" dark depressed class="sign-btn">Sign In</v-btn>
+      </div>
     </main>
 
     <footer>
@@ -63,26 +43,35 @@ export default {
     return {
       email: "",
       password: "",
+      showPassword: false,
     };
   },
 
   computed: {
     ...mapGetters(["error", "isLoading"]),
+
+    inputType() {
+      return this.showPassword ? 'text' : 'password'
+    }
   },
 
   methods: {
     ...mapActions(["login", "clearError", "setError"]),
 
     async signin() {
-      if (this.email == "" || this.password == "") {
-        this.setError("Fill in all the required fields");
-      } else {
-        const userData = new FormData();
-        userData.append("email", this.email);
-        userData.append("password", this.password);
+      const userData = new FormData();
+      userData.append("email", this.email);
+      userData.append("password", this.password);
 
-        this.login(userData);
+      await this.login(userData);
+
+      if (this.error) {
+        this.password = ""
       }
+    },
+
+    togglePassword() {
+      this.showPassword = !this.showPassword
     },
 
     resetError() {
@@ -91,91 +80,54 @@ export default {
   },
 };
 </script>
+
 <style lang="scss" scoped>
-@media screen and (min-width: 1000px) {
-  .login {
-    margin: 2rem auto;
-    width: 70%;
-    height: 70vh;
+main {
+  background-color: rgb(243, 243, 243);
+  padding: 3rem 0;
+  height: 100vh;
+  .signin-form {
+    background-color: white;
+    width: 35%;
     margin: auto;
-    .img,
-    .form {
-      flex: 2;
-    }
-    .form {
-      width: 100%;
-      input[type="submit"] {
-        width: 100px;
-      }
-    }
-  }
-
-  footer {
-    position: absolute;
-    bottom: 2%;
-  }
-}
-
-@media screen and (max-width: 1000px) {
-  .login {
-    margin: 5rem auto;
-    width: 90%;
+    display: flex;
+    gap: 1.5rem;
+    padding: 3rem 0;
+    border-radius: 15px;
     flex-direction: column;
-    .form {
-      width: 100%;
-    }
-  }
-}
-
-.login {
-  display: flex;
-
-  .form {
-    label {
-      display: block;
-      margin: 2rem 0 0.5rem 0;
-      span {
-        color: red;
-        margin-left: 3px;
-      }
-    }
-    input[type="email"],
-    input[type="password"] {
+    align-items: center;
+    input {
       padding: 10px;
-      border: 1px solid rgb(224, 224, 224);
-      border-radius: 5px;
-      width: 100%;
+      background-color: rgb(237, 237, 237);
+      width: 75%;
+      margin: 0 auto;
+      border-radius: 10px;
       &:focus {
         outline: none;
       }
     }
-
-    input[type="submit"] {
-      display: block;
-      margin: 2rem 0;
-      background: green;
-      padding: 10px;
-      border-radius: 5px;
-      color: white;
-      &:hover {
-        background: rgb(88, 129, 88);
+    .password-input {
+      position: relative;
+      width: 75%;
+      input {
+        width: 100%;
+      }
+      .toggle-icon {
+        position: absolute;
+        right: 1rem;
+        top: 10px;
+        color: grey;
       }
     }
-    .recover-account {
-      display: flex;
-      justify-content: space-between;
-      p {
-        display: inline-block;
-        cursor: pointer;
-        &:hover {
-          color: green;
-        }
-      }
+    .error-text {
+      background-color: rgb(254, 200, 200);
+      width: 75%;
+      padding: 10px;
+      border-left: 4px solid red;
+      color: red;
+      font-weight: bold;
+      font-size: 13px;
     }
   }
-}
-
-footer {
-  width: 100%;
 }
 </style>

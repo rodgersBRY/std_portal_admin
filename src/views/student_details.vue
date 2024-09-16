@@ -113,7 +113,7 @@
                   text
                   :loading="isLoading"
                   @click="enrollStudent"
-                  >OK</v-btn
+                  >Ok</v-btn
                 >
                 <v-spacer />
               </v-card-actions>
@@ -146,7 +146,7 @@
                   text
                   :loading="isLoading"
                   @click="updateFee"
-                  >OK</v-btn
+                  >Update & Print Receipt</v-btn
                 >
                 <v-spacer />
               </v-card-actions>

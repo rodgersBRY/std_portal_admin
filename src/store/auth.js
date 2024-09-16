@@ -36,6 +36,7 @@ export default {
 
     async login({ commit, dispatch }, payload) {
       commit("setLoading", true);
+      commit("clearError");
 
       try {
         const res = await axios.post("/auth/login", {
@@ -50,15 +51,15 @@ export default {
         axios.defaults.headers.common["Authorization"] = token;
 
         commit("setUser", { user, token });
-        commit("clearError");
-        commit("setLoading", false);
+
         dispatch("autoLogout");
       } catch (err) {
         console.log(err);
-        commit("setLoading", false);
         commit("setError", err.response.data.message);
 
         localStorage.removeItem("token");
+      } finally {
+        commit("setLoading", false);
       }
     },
 
