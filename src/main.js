@@ -26,6 +26,12 @@ const currencyFormat = function (val) {
   return formattedCurrency;
 };
 
+const dateFormat = function (val, locale = "en-US", options = {}) {
+  if (!val) return "";
+  const date = new Date(val);
+  return new Intl.DateTimeFormat(locale, options).format(date);
+};
+
 // auto authenticate
 const token = localStorage.getItem("token");
 if (token) {
@@ -48,6 +54,7 @@ Vue.component("error-dialog", errorDialog);
 Vue.component("user-dialog", userDialogBox);
 Vue.component("NavBar", NavBar);
 Vue.filter("currencyFormatter", currencyFormat);
+Vue.filter("dateFormat", dateFormat);
 
 new Vue({
   store,
