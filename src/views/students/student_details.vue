@@ -95,6 +95,12 @@ export default {
   name: "student-details",
   data() {
     return {
+      amount: "",
+      module: {
+        name: "",
+        amount: ""
+      },
+      modules: [],
       headers: [
         {
           text: "Title",
@@ -125,27 +131,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["student", "isLoading", "error", "user"]),
-  },
-
-  filters: {
-    dateFilter(val) {
-      if (!val) return;
-
-      var date = new Date(val).toLocaleString("en-US", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "numeric",
-        minute: "2-digit",
-      });
-      
-      return date;
-    },
+    ...mapGetters(["student", "isLoading", "error"]),
   },
 
   methods: {
-    ...mapActions(['setError', 'clearError']),
+    ...mapActions(['updateStudentFee', 'enrollStudentToCourse']),
 
     printSection() {
       // window.print()
@@ -162,43 +152,42 @@ export default {
       newWin.close();
     },
 
-    async updateFee() {
-      if(this.amount == '') {
-        this.dialogUpdate = false;
-        this.setError('Enter amount before submitting')
-      } else {
-        let updateData = {
-          id: this.studentId,
-          amount: this.amount,
-        };
+    addModule() {
+      this.modules.push(this.module);
+    },
 
-        await this.$store.dispatch("updateStudentFee", updateData);
-        this.$store.dispatch("fetchStudents");
+    removeModule(index) {
+      this.modules.splice(index, 1)
+    },
+
+    async updateFee() {
+      await this.updateStudentFee({
+        id: this.student._id,
+        amount: this.amount
+      });
+
+      if (!this.error) {
+        // fetch student details again
         this.amount = "";
-        this.dialogUpdate = false;
-      }      
+      }
     },
 
     async enrollStudent() {
-      if(this.course == '') {
-        this.dialogEnroll = false;
-        this.setError('Select an option before submitting')
-      } else {
-        let payload = {
-          studentId: this.studentId,
-          moduleName: this.course,
+      let payload = {
+        id: this.student._id,
+        modules: this.modules,
+      };
+
+      await this.enrollStudentToCourse(payload);
+
+      if (!this.error) {
+        this.module = {
+          name: "",
+          amount: ""
         };
-
-        await this.$store.dispatch("enrollStudentToCourse", payload);
-        this.course = "";
-        this.dialogEnroll = false;
-        this.$router.push("/students");
-      }      
+        this.modules =[]    
+      }
     },
-
-    resetError() {
-      this.clearError()
-    }
   },
 };
 </script>
