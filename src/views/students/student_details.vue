@@ -45,7 +45,7 @@
             <p>{{ student.enrollDate | dateFormat }}</p>
             <div class="modules-div">
               <h3>Courses Enrolled</h3>
-              <div class="module" v-for="(item, index) in student.modules" :key="index">
+              <div class="module mt-3" v-for="(item, index) in student.modules" :key="index">
                 <p>{{ item.name }}</p>
                 <p>KES {{ item.amount | currencyFormatter }}</p>
               </div>
@@ -319,6 +319,7 @@ main {
       }
     }
     .school-info {
+      flex: 2;
       .info-div {
         & > p:first-child {
           font-size: 20px;
@@ -342,6 +343,7 @@ main {
       }
     }
     .money-info {
+      flex: 1;
       .info-div {
         p {
           font-weight: bold;
