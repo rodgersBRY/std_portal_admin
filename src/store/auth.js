@@ -68,9 +68,6 @@ export default {
       localStorage.removeItem("token");
       delete axios.defaults.headers.common["Authorization"];
       commit("clearStudents");
-      commit("clearInstructors");
-      commit("clearCourses");
-      commit("clearstudentsPerCourse");
     },
 
     clearError({ commit }) {

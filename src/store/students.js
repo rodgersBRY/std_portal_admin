@@ -10,9 +10,9 @@ export default {
     setStudents(state, payload) {
       state.students = payload;
     },
-    
+
     setStudent(state, payload) {
-      state.student = payload
+      state.student = payload;
     },
 
     setAttendanceCount(state, payload) {
@@ -103,10 +103,12 @@ export default {
       commit("setLoading", true);
 
       try {
-        await axios.post("/students", payload);
+        const resp = await axios.post("/students", payload);
 
-        commit("addStudent", payload);
-        commit("setLoading", false);
+        if (resp.status == 201) {
+          commit("addStudent", resp.data.student);
+          commit("setLoading", false);
+        }
       } catch (err) {
         commit("setLoading", false);
         commit("setError", err.response.data.message);
