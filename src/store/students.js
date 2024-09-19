@@ -121,12 +121,16 @@ export default {
       try {
         const resp = await axios.put(`/students/${payload.userId}`, payload);
 
-        commit("updateStudent", resp.data.result);
-
-        commit("setLoading", false);
+        if (resp.status == 201) {
+          let updatedStudent = resp.data.updatedStudent
+          console.log(updatedStudent);
+          
+          commit("updateStudent", updatedStudent);
+        }
       } catch (err) {
-        commit("setLoading", false);
         commit("setError", err.response.data.message);
+      } finally {
+        commit("setLoading", false);
       }
     },
 

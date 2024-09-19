@@ -9,21 +9,34 @@
         <h2>Personal Information</h2>
         <div class="info-div">
           <div>
-            <p class="name display-1 capitalize"><strong>{{ student.name }}</strong></p>
+            <p v-if="!editing" class="name display-1 capitalize"><strong>{{ student.name }}</strong></p>
+            <input v-else type="text" name="name" id="name" :placeholder="student.name" v-model="editedStudent.name" />
             <p style="font-size: 22px;"><strong><span><v-icon>mdi-registered-trademark</v-icon></span>{{ student.code }}</strong></p>
-            <p><span><v-icon>mdi-id-card</v-icon></span>ID No: {{ student.idNo }}</p>
+            <p v-if="!editing"><span><v-icon>mdi-id-card</v-icon></span>ID No: {{ student.idNo }}</p>
+            <p v-else><v-icon>mdi-id-card</v-icon><input type="number" name="id" id="id" :placeholder="editedStudent.idNo" v-model="editedStudent.idNo" /></p>
           </div>
 
           <div>
-            <p v-if="student.email"><span><v-icon>mdi-email</v-icon></span> {{ student.email }}</p>
-            <p><span><v-icon>mdi-phone</v-icon></span> {{ student.phone }}</p>
+            <p v-if="student.email && !editing"><span><v-icon>mdi-email</v-icon></span> {{ student.email }}</p>
+            <span v-else><v-icon>mdi-email</v-icon>
+              <input type="email" name="email" id="email" :placeholder="editedStudent.email" v-model="editedStudent.email" />
+            </span>
+            <br v-if="editing">
+            <p v-if="!editing"><span><v-icon>mdi-phone</v-icon></span> {{ student.phone }}</p>
+            <p v-else>
+              <span><v-icon>mdi-phone</v-icon>
+                <input type="phone" name="phone" id="phone" :placeholder="editedStudent.phone" v-model="editedStudent.phone" />
+              </span>
+            </p>
             <p><span><v-icon>mdi-gender-male-female</v-icon></span> {{ student.gender }}</p>
-            <p><span><v-icon>mdi-counter</v-icon></span> {{ student.age }} years</p>
+            <p>
+              <span><v-icon>mdi-counter</v-icon></span> {{ student.age }} years
+            </p>
           </div>
         </div>
       </section>
 
-      <section class="school-money">
+      <section v-if="!editing" class="school-money">
         <div class="school-info">
           <h2>School Information</h2>
 
@@ -53,18 +66,26 @@
           </div>          
         </div>
       </section>
+
+      <section v-if="success" class="success-message">
+        <p>Student Information has been updated. Give it a few seconds to refresh...</p>
+      </section>
       
       <section class="actions">
         <h2>Quick Actions</h2>
 
-        <div>
-          <button class="btn edit-btn">Edit Student</button>
+        <div v-if="editing">
+          <button class="btn edit-btn" @click="saveUpdates" :disabled="isLoading">Save Info</button>
+          <button class="btn print-btn" @click="toggleEditing" :disabled="isLoading">Cancel</button>
+        </div>
+
+        <div v-else>
+          <button class="btn edit-btn" @click="toggleEditing">Edit Student</button>
           <button class="btn enroll-btn">Enroll</button>
           <button class="btn update-btn">Update Fee</button>
           <button class="btn print-btn">Print Receipt</button>
           <v-spacer />
           <button class="btn delete-btn">Delete Student</button>
-          
         </div>
       </section>
 
@@ -96,6 +117,8 @@ export default {
   data() {
     return {
       amount: "",
+      editing: false,
+      success: false,
       module: {
         name: "",
         amount: ""
@@ -127,6 +150,12 @@ export default {
           filterable: false,
         },
       ],
+      editedStudent: {
+        name: "",
+        email: "",
+        phone: "",
+        idNo: null,
+      }
     };
   },
 
@@ -134,8 +163,19 @@ export default {
     ...mapGetters(["student", "isLoading", "error"]),
   },
 
+  mounted() {
+    this.editedStudent.name = this.student.name;
+    this.editedStudent.email = this.student.email;
+    this.editedStudent.phone = this.student.phone;
+    this.editedStudent.idNo = this.student.idNo;
+  },
+
   methods: {
-    ...mapActions(['updateStudentFee', 'enrollStudentToCourse']),
+    ...mapActions(['updateStudent', 'updateStudentFee', 'enrollStudentToCourse']),
+
+    toggleEditing() {
+      this.editing = !this.editing;
+    },
 
     printSection() {
       // window.print()
@@ -158,6 +198,25 @@ export default {
 
     removeModule(index) {
       this.modules.splice(index, 1)
+    },
+
+    async saveUpdates() {
+      const data = {
+        ...this.editedStudent,
+        userId: this.student._id,
+      };
+
+      await this.updateStudent(data);
+
+      if (!this.error) {
+        this.success = true
+
+        setTimeout(() => {
+          this.success = false;
+          this.toggleEditing();
+          location.reload()
+        }, 2000);
+      }
     },
 
     async updateFee() {
@@ -196,6 +255,7 @@ export default {
 main {
   background-color: rgb(247, 247, 247);
   padding: 3rem;
+
   .personal-info,
   .school-money,
   .actions,
@@ -203,6 +263,26 @@ main {
     width: 90%;
     margin: 0 auto;
   }
+
+  input {
+    border: 2px solid rgb(186, 186, 186);
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .success-message p {
+    font-size: 14px;
+    font-weight: bold;
+    color: green;
+    background-color: rgb(204, 253, 204);
+    padding: 5px 10px;
+    border-left: 4px solid green;
+  }
+
   .personal-info {
     .info-div {
       display: flex;
