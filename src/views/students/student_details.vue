@@ -11,6 +11,7 @@
           <div>
             <p v-if="!editing" class="name display-1 capitalize"><strong>{{ student.name }}</strong></p>
             <input v-else type="text" name="name" id="name" :placeholder="student.name" v-model="editedStudent.name" />
+            <br v-if="editing">
             <p style="font-size: 22px;"><strong><span><v-icon>mdi-registered-trademark</v-icon></span>{{ student.code }}</strong></p>
             <p v-if="!editing"><span><v-icon>mdi-id-card</v-icon></span>ID No: {{ student.idNo }}</p>
             <p v-else><v-icon>mdi-id-card</v-icon><input type="number" name="id" id="id" :placeholder="editedStudent.idNo" v-model="editedStudent.idNo" /></p>
@@ -66,10 +67,6 @@
           </div>          
         </div>
       </section>
-
-      <section v-if="success" class="success-message">
-        <p>Student Information has been updated. Give it a few seconds to refresh...</p>
-      </section>
       
       <section class="actions">
         <h2>Quick Actions</h2>
@@ -81,11 +78,29 @@
 
         <div v-else>
           <button class="btn edit-btn" @click="toggleEditing">Edit Student</button>
-          <button class="btn enroll-btn">Enroll</button>
+          <button class="btn enroll-btn" @click="isEnroll = true">Enroll</button>
           <button class="btn update-btn">Update Fee</button>
           <button class="btn print-btn">Print Receipt</button>
           <v-spacer />
-          <button class="btn delete-btn">Delete Student</button>
+          <button class="btn delete-btn">Deactivate Student</button>
+        </div>
+      </section>
+
+      <section v-if="success" class="success-message">
+        <p>{{ successMessage }}</p>
+      </section>
+
+      <section class="enroll" v-if="isEnroll">
+        <h2>New Course</h2>
+
+        <div>
+          <p for="name">Name</p>
+          <input type="text" name="name" id="name" class="mb-5" placeholder="e.g. roasting" v-model="module.name" />
+          <p for="fee">Course Fee</p>
+          <input type="number" name="fee" id="fee" placeholder="e.g. 50000" v-model="module.amount" />
+
+          <button class="btn enroll" :disabled="isLoading" @click="enrollStudent">Enroll</button>
+          <button class="btn cancel" :disabled="isLoading" @click="closeEnroll">Cancel</button>
         </div>
       </section>
 
@@ -114,16 +129,20 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "student-details",
+
   data() {
     return {
       amount: "",
       editing: false,
       success: false,
+      isEnroll: false,
+      successMessage: "",
+      
       module: {
         name: "",
         amount: ""
       },
-      modules: [],
+      
       headers: [
         {
           text: "Title",
@@ -150,6 +169,7 @@ export default {
           filterable: false,
         },
       ],
+      
       editedStudent: {
         name: "",
         email: "",
@@ -177,6 +197,14 @@ export default {
       this.editing = !this.editing;
     },
 
+    closeEnroll() {
+      this.isEnroll = false
+      this.module = {
+        name: "",
+        amount: "",
+      }
+    },
+
     printSection() {
       // window.print()
       var activityLog = document.getElementById("print");
@@ -192,14 +220,6 @@ export default {
       newWin.close();
     },
 
-    addModule() {
-      this.modules.push(this.module);
-    },
-
-    removeModule(index) {
-      this.modules.splice(index, 1)
-    },
-
     async saveUpdates() {
       const data = {
         ...this.editedStudent,
@@ -210,9 +230,11 @@ export default {
 
       if (!this.error) {
         this.success = true
+        this.successMessage = "Student Information has been updated. Give it a few seconds to refresh..."
 
         setTimeout(() => {
           this.success = false;
+          this.successMessage = ""
           this.toggleEditing();
           location.reload()
         }, 2000);
@@ -234,17 +256,25 @@ export default {
     async enrollStudent() {
       let payload = {
         id: this.student._id,
-        modules: this.modules,
+        module: this.module,
       };
 
       await this.enrollStudentToCourse(payload);
 
       if (!this.error) {
-        this.module = {
-          name: "",
-          amount: ""
-        };
-        this.modules =[]    
+        this.success = true
+        this.successMessage = "The course has been added to student information"
+        this.isEnroll = false
+
+        setTimeout(() => {
+          this.success = false;
+          this.successMessage = "";
+          this.module = {
+            name: "",
+            amount: ""
+          };
+          location.reload();
+        }, 2000);        
       }
     },
   },
@@ -259,9 +289,14 @@ main {
   .personal-info,
   .school-money,
   .actions,
-  .activity {
+  .activity,
+  .enroll {
     width: 90%;
     margin: 0 auto;
+  }
+
+  h2 {
+    margin: 1rem 0;
   }
 
   input {
@@ -275,6 +310,8 @@ main {
   }
 
   .success-message p {
+    width: 90%;
+    margin: 1rem auto;
     font-size: 14px;
     font-weight: bold;
     color: green;
@@ -365,13 +402,17 @@ main {
     border-radius: 15px;
     padding: 2rem;
     .btn {
-      font-size: 18px;
+      font-size: 16px;
+      height: 60px;
       text-transform: uppercase;
       font-weight: bold;
-      padding: 15px;
+      padding: 0 15px;
       border-radius: 10px;
-      box-shadow: 5px 10px 30px rgba(0, 0, 0, 0.3);
       color: white;
+      transition: all .2s ease-in-out;
+      &:hover {
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+      }
     }
     .edit-btn {
       background-color: green;
@@ -389,10 +430,29 @@ main {
       background-color: grey;
     }
   }
-  .activity {
-    h2 {
-      margin: 1rem 0;
+
+  .enroll div {
+    background-color: white;
+    border-radius: 15px;
+    padding: 2rem;
+    button {
+      height: 50px;
+      width: 100px;
+      margin: 1rem 10px 0 0;
+      padding: 5px;
+      border-radius: 10px;
+      color: white;
+      font-weight: bold;
     }
+    .enroll {
+      background-color: green;
+    }
+    .cancel {
+      background-color: grey;
+    }
+  }
+
+  .activity {
     .activity-div {
       background-color: white;
       border-radius: 15px;

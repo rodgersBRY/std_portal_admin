@@ -122,9 +122,9 @@ export default {
         const resp = await axios.put(`/students/${payload.userId}`, payload);
 
         if (resp.status == 201) {
-          let updatedStudent = resp.data.updatedStudent
+          let updatedStudent = resp.data.updatedStudent;
           console.log(updatedStudent);
-          
+
           commit("updateStudent", updatedStudent);
         }
       } catch (err) {
@@ -149,20 +149,21 @@ export default {
     },
 
     async enrollStudentToCourse({ commit }, payload) {
-      commit("setLoading", true);
-
       try {
-        const res = await axios.put(`/students/enroll/${payload.studentId}`, {
-          moduleName: payload.moduleName,
+        commit("setLoading", true);
+        const res = await axios.put(`/students/enroll/${payload.id}`, {
+          module: payload.module,
         });
 
-        let user = res.data.updatedUser;
+        if (res.status == 201) {
+          let user = res.data;
 
-        commit("enrollStudent", user);
-        commit("setLoading", false);
+          commit("enrollStudent", user);
+        }
       } catch (err) {
-        commit("setLoading", false);
         commit("setError", err.response.data.message);
+      } finally {
+        commit("setLoading", false);
       }
     },
 
