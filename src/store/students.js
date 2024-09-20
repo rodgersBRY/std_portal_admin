@@ -117,6 +117,7 @@ export default {
 
     async updateStudent({ commit }, payload) {
       commit("setLoading", true);
+      commit("clearError");
 
       try {
         const resp = await axios.put(`/students/${payload.userId}`, payload);
@@ -136,7 +137,8 @@ export default {
 
     async deleteStudent({ commit }, payload) {
       commit("setLoading", true);
-
+      commit("clearError");
+      
       try {
         await axios.delete(`/students/${payload}`);
 
@@ -151,6 +153,8 @@ export default {
     async enrollStudentToCourse({ commit }, payload) {
       try {
         commit("setLoading", true);
+        commit("clearError");
+
         const res = await axios.put(`/students/enroll/${payload.id}`, {
           module: payload.module,
         });

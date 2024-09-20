@@ -90,6 +90,10 @@
         <p>{{ successMessage }}</p>
       </section>
 
+      <section v-if="error" class="error-message">
+        <p>{{ error }}</p>
+      </section>
+
       <section class="enroll" v-if="isEnroll">
         <h2>New Course</h2>
 
@@ -142,7 +146,7 @@ export default {
         name: "",
         amount: ""
       },
-      
+
       headers: [
         {
           text: "Title",
@@ -169,7 +173,7 @@ export default {
           filterable: false,
         },
       ],
-      
+
       editedStudent: {
         name: "",
         email: "",
@@ -318,6 +322,17 @@ main {
     background-color: rgb(204, 253, 204);
     padding: 5px 10px;
     border-left: 4px solid green;
+  }
+
+  .error-message p {
+    width: 90%;
+    margin: 1rem auto;
+    font-size: 14px;
+    font-weight: bold;
+    color: red;
+    background-color: rgb(255, 191, 191);
+    padding: 5px 10px;
+    border-left: 4px solid red;
   }
 
   .personal-info {
