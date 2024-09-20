@@ -303,9 +303,10 @@ export default {
 
       if (!this.error) {
         this.amount = "";
+        this.desc = "";
         
         this.success = true;
-        this.successMessage = "Student fee has been updated";
+        this.successMessage = "Fee payment has been recorded";
 
         setTimeout(() => {
           this.success = false;
