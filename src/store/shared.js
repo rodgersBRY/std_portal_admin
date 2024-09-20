@@ -5,26 +5,26 @@ export default {
   },
 
   mutations: {
-    setLoading(state, payload) {
+    SET_LOADING(state, payload) {
       state.loading = payload;
     },
 
-    setError(state, payload) {
+    SET_ERROR(state, payload) {
       state.error = payload;
     },
 
-    clearError(state) {
+    CLEAR_ERROR(state) {
       state.error = null;
     },
   },
 
   actions: {
     setError({commit}, payload) {
-      commit('setError', payload);
+      commit('SET_ERROR', payload);
     },
 
     clearError({commit}) {
-      commit('clearError')
+      commit('CLEAR_ERROR')
     }
   },
   

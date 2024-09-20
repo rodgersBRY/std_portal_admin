@@ -7,12 +7,12 @@ export default {
   },
 
   mutations: {
-    setUser(state, payload) {
+    SET_USER(state, payload) {
       state.user = payload.user;
       state.token = payload.token;
     },
 
-    logout(state) {
+    LOGOUT(state) {
       state.user = null;
       state.token = "";
       state.error = null;
@@ -23,20 +23,17 @@ export default {
     // auto logout after 30 minutes
     autoLogout({ commit }) {
       setTimeout(() => {
-        commit("clearError");
-        commit("logout");
-        commit("clearStudents");
-        commit("clearInstructors");
-        commit("clearCourses");
-        commit("clearstudentsPerCourse");
+        commit("CLEAR_ERROR");
+        commit("LOGOUT");
+        commit("CLEAR_STUDENTS");
         localStorage.removeItem("token");
         delete axios.defaults.headers.common["Authorization"];
       }, 30 * 60000);
     },
 
     async login({ commit, dispatch }, payload) {
-      commit("setLoading", true);
-      commit("clearError");
+      commit("SET_LOADING", true);
+      commit("CLEAR_ERROR");
 
       try {
         const res = await axios.post("/auth/login", {
@@ -44,34 +41,32 @@ export default {
           password: payload.get("password"),
         });
 
-        let user = res.data.loadedUser;
-        let token = res.data.token;
+        if (res.status == 200) {
+          let user = res.data.loadedUser;
+          let token = res.data.token;
 
-        localStorage.setItem("token", token);
-        axios.defaults.headers.common["Authorization"] = token;
+          localStorage.setItem("token", token);
+          axios.defaults.headers.common["Authorization"] = token;
 
-        commit("setUser", { user, token });
+          commit("SET_USER", { user, token });
 
-        dispatch("autoLogout");
+          dispatch("autoLogout");
+        }
       } catch (err) {
-        console.log(err);
-        commit("setError", err.response.data.message);
+        commit("SET_ERROR", err.response.data.message);
 
         localStorage.removeItem("token");
       } finally {
-        commit("setLoading", false);
+        commit("SET_LOADING", false);
       }
     },
 
     async logout({ commit }) {
-      commit("logout");
+      commit("LOGOUT");
+      commit("CLEAR_STUDENTS");
+      commit("CLEAR_ERROR");
       localStorage.removeItem("token");
       delete axios.defaults.headers.common["Authorization"];
-      commit("clearStudents");
-    },
-
-    clearError({ commit }) {
-      commit("clearError");
     },
   },
 
