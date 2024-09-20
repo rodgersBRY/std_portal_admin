@@ -79,7 +79,7 @@
         <div v-else>
           <button class="btn edit-btn" @click="toggleEditing">Edit Student</button>
           <button class="btn enroll-btn" @click="isEnroll = true">Enroll</button>
-          <button class="btn update-btn">Update Fee</button>
+          <button class="btn update-btn" @click="feeDialog = true">Update Fee</button>
           <button class="btn print-btn">Print Receipt</button>
           <v-spacer />
           <button class="btn delete-btn">Deactivate Student</button>
@@ -106,6 +106,42 @@
           <button class="btn enroll" :disabled="isLoading" @click="enrollStudent">Enroll</button>
           <button class="btn cancel" :disabled="isLoading" @click="closeEnroll">Cancel</button>
         </div>
+      </section>
+
+      <section class="update-fee-dialog">
+        <v-dialog v-model="feeDialog" max-width="500">
+          <v-card>
+            <v-card-title class="text-h5">Enter a Number</v-card-title>
+    
+            <v-card-text>
+              <v-form ref="form">
+                <v-text-field
+                  v-model="amount"
+                  label="Amount"
+                  type="number"
+                  outlined
+                  required
+                  color="brown"
+                  :rules="numberRules"
+                ></v-text-field>
+                <v-textarea
+                  v-model="desc"
+                  label="Description"
+                  type="text"
+                  outlined
+                  color="brown"
+                  placeholder="Mode of payment and transaction code"
+                ></v-textarea>
+              </v-form>
+            </v-card-text>
+    
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="grey" text dark @click="closeFeeDialog" :disabled="isLoading">Cancel</v-btn>
+              <v-btn color="green darken-2" dark @click="updateFee" :loading="isLoading" :disabled="isLoading">Submit</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </section>
 
       <section class="activity">
@@ -136,12 +172,14 @@ export default {
 
   data() {
     return {
-      amount: "",
+      amount: null,
+      desc: "",
       editing: false,
       success: false,
       isEnroll: false,
       successMessage: "",
-      
+      feeDialog: false,
+
       module: {
         name: "",
         amount: ""
@@ -179,7 +217,12 @@ export default {
         email: "",
         phone: "",
         idNo: null,
-      }
+      },
+
+      numberRules: [
+        v => !!v || 'Number is required',
+        v => (v && v > 0) || 'Number must be positive',
+      ],
     };
   },
 
@@ -207,6 +250,12 @@ export default {
         name: "",
         amount: "",
       }
+    },
+
+    closeFeeDialog() {
+      this.amount = null;
+
+      this.feeDialog = false
     },
 
     printSection() {
@@ -248,13 +297,23 @@ export default {
     async updateFee() {
       await this.updateStudentFee({
         id: this.student._id,
-        amount: this.amount
+        amount: this.amount,
+        desc: this.desc,
       });
 
       if (!this.error) {
-        // fetch student details again
         this.amount = "";
+        
+        this.success = true;
+        this.successMessage = "Student fee has been updated";
+
+        setTimeout(() => {
+          this.success = false;
+          this.successMessage = "";
+          location.reload();
+        }, 3000);  
       }
+      this.feeDialog = false;
     },
 
     async enrollStudent() {
@@ -356,6 +415,7 @@ main {
       }
     }
   }
+
   .school-money {
     display: flex;
     gap: 2rem;

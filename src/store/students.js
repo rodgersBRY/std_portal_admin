@@ -138,7 +138,7 @@ export default {
     async deleteStudent({ commit }, payload) {
       commit("setLoading", true);
       commit("clearError");
-      
+
       try {
         await axios.delete(`/students/${payload}`);
 
@@ -173,17 +173,23 @@ export default {
 
     async updateStudentFee({ commit }, payload) {
       commit("setLoading", true);
+      commit("clearError");
 
       try {
-        const res = await axios.put(`/students/update-fee`, payload);
+        const res = await axios.put(`/students/update-fee/${payload.id}`, {
+          amount: payload.amount,
+          desc: payload.desc,
+        });
 
-        let updatedUser = res.data;
+        if (res.status == 201) {
+          let updatedUser = res.data;
 
-        commit("updateStudentFee", updatedUser);
-        commit("setLoading", false);
+          commit("updateStudentFee", updatedUser);
+        }
       } catch (err) {
-        commit("setLoading", false);
         commit("setError", err.response.data.message);
+      } finally {
+        commit("setLoading", false);
       }
     },
 
