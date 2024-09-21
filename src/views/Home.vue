@@ -105,7 +105,7 @@ export default {
     ...mapGetters(['students', 'isLoading', 'user']),
 
     filteredStudents() {
-      return this.students.filter(student => student.fee_balance > 20000);
+      return this.students.filter(student => student.fee_balance > 20000 && student.active);
     }
   },
 
