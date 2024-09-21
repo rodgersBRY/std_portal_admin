@@ -115,14 +115,16 @@ export default {
       }
     },
 
-    async deleteStudent({ commit }, payload) {
+    async deactivateStudent({ commit }, id) {
       commit("SET_LOADING", true);
       commit("CLEAR_ERROR");
 
       try {
-        await axios.delete(`/students/${payload}`);
+        const res = await axios.put(`/students/${id}`, { status: false });
 
-        commit("DELETE_STUDENT", payload);
+        if (res.status == 201) {
+          commit("UPDATE_STUDENT", res.data.updatedStudent);
+        }
       } catch (err) {
         commit("SET_ERROR", err.response.data.message);
       } finally {

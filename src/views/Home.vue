@@ -13,7 +13,7 @@
           <p>Students <span class="grey--text">({{ students.length }})</span></p>
         </div>
 
-        <div class="card">
+        <div class="card" @click="$router.push('/reports')">
           <v-icon size="80" color="brown">mdi-chart-multiple</v-icon>
           <p>Reports</p>
         </div>
@@ -38,7 +38,7 @@
             loading-text="Loading... Please wait"
           >
           <template v-slot:item="{ item }">
-            <tr @click="handleClick(item)">
+            <tr @click="handleClick(item)" style="cursor: pointer;">
               <td>{{ item.code }}</td>
               <td>{{ item.name }}</td>
               <td>{{ item.phone }}</td>

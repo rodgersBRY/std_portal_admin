@@ -5,13 +5,6 @@
     </header>
 
     <main>
-      <!-- <section class="add-new">
-        <v-btn dark color="brown" @click="newStudentDialog = true">
-          <v-icon>mdi-plus</v-icon>
-          New Student
-        </v-btn>
-      </section> -->
-
       <section class="add-new">
         <v-dialog v-model="dialog" persistent max-width="600px">
           <template v-slot:activator="{ on, attrs }">
@@ -181,7 +174,7 @@
           loading-text="Loading... Please wait"
         >
           <template v-slot:item="{ item }">
-              <tr @click="handleClick(item)">
+              <tr @click="handleClick(item)" style="cursor: pointer; font-weight: bold;" :class="{ 'inactive-row' : !item.active }">
                 <td>{{ item.code }}</td>
                 <td>{{ item.name }}</td>
                 <td>{{ item.phone }}</td>
@@ -300,6 +293,9 @@ export default {
       await this.newStudent(this.student)
 
       if (!this.error) {
+        // reset the form
+        this.$refs.form.reset()
+        this.student.modules = []
         this.dialog = false
       }
       
@@ -347,5 +343,10 @@ main {
     }
   }
 
+  .inactive-row {
+    background-color: #f5f5f5; /* Light grey background */
+    color: #999; /* Grey text color */
+    font-style: italic
+  }
 }
 </style>
