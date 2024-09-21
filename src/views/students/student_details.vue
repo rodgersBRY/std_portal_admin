@@ -49,7 +49,7 @@
             <div class="modules-div">
               <h3>Courses Enrolled</h3>
               <div class="module mt-3" v-for="(item, index) in student.modules" :key="index">
-                <p>{{ item.name }}</p>
+                <p style="text-transform: capitalize;">{{ item.name }}</p>
                 <p>KES {{ item.amount | currencyFormatter }}</p>
               </div>
             </div>
@@ -337,7 +337,7 @@ export default {
         setTimeout(() => {
           this.success = false;
           this.successMessage = "";
-          location.reload();
+          // location.reload();
         }, 3000);  
       }
       this.feeDialog = false;
@@ -431,6 +431,7 @@ main {
     background-color: rgb(204, 253, 204);
     padding: 5px 10px;
     border-left: 4px solid green;
+    color: #331616;
   }
 
   .error-message p {
@@ -495,11 +496,11 @@ main {
             display: inline-block;
             width: 200px;
             font-weight: bold;
-            color: rgb(75, 75, 75);
+            color: white;
             margin-right: 3rem;
             padding: 10px;
             border-radius: 10px;
-            background-color: rgb(244, 244, 244);
+            background-color: rgb(136, 127, 127);
           }
         }
       }
