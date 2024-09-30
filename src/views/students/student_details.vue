@@ -82,7 +82,6 @@
           <button class="btn edit-btn" @click="toggleEditing">Edit Student</button>
           <button class="btn enroll-btn" @click="isEnroll = true">Enroll</button>
           <button class="btn update-btn" @click="feeDialog = true">Update Fee</button>
-          <button class="btn print-btn">Print Receipt</button>
           <v-spacer />
           <button v-if="student.active" class="btn delete-btn" @click="deactivateDialog = true">Deactivate Student</button>
         </div>
@@ -125,6 +124,7 @@
                 color="brown"
                 :rules="numberRules"
               ></v-text-field>
+
               <v-textarea
                 v-model="desc"
                 label="Description"
@@ -133,6 +133,11 @@
                 color="brown"
                 placeholder="Mode of payment and transaction code"
               ></v-textarea>
+
+              <div>
+                <input v-model="printOption" type="checkbox" name="printOption" id="printOption" />
+                <p><strong>Print receipt?</strong></p>
+              </div>
             </v-form>
           </v-card-text>
   
@@ -205,7 +210,7 @@ export default {
       successMessage: "",
       feeDialog: false,
       deactivateDialog: false,
-
+      printOption: false,
       module: {
         name: "",
         amount: ""
@@ -325,6 +330,7 @@ export default {
         id: this.student._id,
         amount: this.amount,
         desc: this.desc,
+        printOption: this.printOption,
       });
 
       if (!this.error) {
@@ -337,7 +343,7 @@ export default {
         setTimeout(() => {
           this.success = false;
           this.successMessage = "";
-          // location.reload();
+          location.reload();
         }, 3000);  
       }
       this.feeDialog = false;
@@ -583,6 +589,12 @@ main {
       border-radius: 15px;
       padding: 2rem;
     }
+  }
+
+  .schoolOptions {
+    display: flex;
+    gap: 1rem;
+    font-weight: bold;
   }
 }
 </style>

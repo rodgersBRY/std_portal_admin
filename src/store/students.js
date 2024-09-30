@@ -163,18 +163,15 @@ export default {
           {
             amount: payload.amount,
             desc: payload.desc,
+            printOption: payload.printOption,
           },
           { responseType: "blob" }
         );
 
         if (res.status == 200) {
-          // let updatedUser = res.data;
-
-          // commit("UPDATE_STUDENT", updatedUser);
           const disposition = res.headers["content-disposition"];
-          console.log(res.headers);
-          
-          let filename = ""; // Default filename
+
+          let filename = "";
 
           if (disposition && disposition.indexOf("filename=") !== -1) {
             const matches = disposition.match(
