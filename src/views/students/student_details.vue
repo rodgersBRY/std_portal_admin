@@ -184,9 +184,19 @@
           :items="student.activity"
           loading-text="Loading... Please wait"
         >
-          <template v-slot:item.ts="{ item }">
-            <p>{{ item.ts | dateFormat }}</p>
-          </template>
+        <template v-slot:item="{ item }">
+          <tr @click="handleClick(item)">
+            <td>{{ item.title }}</td>
+            <td>{{ item.value }}</td>
+            <td>{{ item.amount }}</td>
+            <td>{{ item.ts | dateFormat }}</td>
+            <td>
+              <v-btn icon  v-if="item.title == 'Fee Payment'">
+                <v-icon>mdi-printer</v-icon>
+              </v-btn>
+            </td>
+          </tr>
+      </template>
         </v-data-table>
         </div>
       </section>
@@ -238,6 +248,11 @@ export default {
         {
           text: "Timestamp",
           value: "ts",
+          sortable: false,
+          filterable: false,
+        },
+        {
+          text: "Actions",
           sortable: false,
           filterable: false,
         },
@@ -433,11 +448,11 @@ main {
     width: 90%;
     margin: 1rem auto;
     font-size: 14px;
-    color: green;
+    font-weight: bold;
     background-color: rgb(204, 253, 204);
     padding: 5px 10px;
     border-left: 4px solid green;
-    color: #331616;
+    color: green;
   }
 
   .error-message p {
