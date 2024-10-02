@@ -90,7 +90,7 @@ router.beforeEach((to, from, next) => {
       next();
       return;
     }
-    next("/accounts/login");
+    next("/login");
   } else {
     next();
   }
