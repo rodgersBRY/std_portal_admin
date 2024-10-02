@@ -308,6 +308,7 @@ export default {
 main {
   background-color: rgb(247, 247, 247);
   padding: 3rem;
+  min-height: 100vh;
 
   .table,
   .add-new {
