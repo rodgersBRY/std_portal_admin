@@ -15,6 +15,8 @@
             <p style="font-size: 22px;"><strong><span><v-icon>mdi-registered-trademark</v-icon></span>{{ student.code }}</strong></p>
             <p v-if="!editing"><span><v-icon>mdi-id-card</v-icon></span>ID No: {{ student.idNo }}</p>
             <p v-else><v-icon>mdi-id-card</v-icon><input type="number" name="id" id="id" :placeholder="editedStudent.idNo" v-model="editedStudent.idNo" /></p>
+
+            <p class="inactive-text" v-if="!student.active">DEACTIVATED</p>
           </div>
 
           <div>
@@ -47,7 +49,7 @@
             <div class="modules-div">
               <h3>Courses Enrolled</h3>
               <div class="module mt-3" v-for="(item, index) in student.modules" :key="index">
-                <p>{{ item.name }}</p>
+                <p style="text-transform: capitalize;">{{ item.name }}</p>
                 <p>KES {{ item.amount | currencyFormatter }}</p>
               </div>
             </div>
@@ -68,7 +70,7 @@
         </div>
       </section>
       
-      <section class="actions">
+      <section class="actions" v-if="student.active">
         <h2>Quick Actions</h2>
 
         <div v-if="editing">
@@ -80,14 +82,13 @@
           <button class="btn edit-btn" @click="toggleEditing">Edit Student</button>
           <button class="btn enroll-btn" @click="isEnroll = true">Enroll</button>
           <button class="btn update-btn" @click="feeDialog = true">Update Fee</button>
-          <button class="btn print-btn">Print Receipt</button>
           <v-spacer />
-          <button class="btn delete-btn">Deactivate Student</button>
+          <button v-if="student.active" class="btn delete-btn" @click="deactivateDialog = true">Deactivate Student</button>
         </div>
       </section>
 
       <section v-if="success" class="success-message">
-        <p>{{ successMessage }}</p>
+        <p v-html="successMessage"></p>
       </section>
 
       <section v-if="error" class="error-message">
@@ -104,45 +105,74 @@
           <input type="number" name="fee" id="fee" placeholder="e.g. 50000" v-model="module.amount" />
 
           <button class="btn enroll" :disabled="isLoading" @click="enrollStudent">Enroll</button>
-          <button class="btn cancel" :disabled="isLoading" @click="closeEnroll">Cancel</button>
+          <button class="btn cancel" :disabled="isLoading" @click="closeEnroll">Close</button>
         </div>
       </section>
 
-      <section class="update-fee-dialog">
-        <v-dialog v-model="feeDialog" max-width="500">
-          <v-card>
-            <v-card-title class="text-h5">Enter a Number</v-card-title>
+      <v-dialog v-model="feeDialog" max-width="500">
+        <v-card>
+          <v-card-title class="text-h5">Enter a Number</v-card-title>
+  
+          <v-card-text>
+            <v-form ref="form">
+              <v-text-field
+                v-model="amount"
+                label="Amount"
+                type="number"
+                outlined
+                required
+                color="brown"
+                :rules="numberRules"
+              ></v-text-field>
+
+              <v-textarea
+                v-model="desc"
+                label="Description"
+                type="text"
+                outlined
+                color="brown"
+                placeholder="Mode of payment and transaction code"
+              ></v-textarea>
+
+              <div>
+                <input v-model="printOption" type="checkbox" name="printOption" id="printOption" />
+                <p><strong>Print receipt?</strong></p>
+              </div>
+            </v-form>
+          </v-card-text>
+  
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="grey" text dark @click="closeFeeDialog" :disabled="isLoading">Cancel</v-btn>
+            <v-btn color="green darken-2" dark @click="updateFee" :loading="isLoading" :disabled="isLoading">Submit</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="deactivateDialog" max-width="400px">
+        <!-- <template v-slot:activator="{ on, attrs }">
+          <button color="red" dark v-bind="attrs" v-on="on">
+            Deactivate Student
+          </button>
+        </template> -->
     
-            <v-card-text>
-              <v-form ref="form">
-                <v-text-field
-                  v-model="amount"
-                  label="Amount"
-                  type="number"
-                  outlined
-                  required
-                  color="brown"
-                  :rules="numberRules"
-                ></v-text-field>
-                <v-textarea
-                  v-model="desc"
-                  label="Description"
-                  type="text"
-                  outlined
-                  color="brown"
-                  placeholder="Mode of payment and transaction code"
-                ></v-textarea>
-              </v-form>
-            </v-card-text>
+        <v-card>
+          <v-card-title class="headline justify-center">Confirm Deactivation</v-card-title>
     
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="grey" text dark @click="closeFeeDialog" :disabled="isLoading">Cancel</v-btn>
-              <v-btn color="green darken-2" dark @click="updateFee" :loading="isLoading" :disabled="isLoading">Submit</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </section>
+          <v-card-text>
+            Are you sure you want to deactivate <strong>{{ student.name }}</strong>?
+            <v-alert type="warning" class="mt-3">
+              It's good practice to deactivate instead of deleting records for auditing purposes
+            </v-alert>
+          </v-card-text>
+    
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="grey" text @click="deactivateDialog = false">Cancel</v-btn>
+            <v-btn color="red darken-2" text @click="confirmDeactivation">Deactivate</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
       <section class="activity">
         <h2>Activity Log</h2>
@@ -154,9 +184,19 @@
           :items="student.activity"
           loading-text="Loading... Please wait"
         >
-          <template v-slot:item.ts="{ item }">
-            <p>{{ item.ts | dateFormat }}</p>
-          </template>
+        <template v-slot:item="{ item }">
+          <tr @click="handleClick(item)">
+            <td>{{ item.title }}</td>
+            <td>{{ item.value }}</td>
+            <td>{{ item.amount }}</td>
+            <td>{{ item.ts | dateFormat }}</td>
+            <td>
+              <v-btn icon  v-if="item.title == 'Fee Payment'">
+                <v-icon>mdi-printer</v-icon>
+              </v-btn>
+            </td>
+          </tr>
+      </template>
         </v-data-table>
         </div>
       </section>
@@ -179,7 +219,8 @@ export default {
       isEnroll: false,
       successMessage: "",
       feeDialog: false,
-
+      deactivateDialog: false,
+      printOption: false,
       module: {
         name: "",
         amount: ""
@@ -207,6 +248,11 @@ export default {
         {
           text: "Timestamp",
           value: "ts",
+          sortable: false,
+          filterable: false,
+        },
+        {
+          text: "Actions",
           sortable: false,
           filterable: false,
         },
@@ -238,7 +284,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['updateStudent', 'updateStudentFee', 'enrollStudentToCourse']),
+    ...mapActions(['updateStudent', 'updateStudentFee', 'enrollStudentToCourse', 'deactivateStudent']),
 
     toggleEditing() {
       this.editing = !this.editing;
@@ -299,6 +345,7 @@ export default {
         id: this.student._id,
         amount: this.amount,
         desc: this.desc,
+        printOption: this.printOption,
       });
 
       if (!this.error) {
@@ -341,6 +388,23 @@ export default {
         }, 2000);        
       }
     },
+
+    async confirmDeactivation() {
+      await this.deactivateStudent(this.student._id)
+
+      if (!this.error) {
+        this.deactivateDialog = false
+        this.success = true
+        this.successMessage = `<strong>${this.student.name}</strong> has been deactivated`
+
+        setTimeout(() => {
+          this.success = false;
+          this.successMessage = "";
+          
+          location.reload();
+        }, 2000);  
+      }
+    }
   },
 };
 </script>
@@ -373,15 +437,22 @@ main {
     }
   }
 
+  .inactive-text {
+    font-weight: bold;
+    font-size: 30px;
+    color: orange;
+    font-style: italic;
+  }
+
   .success-message p {
     width: 90%;
     margin: 1rem auto;
     font-size: 14px;
     font-weight: bold;
-    color: green;
     background-color: rgb(204, 253, 204);
     padding: 5px 10px;
     border-left: 4px solid green;
+    color: green;
   }
 
   .error-message p {
@@ -446,11 +517,11 @@ main {
             display: inline-block;
             width: 200px;
             font-weight: bold;
-            color: rgb(75, 75, 75);
+            color: white;
             margin-right: 3rem;
             padding: 10px;
             border-radius: 10px;
-            background-color: rgb(244, 244, 244);
+            background-color: rgb(136, 127, 127);
           }
         }
       }
@@ -473,7 +544,6 @@ main {
   .actions div {
     display: flex;
     gap: 2rem;
-    margin-top: 1rem;
     background-color: white;
     border-radius: 15px;
     padding: 2rem;
@@ -534,6 +604,12 @@ main {
       border-radius: 15px;
       padding: 2rem;
     }
+  }
+
+  .schoolOptions {
+    display: flex;
+    gap: 1rem;
+    font-weight: bold;
   }
 }
 </style>

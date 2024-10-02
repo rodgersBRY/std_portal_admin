@@ -115,14 +115,16 @@ export default {
       }
     },
 
-    async deleteStudent({ commit }, payload) {
+    async deactivateStudent({ commit }, id) {
       commit("SET_LOADING", true);
       commit("CLEAR_ERROR");
 
       try {
-        await axios.delete(`/students/${payload}`);
+        const res = await axios.put(`/students/${id}`, { status: false });
 
-        commit("DELETE_STUDENT", payload);
+        if (res.status == 201) {
+          commit("UPDATE_STUDENT", res.data.updatedStudent);
+        }
       } catch (err) {
         commit("SET_ERROR", err.response.data.message);
       } finally {
@@ -156,15 +158,39 @@ export default {
       commit("CLEAR_ERROR");
 
       try {
-        const res = await axios.put(`/students/update-fee/${payload.id}`, {
-          amount: payload.amount,
-          desc: payload.desc,
-        });
+        const res = await axios.put(
+          `/students/update-fee/${payload.id}`,
+          {
+            amount: payload.amount,
+            desc: payload.desc,
+            printOption: payload.printOption,
+          },
+          { responseType: "blob" }
+        );
 
-        if (res.status == 201) {
-          let updatedUser = res.data;
+        if (res.status == 200) {
+          const disposition = res.headers["content-disposition"];
 
-          commit("UPDATE_STUDENT", updatedUser);
+          let filename = "";
+
+          if (disposition && disposition.indexOf("filename=") !== -1) {
+            const matches = disposition.match(
+              /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+            );
+            if (matches != null && matches[1]) {
+              filename = matches[1].replace(/['"]/g, ""); // Remove quotes if present
+            }
+          }
+
+          const url = window.URL.createObjectURL(new Blob([res.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+
+          window.URL.revokeObjectURL(url);
         }
       } catch (err) {
         commit("SET_ERROR", err.response.data.message);

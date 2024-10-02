@@ -23,7 +23,7 @@ main {
   .dashboard {
     width: 90%;
     margin: 3rem auto;
-    height: 90vh;
+    height: 100vh;
   }
 }
 </style>
