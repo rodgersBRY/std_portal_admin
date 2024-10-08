@@ -7,7 +7,7 @@
     <main>
       <section class="dashboard">
         <iframe
-        src="http://164.92.169.3:3000/public/dashboard/992cce01-9f9d-412d-911c-a4a080398c01"
+        src="https://mawi.icu/public/dashboard/1ebbf6ec-6cd2-4d18-a7b1-5d32428e2617"
         frameborder="0"
         width="100%"
         height="100%"
